@@ -1,0 +1,24 @@
+<h1>Dashboard</h1>
+
+<p *ngIf="!dashboardResults"><em>Loading...</em></p>
+
+<table class='table' *ngIf="dashboardResults">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Last update</th>
+            <th>Status</th>
+            <th>Next run</th>
+            <th>Refresh in</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let status of dashboardResults">
+            <td>{{ status.description }}</td>
+            <td>{{ status.lastUpdate }}</td>
+            <td>{{ status.lastStatus }}</td>
+            <td>{{ status.nextUpdate }}</td>
+            <td>{{ status.nextUpdateSeconds }}</td>
+        </tr>
+    </tbody>
+</table>

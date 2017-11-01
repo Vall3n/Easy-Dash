@@ -8,36 +8,32 @@ namespace EasyDash.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
+        private static readonly string[] Status = new[]
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            "Success", "Fail", "Pending"
         };
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public IEnumerable<DashboardResult> DashboardResults()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return Enumerable.Range(1, 5).Select(index => new DashboardResult
             {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
+                Description = "Test service " + index,
+                LastStatus = Status[rng.Next(Status.Length - 1)],
+                LastUpdate = DateTime.Now.AddSeconds(rng.Next(-300, 0)),
+                NextUpdate = DateTime.Now.AddSeconds(rng.Next(10, 300))
             });
         }
 
-        public class WeatherForecast
+        public class DashboardResult
         {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
+            public string Description { get; set; }
 
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
+            public string LastStatus { get; set; }
+            public DateTime LastUpdate { get; set; }
+
+            public DateTime NextUpdate { get; set; }
         }
     }
 }
