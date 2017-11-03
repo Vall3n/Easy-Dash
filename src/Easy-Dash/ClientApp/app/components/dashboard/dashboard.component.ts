@@ -12,13 +12,13 @@ export class DashboardComponent {
 
 
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
-        http.get(baseUrl + 'api/SampleData/DashboardResults').subscribe(result => {
+        http.get(baseUrl + 'api/SampleData/SampleDataFromDb').subscribe(result => {
             this.dashboardResults = result.json() as IDashboardResult[];
 
             this.dashboardResults.forEach((item) => {
                 this.configureItem(item);
 
-                this.sortResults();
+                //this.sortResults();
             });
         }, error => console.error(error));
     }
@@ -39,7 +39,15 @@ export class DashboardComponent {
         }
 
         item.friendlyLastUpdated = () => {
-            return moment(item.lastUpdate).fromNow();
+            try {
+                const m = moment(item.lastUpdate);
+                console.warn(m)
+                return m.fromNow();
+            } catch (e) {
+                console.warn(e);
+            }
+            return "oops";
+
         }        
     }
 
@@ -51,12 +59,13 @@ export class DashboardComponent {
             if (a.nextUpdateSeconds > b.nextUpdateSeconds)
                 return 1;
 
-            return 0;
+            return 1;
         });
     }
 }
 
 interface IDashboardResult {
+    id: number;
     description: string;
     lastStatus: string;
     lastUpdate: Date;
