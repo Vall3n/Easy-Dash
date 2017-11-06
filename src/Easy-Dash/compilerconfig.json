@@ -6,5 +6,9 @@
   {
     "outputFile": "ClientApp/app/components/navmenu/navmenu.component.css",
     "inputFile": "ClientApp/app/components/navmenu/navmenu.component.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/components/configure/configure.component.css",
+    "inputFile": "ClientApp/app/components/configure/configure.component.scss"
   }
 ]

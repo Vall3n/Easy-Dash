@@ -28,7 +28,21 @@ namespace EasyDash.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<DashboardResult> SampleDataFromDb() 
+        public IEnumerable<dynamic> Configurations()
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new
+            {
+                Id = index,
+                Description = "Test service " + index,
+                Url = "http://example/" + index,
+                statusCode = 200,
+                ContainsText = ""
+            });
+        }
+
+        [HttpGet("[action]")]
+        public IEnumerable<DashboardResult> SampleDataFromDb()
         {
             using (var db = new LiteDatabase("EasyDash.db"))
             {

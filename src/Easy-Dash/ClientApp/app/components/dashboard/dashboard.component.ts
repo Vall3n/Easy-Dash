@@ -1,7 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { PLATFORM_ID, Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
+import { isPlatformBrowser } from '@angular/common';
 import * as moment from 'moment';
-
 
 @Component({
     selector: 'dashboard',
@@ -11,55 +11,64 @@ export class DashboardComponent {
     public dashboardResults: IDashboardResult[];
 
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+    constructor(http: Http, @Inject('BASE_URL') baseUrl: string, @Inject(PLATFORM_ID) platformId: string) {
+        if (!isPlatformBrowser(platformId))
+            return;
+
         http.get(baseUrl + 'api/SampleData/SampleDataFromDb').subscribe(result => {
             this.dashboardResults = result.json() as IDashboardResult[];
 
             this.dashboardResults.forEach((item) => {
                 this.configureItem(item);
 
-                //this.sortResults();
+                this.sortResults();
             });
         }, error => console.error(error));
     }
 
-    configureItem(item: IDashboardResult) {
-        item.nextUpdateSeconds = Math.round(((new Date(item.nextUpdate).getTime() - new Date(Date.now()).getTime()) / 1000));
-        const intervalHandle = setInterval(() => {
-            item.nextUpdateSeconds = item.nextUpdateSeconds - 1;
+    getRowStyle(item: IDashboardResult): string {
+        switch (item.lastStatus) {
+            case 'Pending':
+                return 'info';
+            case 'Fail':
+                return 'danger';
+            //case 'Success':
+            //    return 'success';
+            default:
+                return '';
+        }
+    }
 
-            if (item.nextUpdateSeconds < 1) {
+    configureItem(item: IDashboardResult) {
+        const intervalHandle = setInterval(() => {
+            if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
                 clearInterval(intervalHandle);
-                item.lastStatus = "Pending";
+                item.lastStatus = 'Pending';
             }
         }, 1000);
 
         item.friendlyNextUpdate = () => {
+            if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
+                return 'Awaiting results..';
+            }
+
             return moment(item.nextUpdate).fromNow();
         }
 
         item.friendlyLastUpdated = () => {
             try {
                 const m = moment(item.lastUpdate);
-                console.warn(m)
                 return m.fromNow();
             } catch (e) {
                 console.warn(e);
             }
-            return "oops";
-
-        }        
+            return 'oops';
+        }
     }
 
     sortResults() {
         this.dashboardResults.sort((a, b) => {
-            if (a.nextUpdateSeconds < b.nextUpdateSeconds)
-                return -1;
-
-            if (a.nextUpdateSeconds > b.nextUpdateSeconds)
-                return 1;
-
-            return 1;
+            return new Date(a.nextUpdate).getTime() - new Date(b.nextUpdate).getTime();
         });
     }
 }
@@ -68,9 +77,8 @@ interface IDashboardResult {
     id: number;
     description: string;
     lastStatus: string;
-    lastUpdate: Date;
-    nextUpdate: Date;
-    nextUpdateSeconds: number;
+    lastUpdate: string;
+    nextUpdate: string;
     friendlyNextUpdate(): string;
     friendlyLastUpdated(): string;
 }

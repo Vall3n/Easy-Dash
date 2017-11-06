@@ -2,7 +2,7 @@
 
 <p *ngIf="!dashboardResults"><em>Loading...</em></p>
 
-<table class='table' *ngIf="dashboardResults">
+<table class="table table-hover " *ngIf="dashboardResults">
     <thead>
         <tr>
             <th>Description</th>
@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let status of dashboardResults">
+        <tr *ngFor="let status of dashboardResults" class="{{getRowStyle(status)}}">
             <td>{{ status.description }}</td>
             <td>{{ status.friendlyLastUpdated() }}</td>
             <td>{{ status.lastStatus }}</td>
