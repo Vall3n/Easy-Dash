@@ -14,7 +14,7 @@ export class ConfigureComponent {
         if (!isPlatformBrowser(platformId))
             return;
 
-        http.get(baseUrl + 'api/SampleData/Configurations').subscribe(result => {
+        http.get(baseUrl + 'api/Configuration/Urls').subscribe(result => {
             this.configurations = result.json() as Configuration[];
 
             this.configurations.forEach((item) => {
@@ -42,7 +42,9 @@ class Configuration {
     description: string;
     url: string;
     statusCode?: number;
-    containsText?: string;
+    bodyContains?: string;
+    schedule: string;
+    enabled: boolean;
 
     save(): void { };
 }

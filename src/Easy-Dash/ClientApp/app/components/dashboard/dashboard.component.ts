@@ -15,7 +15,7 @@ export class DashboardComponent {
         if (!isPlatformBrowser(platformId))
             return;
 
-        http.get(baseUrl + 'api/SampleData/SampleDataFromDb').subscribe(result => {
+        http.get(baseUrl + 'api/Dashboard/Results').subscribe(result => {
             this.dashboardResults = result.json() as IDashboardResult[];
 
             this.dashboardResults.forEach((item) => {
@@ -32,8 +32,8 @@ export class DashboardComponent {
                 return 'info';
             case 'Fail':
                 return 'danger';
-            //case 'Success':
-            //    return 'success';
+            case 'Success':
+                return 'success';
             default:
                 return '';
         }

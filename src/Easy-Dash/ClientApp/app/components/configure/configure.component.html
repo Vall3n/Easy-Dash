@@ -14,7 +14,7 @@
 
             <div class="form-group">
                 <label for="url">Full Url</label>
-                <input type="text" class="form-control" id="url" required [(ngModel)]="config.url" name="url" #url="ngModel">
+                <input type="url" class="form-control" id="url" required [(ngModel)]="config.url" name="url" #url="ngModel">
                 <div [hidden]="url.valid || url.pristine" class="alert alert-danger">
                     Url to monitor is required
                 </div>
@@ -26,8 +26,18 @@
             </div>
 
             <div class="form-group">
-                <label for="containsText">Response contains text</label>
-                <input type="text" class="form-control" id="containsText" [(ngModel)]="config.containsText" name="containsText">
+                <label for="bodyContains">Response body contains text</label>
+                <input type="text" class="form-control" id="bodyContains" [(ngModel)]="config.bodyContains" name="bodyContains">
+            </div>
+            
+            <div class="form-group">
+                <label for="schedule">Schedule time</label>
+                <input type="number" class="form-control" id="schedule" required [(ngModel)]="config.schedule" name="schedule">
+            </div>
+            
+            <div class="form-group">
+                <label for="enabled">Enabled</label>
+                <input type="checkbox" class="form-control" id="enabled" [(ngModel)]="config.enabled" name="enabled">
             </div>
 
             <button type="submit" class="btn" (click)="config.save()" [disabled]="!configForm.form.valid">Save</button>

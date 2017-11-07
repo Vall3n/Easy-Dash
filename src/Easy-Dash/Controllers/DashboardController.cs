@@ -7,14 +7,13 @@ using LiteDB;
 namespace EasyDash.Controllers
 {
     [Route("api/[controller]")]
-    public class SampleDataController : Controller
+    public class DashboardController : Controller
     {
         private static readonly string[] Status = {
             "Success", "Fail", "Pending"
         };
 
-        [HttpGet("[action]")]
-        public IEnumerable<DashboardResult> DashboardResults()
+        private IEnumerable<DashboardResult> DashboardResults()
         {
             var rng = new Random();
             return Enumerable.Range(1, 20).Select(index => new DashboardResult
@@ -28,21 +27,7 @@ namespace EasyDash.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<dynamic> Configurations()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new
-            {
-                Id = index,
-                Description = "Test service " + index,
-                Url = "http://example/" + index,
-                statusCode = 200,
-                ContainsText = ""
-            });
-        }
-
-        [HttpGet("[action]")]
-        public IEnumerable<DashboardResult> SampleDataFromDb()
+        public List<DashboardResult> Results()
         {
             using (var db = new LiteDatabase("EasyDash.db"))
             {
