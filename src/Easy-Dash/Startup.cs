@@ -23,6 +23,12 @@ namespace EasyDash
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddOptions();
+
+            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
+            services.AddSingleton<IConfiguration>(Configuration);
+            
+            
             services.AddHangfire(t => t.UseLiteDbStorage(Configuration[key: "ConnectionStrings:HangfireDatabase"]));
         }
 
