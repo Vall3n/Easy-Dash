@@ -4,16 +4,23 @@ using System.Linq;
 using EasyDash.Models;
 using Microsoft.AspNetCore.Mvc;
 using LiteDB;
+using Microsoft.Extensions.Options;
 
 namespace EasyDash.Controllers
 {
     [Route("api/[controller]")]
     public class ConfigurationController : Controller
     {
+        private readonly IOptions<ConnectionStrings> _connectionStrings;
+
+        public ConfigurationController(IOptions<ConnectionStrings> connectionStrings)
+        {
+            _connectionStrings = connectionStrings;
+        }
         [HttpGet("[action]")]
         public List<UrlConfiguration> Urls()
         {
-            using (var db = new LiteDatabase("EasyDash.db"))
+            using (var db = new LiteDatabase(_connectionStrings.Value.EasyDashDatabase))
             {
                 var collection = db.GetCollection<UrlConfiguration>("UrlConfigurations");
                 GenerateSampleData(collection);
