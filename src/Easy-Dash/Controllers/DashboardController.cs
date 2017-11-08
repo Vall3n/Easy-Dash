@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using LiteDB;
+using Microsoft.Extensions.Options;
 
 namespace EasyDash.Controllers
 {
     [Route("api/[controller]")]
     public class DashboardController : Controller
     {
+        private readonly IOptions<ConnectionStrings> _connectionStrings;
+
+        public DashboardController(IOptions<ConnectionStrings> connectionStrings)
+        {
+            _connectionStrings = connectionStrings;
+        }
         private static readonly string[] Status = {
             "Success", "Fail", "Pending"
         };
@@ -29,7 +36,7 @@ namespace EasyDash.Controllers
         [HttpGet("[action]")]
         public List<DashboardResult> Results()
         {
-            using (var db = new LiteDatabase("EasyDash.db"))
+            using (var db = new LiteDatabase(_connectionStrings.Value.EasyDashDatabase))
             {
                 var collection = db.GetCollection<DashboardResult>("dashboardresults");
                 collection.Delete(x => x.Id > 0);
