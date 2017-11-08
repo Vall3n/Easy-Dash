@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Hangfire;
+using Hangfire.LiteDB;
+using System.Diagnostics;
+using System;
 
 namespace EasyDash
 {
@@ -19,6 +23,7 @@ namespace EasyDash
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddHangfire(t => t.UseLiteDbStorage(Configuration[key: "ConnectionStrings:HangfireDatabase"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +43,13 @@ namespace EasyDash
             }
 
             app.UseStaticFiles();
+            app.UseHangfireServer();
+            
+            if (env.IsDevelopment()) {
+                app.UseHangfireDashboard();
+            }
+
+            RecurringJob.AddOrUpdate(() => Debug.WriteLine($"Job {DateTime.Now}"),Cron.Minutely);
 
             app.UseMvc(routes =>
             {
