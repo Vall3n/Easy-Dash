@@ -8,6 +8,7 @@ using Hangfire.LiteDB;
 using System.Diagnostics;
 using System;
 using EasyDash.Services;
+using EasyDash.Hubs;
 
 namespace EasyDash
 {
@@ -25,6 +26,7 @@ namespace EasyDash
         {
             services.AddMvc();
             services.AddOptions();
+            services.AddSignalR();
 
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
             services.AddSingleton<IConfiguration>(Configuration);
@@ -50,6 +52,10 @@ namespace EasyDash
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<DashboardHub>("dashboardsignal");
+            });
             app.UseStaticFiles();
             app.UseHangfireServer();
 

@@ -2,6 +2,7 @@ import { PLATFORM_ID, Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { isPlatformBrowser } from '@angular/common';
 import * as moment from 'moment';
+import { HubConnection } from '@aspnet/signalr-client';
 
 @Component({
     selector: 'dashboard',
@@ -9,11 +10,34 @@ import * as moment from 'moment';
 })
 export class DashboardComponent {
     public dashboardResults: IDashboardResult[];
+    private _hubConnection: HubConnection;
 
 
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string, @Inject(PLATFORM_ID) platformId: string) {
         if (!isPlatformBrowser(platformId))
             return;
+
+            this._hubConnection = new HubConnection('/dashboardsignal');   
+            this._hubConnection.start().then(() => {
+                console.warn("Hub started");
+            }).catch((e) => {
+                console.warn("Error", e);
+            })
+            
+            this._hubConnection.on("testStarted", (id: number) => {
+                let row = this.dashboardResults.findIndex(result => result.id == id);
+                if (row >= 0) {
+                    this.dashboardResults[row].lastStatus = "Running";
+                }
+            });
+
+            this._hubConnection.on("testEnded", (id: number, status: boolean) => {
+                let row = this.dashboardResults.findIndex(result => result.id == id);
+                if (row >= 0) {
+                    this.dashboardResults[row].lastStatus = status ? 'Success':'Failed';
+                }
+            });            
+
 
         http.get(baseUrl + 'api/Dashboard/Results').subscribe(result => {
             this.dashboardResults = result.json() as IDashboardResult[];
@@ -27,6 +51,7 @@ export class DashboardComponent {
     }
 
     getRowStyle(item: IDashboardResult): string {
+
         switch (item.lastStatus) {
             case 'Pending':
                 return 'info';
@@ -34,6 +59,8 @@ export class DashboardComponent {
                 return 'danger';
             case 'Success':
                 return 'success';
+            case 'Running':
+                return 'active';
             default:
                 return '';
         }

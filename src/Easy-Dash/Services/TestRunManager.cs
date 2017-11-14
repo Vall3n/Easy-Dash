@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using EasyDash.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace EasyDash.Services
 {
@@ -15,10 +17,12 @@ namespace EasyDash.Services
         //public static TestRunManager Instance = new TestRunManager(null);
 
         private readonly IOptions<ConnectionStrings> _connectionStrings;
+        private readonly IHubContext<DashboardHub> _hubContext;
 
-        public TestRunManager(IOptions<ConnectionStrings> connectionStrings)
+        public TestRunManager(IOptions<ConnectionStrings> connectionStrings,  IHubContext<DashboardHub> hubContext)
         {
             _connectionStrings = connectionStrings;
+            _hubContext = hubContext;
         }
 
         public void Initialize()
@@ -39,6 +43,8 @@ namespace EasyDash.Services
         [DisplayName("UrlConfiguration #{0}.Id")]
         public async Task RunTest(int id)
         {
+            _hubContext.Clients.All.InvokeAsync("testStarted", id);
+            System.Threading.Thread.Sleep(2000);
             using (var db = new LiteDatabase(_connectionStrings.Value.EasyDashDatabase))
             {
                 var collection = db.GetCollection<UrlConfiguration>("UrlConfigurations");
@@ -50,6 +56,7 @@ namespace EasyDash.Services
                 configuration.UrlTestStatuses.Insert(0, testResult);
 
                 collection.Update(configuration);
+                await _hubContext.Clients.All.InvokeAsync("testEnded", id, testResult.Succeeded);
             }
         }
     }
