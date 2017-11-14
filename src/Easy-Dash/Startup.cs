@@ -7,6 +7,7 @@ using Hangfire;
 using Hangfire.LiteDB;
 using System.Diagnostics;
 using System;
+using EasyDash.Services;
 
 namespace EasyDash
 {
@@ -27,8 +28,9 @@ namespace EasyDash
 
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
             services.AddSingleton<IConfiguration>(Configuration);
-            
-            
+            services.AddSingleton<ITestRunManager, TestRunManager>();
+
+
             services.AddHangfire(t => t.UseLiteDbStorage(Configuration[key: "ConnectionStrings:HangfireDatabase"]));
         }
 
@@ -50,12 +52,16 @@ namespace EasyDash
 
             app.UseStaticFiles();
             app.UseHangfireServer();
-            
-            if (env.IsDevelopment()) {
+
+            if (env.IsDevelopment())
+            {
                 app.UseHangfireDashboard();
             }
 
-            RecurringJob.AddOrUpdate(() => Debug.WriteLine($"Job {DateTime.Now}"),Cron.Minutely);
+            //TestRunManager.Instance.Initialize();
+            var testRunManager = app.ApplicationServices.GetService<ITestRunManager>();
+            testRunManager.Initialize();
+            //RecurringJob.AddOrUpdate(() => Debug.WriteLine($"Job {DateTime.Now}"), Cron.Minutely);
 
             app.UseMvc(routes =>
             {

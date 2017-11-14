@@ -39,9 +39,9 @@ namespace EasyDash.Controllers
             {
                 Id = index,
                 Description = "Test service " + index,
-                Url = $"http://example/{index}",
+                Url = $"https://jsonplaceholder.typicode.com/posts/{index}",
                 StatusCode = 200,
-                BodyContains = $"a{index}",
+                BodyContains = $"\"id\": {index}",
                 Enabled = true,
                 ScheduleTime = "00:05:00"
             });
