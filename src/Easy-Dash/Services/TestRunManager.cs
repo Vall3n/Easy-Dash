@@ -43,8 +43,7 @@ namespace EasyDash.Services
         [DisplayName("UrlConfiguration #{0}.Id")]
         public async Task RunTest(int id)
         {
-            _hubContext.Clients.All.InvokeAsync("testStarted", id);
-            System.Threading.Thread.Sleep(2000);
+            var startTask = _hubContext.Clients.All.InvokeAsync("testStarted", id);
             using (var db = new LiteDatabase(_connectionStrings.Value.EasyDashDatabase))
             {
                 var collection = db.GetCollection<UrlConfiguration>("UrlConfigurations");
@@ -56,6 +55,7 @@ namespace EasyDash.Services
                 configuration.UrlTestStatuses.Insert(0, testResult);
 
                 collection.Update(configuration);
+                await startTask;
                 await _hubContext.Clients.All.InvokeAsync("testEnded", id, testResult.Succeeded);
             }
         }
