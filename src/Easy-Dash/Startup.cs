@@ -33,7 +33,7 @@ namespace EasyDash
             services.AddSingleton<ITestRunManager, TestRunManager>();
 
 
-            services.AddHangfire(t => t.UseLiteDbStorage(Configuration[key: "ConnectionStrings:HangfireDatabase"]));
+            services.AddHangfire(t => t.UseLiteDbStorage(Configuration.GetConnectionString("HangfireDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
