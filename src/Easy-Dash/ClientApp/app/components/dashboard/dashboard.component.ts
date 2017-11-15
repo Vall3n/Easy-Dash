@@ -12,33 +12,10 @@ export class DashboardComponent {
     public dashboardResults: IDashboardResult[];
     private _hubConnection: HubConnection;
 
-
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string, @Inject(PLATFORM_ID) platformId: string) {
         if (!isPlatformBrowser(platformId))
             return;
-
-            this._hubConnection = new HubConnection('/dashboardsignal');   
-            this._hubConnection.start().then(() => {
-                console.warn("Hub started");
-            }).catch((e) => {
-                console.warn("Error", e);
-            })
-            
-            this._hubConnection.on("testStarted", (id: number) => {
-                let row = this.dashboardResults.findIndex(result => result.id == id);
-                if (row >= 0) {
-                    this.dashboardResults[row].lastStatus = "Running";
-                }
-            });
-
-            this._hubConnection.on("testEnded", (id: number, status: boolean) => {
-                let row = this.dashboardResults.findIndex(result => result.id == id);
-                if (row >= 0) {
-                    this.dashboardResults[row].lastStatus = status ? 'Success':'Failed';
-                }
-            });            
-
-
+    
         http.get(baseUrl + 'api/Dashboard/Results').subscribe(result => {
             this.dashboardResults = result.json() as IDashboardResult[];
 
@@ -48,6 +25,30 @@ export class DashboardComponent {
                 this.sortResults();
             });
         }, error => console.error(error));
+    }
+
+    async ngOnInit() {
+
+        try {
+            this._hubConnection = new HubConnection('/dashboardsignal');
+            await this._hubConnection.start();
+
+            this._hubConnection.on("testStarted", (id: number) => {
+                let row = this.dashboardResults.findIndex(result => result.id == id);
+                if (row >= 0) {
+                    this.dashboardResults[row].lastStatus = "Running";
+                }
+            });
+    
+            this._hubConnection.on("testEnded", (id: number, status: boolean) => {
+                let row = this.dashboardResults.findIndex(result => result.id == id);
+                if (row >= 0) {
+                    this.dashboardResults[row].lastStatus = status ? 'Success' : 'Failed';
+                }
+            });
+        } catch (e) {
+            console.warn("Exception on Init", e);
+        }
     }
 
     getRowStyle(item: IDashboardResult): string {
