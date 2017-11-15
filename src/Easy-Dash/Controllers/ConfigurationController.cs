@@ -5,6 +5,8 @@ using EasyDash.Models;
 using Microsoft.AspNetCore.Mvc;
 using LiteDB;
 using Microsoft.Extensions.Options;
+using EasyDash.Repositories;
+using System.Threading.Tasks;
 
 namespace EasyDash.Controllers
 {
@@ -12,27 +14,23 @@ namespace EasyDash.Controllers
     public class ConfigurationController : Controller
     {
         private readonly IOptions<ConnectionStrings> _connectionStrings;
+        private readonly IConfigurationRepository _configurationRepository;
 
-        public ConfigurationController(IOptions<ConnectionStrings> connectionStrings)
+        public ConfigurationController(IOptions<ConnectionStrings> connectionStrings, IConfigurationRepository configurationRepository)
         {
             _connectionStrings = connectionStrings;
+            _configurationRepository = configurationRepository;
         }
         [HttpGet("[action]")]
-        public List<UrlConfiguration> Urls()
+        public async Task<IEnumerable<UrlConfiguration>> Urls()
         {
-            using (var db = new LiteDatabase(_connectionStrings.Value.EasyDashDatabase))
-            {
-                var collection = db.GetCollection<UrlConfiguration>("UrlConfigurations");
-                GenerateSampleData(collection);
-
-                var result = collection.FindAll().ToList();
-                return result;
-            }
+            await GenerateSampleData();
+            return await _configurationRepository.Get();
         }
 
-        private void GenerateSampleData(LiteCollection<UrlConfiguration> collection)
+        private async Task GenerateSampleData()
         {
-            if (collection.Count() > 0)
+            if (await _configurationRepository.Count() > 0)
                 return;
 
             var items = Enumerable.Range(1, 5).Select(index => new UrlConfiguration()
@@ -46,12 +44,7 @@ namespace EasyDash.Controllers
                 ScheduleTime = "00:05:00"
             });
 
-            foreach (var item in items)
-            {
-                collection.Insert(item);
-            }
-
-            collection.EnsureIndex(x => x.Id);
+            await _configurationRepository.Save(items);
         }
     }
 }

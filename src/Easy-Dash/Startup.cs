@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System;
 using EasyDash.Services;
 using EasyDash.Hubs;
+using EasyDash.Repositories;
 
 namespace EasyDash
 {
@@ -31,6 +32,8 @@ namespace EasyDash
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<ITestRunManager, TestRunManager>();
+
+            services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
 
             services.AddHangfire(t => t.UseLiteDbStorage(Configuration.GetConnectionString("HangfireDatabase")));
