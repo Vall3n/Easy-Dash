@@ -10,33 +10,35 @@ import { HubConnection } from '@aspnet/signalr-client';
 })
 export class DashboardComponent {
     public dashboardResults: IDashboardResult[];
-    private _hubConnection: HubConnection;
+    private hubConnection: HubConnection;
 
 
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string, @Inject(PLATFORM_ID) platformId: string) {
         if (!isPlatformBrowser(platformId))
             return;
 
-            this._hubConnection = new HubConnection('/dashboardsignal');   
-            this._hubConnection.start().then(() => {
-                console.warn("Hub started");
-            }).catch((e) => {
-                console.warn("Error", e);
-            })
-            
-            this._hubConnection.on("testStarted", (id: number) => {
-                let row = this.dashboardResults.findIndex(result => result.id == id);
-                if (row >= 0) {
-                    this.dashboardResults[row].lastStatus = "Running";
-                }
-            });
+        this.hubConnection = new HubConnection('/dashboardsignal');
+        this.hubConnection.start();
 
-            this._hubConnection.on("testEnded", (id: number, status: boolean) => {
-                let row = this.dashboardResults.findIndex(result => result.id == id);
-                if (row >= 0) {
-                    this.dashboardResults[row].lastStatus = status ? 'Success':'Failed';
-                }
-            });            
+        this.hubConnection.on('testStarted', (id: number) => {
+            let row = this.dashboardResults.findIndex(result => result.id === id);
+            if (row >= 0) {
+                this.dashboardResults[row].lastStatus = 'Running';
+            }
+        });
+
+        this.hubConnection.on('testEnded', (result: IDashboardResult) => {
+            let row = this.dashboardResults.findIndex(item => item.id === result.id);
+            if (row >= 0) {
+                const item = this.dashboardResults[row];
+                item.nextUpdate = result.nextUpdate;
+                item.lastStatus = result.lastStatus;
+                item.description = result.description;
+                item.lastUpdate = result.lastUpdate;
+
+                setTimeout(() => this.sortResults(), 5000);
+            }
+        });
 
 
         http.get(baseUrl + 'api/Dashboard/Results').subscribe(result => {
@@ -76,7 +78,7 @@ export class DashboardComponent {
 
         item.friendlyNextUpdate = () => {
             if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
-                return 'Awaiting results..';
+                return 'Waiting for test to start';
             }
 
             return moment(item.nextUpdate).fromNow();

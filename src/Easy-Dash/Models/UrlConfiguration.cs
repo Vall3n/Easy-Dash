@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace EasyDash.Models
 {
@@ -15,6 +16,6 @@ namespace EasyDash.Models
 
         public List<UrlTestStatus> UrlTestStatuses { get; set; } = new List<UrlTestStatus>();
 
-        public TimeSpan ScheduleTimeSpan => new TimeSpan(1000);
+        public TimeSpan ScheduleTimeSpan => TimeSpan.Parse(ScheduleTime);
     }
 }

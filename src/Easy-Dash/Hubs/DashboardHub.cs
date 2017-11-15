@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using EasyDash.Controllers;
 using Microsoft.AspNetCore.SignalR;
 
 namespace EasyDash.Hubs
@@ -12,9 +13,9 @@ namespace EasyDash.Hubs
         }
 
 
-        public Task EndTest(int Id, bool success)
+        public Task EndTest(DashboardController.DashboardResult dashboardResult)//int Id, bool success)
         {
-            return Clients.All.InvokeAsync("testEnded", Id, success);
-        }        
+            return Clients.All.InvokeAsync("testEnded", dashboardResult); //Id, success);
+        }
     }
 }

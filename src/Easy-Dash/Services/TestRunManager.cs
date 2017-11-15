@@ -2,12 +2,12 @@
 using Hangfire;
 using LiteDB;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using EasyDash.Controllers;
 using EasyDash.Hubs;
+using EasyDash.Repositories;
 using Microsoft.AspNetCore.SignalR;
 
 namespace EasyDash.Services
@@ -18,11 +18,13 @@ namespace EasyDash.Services
 
         private readonly IOptions<ConnectionStrings> _connectionStrings;
         private readonly IHubContext<DashboardHub> _hubContext;
+        private readonly IConfigurationRepository _configurationRepository;
 
-        public TestRunManager(IOptions<ConnectionStrings> connectionStrings,  IHubContext<DashboardHub> hubContext)
+        public TestRunManager(IOptions<ConnectionStrings> connectionStrings, IHubContext<DashboardHub> hubContext)//, IConfigurationRepository configurationRepository)
         {
             _connectionStrings = connectionStrings;
             _hubContext = hubContext;
+            //_configurationRepository = configurationRepository;
         }
 
         public void Initialize()
@@ -30,14 +32,31 @@ namespace EasyDash.Services
             using (var db = new LiteDatabase(_connectionStrings.Value.EasyDashDatabase))
             {
                 var collection = db.GetCollection<UrlConfiguration>("UrlConfigurations");
-                var configurations = collection.FindAll().Where(r => r.Enabled).ToList();
-
+                var configurations = collection.FindAll().ToList();
 
                 foreach (var configuration in configurations)
                 {
-                    RecurringJob.AddOrUpdate($"UrlConfiguration_{configuration.Id}", () => RunTest(configuration.Id), Cron.Minutely);
+                    AddOrUpdateSchedule(configuration);
                 }
             }
+        }
+
+        public void AddOrUpdateSchedule(UrlConfiguration configuration)
+        {
+            var jobName = $"UrlConfiguration_{configuration.Id}";
+            RecurringJob.RemoveIfExists(jobName);
+
+            if (!configuration.Enabled)
+                return;
+
+            var span = configuration.ScheduleTimeSpan;
+            string cron;
+            if (span.TotalMinutes < 60)
+                cron = $"*/{span.Minutes} * * * *";
+            else
+                cron = $"*/{span.Minutes} */{span.Hours} * * *";
+
+            RecurringJob.AddOrUpdate(jobName, () => RunTest(configuration.Id), cron);
         }
 
         [DisplayName("UrlConfiguration #{0}.Id")]
@@ -56,7 +75,8 @@ namespace EasyDash.Services
 
                 collection.Update(configuration);
                 await startTask;
-                await _hubContext.Clients.All.InvokeAsync("testEnded", id, testResult.Succeeded);
+                //await _hubContext.Clients.All.InvokeAsync("testEnded", id, testResult.Succeeded);
+                await _hubContext.Clients.All.InvokeAsync("testEnded", DashboardController.TransformToDashboardResult(configuration));
             }
         }
     }

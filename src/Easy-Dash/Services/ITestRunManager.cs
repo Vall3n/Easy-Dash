@@ -1,4 +1,6 @@
-﻿namespace EasyDash.Services
+﻿using System.Threading.Tasks;
+
+namespace EasyDash.Services
 {
     public interface ITestRunManager
     {

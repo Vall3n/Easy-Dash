@@ -67,10 +67,8 @@ namespace EasyDash
                 app.UseHangfireDashboard();
             }
 
-            //TestRunManager.Instance.Initialize();
             var testRunManager = app.ApplicationServices.GetService<ITestRunManager>();
             testRunManager.Initialize();
-            //RecurringJob.AddOrUpdate(() => Debug.WriteLine($"Job {DateTime.Now}"), Cron.Minutely);
 
             app.UseMvc(routes =>
             {

@@ -41,7 +41,8 @@ namespace EasyDash.Controllers
                 StatusCode = 200,
                 BodyContains = $"\"id\": {index}",
                 Enabled = true,
-                ScheduleTime = "00:05:00"
+                ScheduleTime = "00:05:00",
+                
             });
 
             await _configurationRepository.Save(items);
