@@ -24,12 +24,12 @@ namespace EasyDash.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<UrlConfiguration>> Urls()
         {
-            await GenerateSampleData();
+            //await GenerateSampleData();
             return await _configurationRepository.Get();
         }
 
         [HttpPost("[action]")]
-        public async Task<UrlConfiguration> Create([FromBody] UrlConfiguration urlConfiguration)
+        public async Task<UrlConfiguration> Save([FromBody] UrlConfiguration urlConfiguration)
         {
             return await _configurationRepository.Save(urlConfiguration);
         }        
@@ -47,7 +47,7 @@ namespace EasyDash.Controllers
                 StatusCode = 200,
                 BodyContains = $"\"id\": {index}",
                 Enabled = true,
-                ScheduleTime = "00:05:00",
+                ScheduleTime = "PT5M",
                 
             });
 
