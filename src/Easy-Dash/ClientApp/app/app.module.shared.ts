@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
+import { DurationPickerModule } from 'ngx-duration-picker';
+
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -23,6 +25,7 @@ import { AboutComponent } from './components/about/about.component';
         CommonModule,
         HttpModule,
         FormsModule,
+        DurationPickerModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: DashboardComponent },

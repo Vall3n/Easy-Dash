@@ -43,9 +43,7 @@ export class ConfigureComponent {
 
     configureItem(item: Configuration) {
          item.save = async () => {
-         console.warn("About to save", item);
-         this.http.post(this.baseUrl + 'api/configuration/create',item).subscribe(async response => {
-          console.warn("save response", response);
+         this.http.post(this.baseUrl + 'api/configuration/save',item).subscribe(async response => {
           const result = response.json() as Configuration;
           await this.hubConnection.invoke("ConfigAdded", result.id);
             }, error => console.error(error));
@@ -59,7 +57,7 @@ class Configuration {
     url: string;
     statusCode?: number;
     bodyContains?: string;
-    schedule: string;
+    scheduleTime: string;
     enabled: boolean;
 
     save(): void { };

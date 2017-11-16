@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyDash.Hubs;
 using EasyDash.Models;
+using EasyDash.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 
@@ -11,11 +12,13 @@ namespace EasyDash.Repositories
     public class ConfigurationRepository : IConfigurationRepository
     {
         private readonly IOptions<ConnectionStrings> _connnectionStrings;
+	    private readonly ITestRunManager _testRunManager;
 
-        public ConfigurationRepository(IOptions<ConnectionStrings> connnectionStrings)
-        {
-            _connnectionStrings = connnectionStrings;
-        }
+	    public ConfigurationRepository(IOptions<ConnectionStrings> connnectionStrings, ITestRunManager testRunManager)
+	    {
+		    _connnectionStrings = connnectionStrings;
+		    _testRunManager = testRunManager;
+	    }
 
         public Task<int> Count()
         {
@@ -70,10 +73,16 @@ namespace EasyDash.Repositories
             using (var database = new LiteDB.LiteDatabase(_connnectionStrings.Value.EasyDashDatabase))
             {
                 var collection = database.GetCollection<UrlConfiguration>("UrlConfigurations");
-                if (collection.Upsert(urlConfiguration))
-                    return Task.FromResult(urlConfiguration);
-
-                return Task.FromException<UrlConfiguration>(new Exception("Could not save the configuration"));
+	            try
+	            {
+		            collection.Upsert(urlConfiguration);
+		            _testRunManager.AddOrUpdateSchedule(urlConfiguration);
+		            return Task.FromResult(urlConfiguration);
+	            }
+	            catch (Exception ex)
+	            {
+		            return Task.FromException<UrlConfiguration>(new Exception("Could not save the configuration",ex));
+	            }
 
             }
         }

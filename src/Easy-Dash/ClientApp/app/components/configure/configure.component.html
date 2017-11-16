@@ -6,6 +6,7 @@
         <form #configForm="ngForm">
             <div class="form-group">
                 <label for="description">Description</label>
+                <input type="hidden" name="someData" ng-value="config.id" />
                 <input type="text" class="form-control" id="description" required [(ngModel)]="config.description" name="description" #description="ngModel">
                 <div [hidden]="description.valid || description.pristine" class="alert alert-danger">
                     Description of the service to monitor is required
@@ -32,8 +33,9 @@
             
             <div class="form-group">
                 <label for="schedule">Schedule time</label>
-                <input type="number" class="form-control" id="schedule" required [(ngModel)]="config.schedule" name="schedule">
-            </div>
+                <app-duration-picker id="schedule" [(value)]="config.scheduleTime" [options]="{showPreview: false, showSeconds: false, showWeeks: false, showMonths: false, showYears: false }"></app-duration-picker>
+                    <!--<input type="number" class="form-control" id="schedule" required [(ngModel)]="config.schedule" name="schedule">-->
+</div>
             
             <div class="form-group">
                 <label for="enabled">Enabled</label>
