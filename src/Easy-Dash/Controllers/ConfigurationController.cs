@@ -28,6 +28,12 @@ namespace EasyDash.Controllers
             return await _configurationRepository.Get();
         }
 
+        [HttpPost("[action]")]
+        public async Task<UrlConfiguration> Create([FromBody] UrlConfiguration urlConfiguration)
+        {
+            return await _configurationRepository.Save(urlConfiguration);
+        }        
+
         private async Task GenerateSampleData()
         {
             if (await _configurationRepository.Count() > 0)

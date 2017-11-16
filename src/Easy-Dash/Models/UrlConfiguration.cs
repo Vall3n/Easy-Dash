@@ -12,10 +12,8 @@ namespace EasyDash.Models
         public int? StatusCode { get; set; }
         public string BodyContains { get; set; }
         public bool Enabled { get; set; }
-        public string ScheduleTime { get; set; }
-
+        public string ScheduleTime { get; set; } = "00:05:00"; // default to 5 a minutes
         public List<UrlTestStatus> UrlTestStatuses { get; set; } = new List<UrlTestStatus>();
-
         public TimeSpan ScheduleTimeSpan => TimeSpan.Parse(ScheduleTime);
     }
 }

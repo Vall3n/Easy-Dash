@@ -12,19 +12,11 @@ export class DashboardComponent {
     public dashboardResults: IDashboardResult[];
     private hubConnection: HubConnection;
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string, @Inject(PLATFORM_ID) platformId: string) {
+    constructor(public http: Http, @Inject('BASE_URL') public baseUrl: string, @Inject(PLATFORM_ID) platformId: string) {
         if (!isPlatformBrowser(platformId))
             return;
 
-        http.get(baseUrl + 'api/Dashboard/Results').subscribe(result => {
-            this.dashboardResults = result.json() as IDashboardResult[];
-
-            this.dashboardResults.forEach((item) => {
-                this.configureItem(item);
-
-                this.sortResults();
-            });
-        }, error => console.error(error));
+            this.loadDashboardResults();
     }
 
     async ngOnInit() {
@@ -52,6 +44,12 @@ export class DashboardComponent {
                     setTimeout(() => this.sortResults(), 5000);
                 }
             });
+
+            this.hubConnection.on('configAdded', (id: number) => {
+                console.warn("New config created", id);
+                this.addDashboardResult(id);
+            });
+
         } catch (e) {
             console.warn('Exception on Init', e);
         }
@@ -105,6 +103,30 @@ export class DashboardComponent {
             return new Date(a.nextUpdate).getTime() - new Date(b.nextUpdate).getTime();
         });
     }
+
+    private loadDashboardResults() {
+        this.http.get(this.baseUrl + 'api/Dashboard/Results').subscribe(result => {
+            this.dashboardResults = result.json() as IDashboardResult[];
+
+            this.dashboardResults.forEach((item) => {
+                this.configureItem(item);
+
+                this.sortResults();
+            });
+        }, error => console.error(error));
+    }
+
+    private addDashboardResult(id: number) {
+        this.http.get(this.baseUrl + 'api/Dashboard/Find/' + id).subscribe(response => {
+            const result = response.json() as IDashboardResult;
+
+        if (result) {
+            this.dashboardResults.push(result);
+            this.configureItem(result);
+            this.sortResults();
+        }
+        }, error => console.error(error));
+    }    
 }
 
 interface IDashboardResult {

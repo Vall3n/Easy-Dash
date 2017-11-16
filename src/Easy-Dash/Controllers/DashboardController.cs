@@ -40,8 +40,23 @@ namespace EasyDash.Controllers
             return result;
         }
 
+        [HttpGet("[action]/{id}")]
+        public async Task<DashboardResult> Find(int id)
+        {
+            //return Testing().ToList();
+
+            var dashboardResult = await _configurationRepository.Get(id);
+
+            var result = TransformToDashboardResult(dashboardResult);
+            return result;
+        }        
+
         public static DashboardResult TransformToDashboardResult(UrlConfiguration configuration)
         {
+            if (configuration.UrlTestStatuses == null){
+                configuration.UrlTestStatuses = new List<UrlTestStatus>();
+            }
+
             var lastStatus = configuration.UrlTestStatuses.FirstOrDefault();
 
             var result = new DashboardResult
