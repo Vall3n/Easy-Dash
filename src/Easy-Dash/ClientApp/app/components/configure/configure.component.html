@@ -1,3 +1,38 @@
+<p *ngIf="!configurations"><em>Loading...</em></p>
+
+<table class="table table-hover table-condensed" *ngIf="configurations">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Url</th>
+            <th>Status</th>
+            <th>Interval</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let config of configurations">
+            <td>{{ config.description }}</td>
+            <td>{{ config.url }}</td>
+            <td>{{ config.statusCode }}</td>
+            <td>{{ config.scheduleTimeSpan }}</td>
+            <td>
+                <a [routerLink]="['/dashboard']">
+                    <span class='glyphicon glyphicon glyphicon-edit'></span> 
+                </a>
+            </td>
+            <td>
+                <a [routerLink]="['/dashboard']">
+                    <span class='glyphicon glyphicon glyphicon-remove'></span> 
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
 <p *ngIf="configurations.length == 0"><em>Loading...</em></p>
 <div *ngIf="configurations.length > 0">
     <div *ngFor="let config of configurations">

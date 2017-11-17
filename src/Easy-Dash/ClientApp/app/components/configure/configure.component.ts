@@ -108,6 +108,6 @@ class Configuration {
     bodyContains?: string;
     scheduleTime: string;
     enabled: boolean;
-
+    scheduleTimeSpan: string;
     save(): void { };
 }

@@ -24,8 +24,6 @@ namespace EasyDash.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<UrlConfiguration>> Urls()
         {
-			System.Threading.Thread.Sleep(3000);
-            //await GenerateSampleData();
             return await _configurationRepository.Get();
         }
 
