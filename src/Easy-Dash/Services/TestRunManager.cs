@@ -14,17 +14,13 @@ namespace EasyDash.Services
 {
     public class TestRunManager : ITestRunManager
     {
-        //public static TestRunManager Instance = new TestRunManager(null);
-
         private readonly IOptions<ConnectionStrings> _connectionStrings;
         private readonly IHubContext<DashboardHub> _hubContext;
-        private readonly IConfigurationRepository _configurationRepository;
 
-        public TestRunManager(IOptions<ConnectionStrings> connectionStrings, IHubContext<DashboardHub> hubContext)//, IConfigurationRepository configurationRepository)
+        public TestRunManager(IOptions<ConnectionStrings> connectionStrings, IHubContext<DashboardHub> hubContext)
         {
             _connectionStrings = connectionStrings;
             _hubContext = hubContext;
-            //_configurationRepository = configurationRepository;
         }
 
         public void Initialize()

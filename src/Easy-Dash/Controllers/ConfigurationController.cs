@@ -32,7 +32,13 @@ namespace EasyDash.Controllers
         public async Task<UrlConfiguration> Save([FromBody] UrlConfiguration urlConfiguration)
         {
             return await _configurationRepository.Save(urlConfiguration);
-        }        
+        }
+
+		[HttpDelete("[action]/{id}")]
+	    public async Task<bool> Delete(int id)
+		{
+			return await _configurationRepository.Delete(id);
+		}
 
         private async Task GenerateSampleData()
         {

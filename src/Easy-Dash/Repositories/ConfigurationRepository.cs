@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using EasyDash.Hubs;
 using EasyDash.Models;
 using EasyDash.Services;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 
 namespace EasyDash.Repositories
@@ -31,7 +30,21 @@ namespace EasyDash.Repositories
             }
         }
 
-        public Task<UrlConfiguration> Get(int id)
+	    public Task<bool> Delete(int id)
+	    {
+			using (var database = new LiteDB.LiteDatabase(_connnectionStrings.Value.EasyDashDatabase))
+			{
+				var collection = database.GetCollection<UrlConfiguration>("UrlConfigurations");
+
+				var deleted = collection.Delete(id);
+
+				return deleted
+					? Task.FromResult(true)
+					: Task.FromException<bool>(new Exception("Could not find the configuration"));
+			}
+		}
+
+	    public Task<UrlConfiguration> Get(int id)
         {
             using (var database = new LiteDB.LiteDatabase(_connnectionStrings.Value.EasyDashDatabase))
             {
@@ -53,16 +66,17 @@ namespace EasyDash.Repositories
             }
         }
 
-        public Task<IEnumerable<UrlConfiguration>> Save(IEnumerable<UrlConfiguration> urlConfigurations)
+        public Task<List<UrlConfiguration>> Save(IEnumerable<UrlConfiguration> urlConfigurations)
         {
+	        var urlConfigurationsList = urlConfigurations.ToList();
             using (var database = new LiteDB.LiteDatabase(_connnectionStrings.Value.EasyDashDatabase))
             {
                 var collection = database.GetCollection<UrlConfiguration>("UrlConfigurations");
-                foreach (var url in urlConfigurations)
+                foreach (var url in urlConfigurationsList)
                 {
                     collection.Upsert(url);
                 }
-                return Task.FromResult(urlConfigurations);
+                return Task.FromResult(urlConfigurationsList);
 
 
             }
@@ -86,15 +100,5 @@ namespace EasyDash.Repositories
 
             }
         }
-    }
-    public interface IConfigurationRepository
-    {
-        Task<IEnumerable<UrlConfiguration>> Get();
-        Task<UrlConfiguration> Get(int id);
-        Task<UrlConfiguration> Save(UrlConfiguration urlConfiguration);
-
-        Task<IEnumerable<UrlConfiguration>> Save(IEnumerable<UrlConfiguration> urlConfigurations);
-
-        Task<int> Count();
     }
 }

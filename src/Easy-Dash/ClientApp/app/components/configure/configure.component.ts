@@ -34,11 +34,23 @@ export class ConfigureComponent {
         }
     }
 
-    public addConfiguration(): void {
+    addConfiguration(): void {
         const item: Configuration = new Configuration();
 
         this.configureItem(item);
         this.configurations.push(item);
+    }
+
+    deleteConfiguration(id: number): void {
+        this.http.delete(this.baseUrl + 'api/configuration/delete/' + id)
+            .subscribe(async response => {
+                const result = response.json() as boolean;
+                if (result) {
+                    await this.hubConnection.invoke("ConfigDeleted", id);
+                } else {
+                    alert('Something went wonk');
+                }
+            });
     }
 
     configureItem(item: Configuration) {
