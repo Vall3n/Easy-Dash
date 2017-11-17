@@ -37,8 +37,12 @@ namespace EasyDash.Repositories
 				var collection = database.GetCollection<UrlConfiguration>("UrlConfigurations");
 
 				var deleted = collection.Delete(id);
-				return Task.FromResult(deleted);
+				if (deleted)
+				{
+					_testRunManager.RemoveScedule(id);
+				}
 
+				return Task.FromResult(deleted);
 			}
 		}
 

@@ -7,6 +7,7 @@ namespace EasyDash.Services
     {
         void Initialize();
 	    void AddOrUpdateSchedule(UrlConfiguration configuration);
+	    void RemoveScedule(int id);
 
     }
 }

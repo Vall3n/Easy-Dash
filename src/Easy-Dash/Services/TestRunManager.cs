@@ -55,7 +55,13 @@ namespace EasyDash.Services
             RecurringJob.AddOrUpdate(jobName, () => RunTest(configuration.Id), cron);
         }
 
-        [DisplayName("UrlConfiguration #{0}.Id")]
+	    public void RemoveScedule(int id)
+	    {
+		    var jobName = $"UrlConfiguration_{id}";
+		    RecurringJob.RemoveIfExists(jobName);
+		}
+
+	    [DisplayName("UrlConfiguration #{0}.Id")]
         public async Task RunTest(int id)
         {
             var startTask = _hubContext.Clients.All.InvokeAsync("testStarted", id);
