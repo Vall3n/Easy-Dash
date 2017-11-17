@@ -37,10 +37,8 @@ namespace EasyDash.Repositories
 				var collection = database.GetCollection<UrlConfiguration>("UrlConfigurations");
 
 				var deleted = collection.Delete(id);
+				return Task.FromResult(deleted);
 
-				return deleted
-					? Task.FromResult(true)
-					: Task.FromException<bool>(new Exception("Could not find the configuration"));
 			}
 		}
 

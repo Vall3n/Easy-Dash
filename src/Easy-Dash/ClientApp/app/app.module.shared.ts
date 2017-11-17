@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { DurationPickerModule } from 'ngx-duration-picker';
 
@@ -11,6 +12,7 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ConfigureComponent } from './components/configure/configure.component';
 import { AboutComponent } from './components/about/about.component';
+import { SweetAlertService } from 'angular-sweetalert-service';
 
 
 @NgModule({
@@ -22,6 +24,7 @@ import { AboutComponent } from './components/about/about.component';
         AboutComponent
     ],
     imports: [
+        BrowserModule,
         CommonModule,
         HttpModule,
         FormsModule,
@@ -33,6 +36,9 @@ import { AboutComponent } from './components/about/about.component';
             { path: 'about', component: AboutComponent },
             { path: '**', redirectTo: 'dashboard' }
         ])
+    ],
+    providers: [
+        SweetAlertService
     ]
 })
 export class AppModuleShared {
