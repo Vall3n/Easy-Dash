@@ -39,6 +39,7 @@
     "json-loader": "0.5.4",
     "moment": "^2.19.1",
     "ngx-duration-picker": "^1.0.2",
+    "ngx-modal-dialog": "^1.0.0",
     "preboot": "4.5.2",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.10",

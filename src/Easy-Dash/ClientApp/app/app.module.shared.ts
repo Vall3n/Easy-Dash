@@ -13,7 +13,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ConfigureComponent } from './components/configure/configure.component';
 import { AboutComponent } from './components/about/about.component';
 import { SweetAlertService } from 'angular-sweetalert-service';
-
+import { ConfigFormComponent } from './components/configform/configform.component';
+import { ModalDialogModule } from 'ngx-modal-dialog';   
 
 @NgModule({
     declarations: [
@@ -21,9 +22,11 @@ import { SweetAlertService } from 'angular-sweetalert-service';
         NavMenuComponent,
         DashboardComponent,
         ConfigureComponent,
-        AboutComponent
+        AboutComponent,
+        ConfigFormComponent
     ],
     imports: [
+        ModalDialogModule.forRoot(),
         BrowserModule,
         CommonModule,
         HttpModule,
@@ -39,6 +42,9 @@ import { SweetAlertService } from 'angular-sweetalert-service';
     ],
     providers: [
         SweetAlertService
+    ],
+    entryComponents: [
+        ConfigFormComponent
     ]
 })
 export class AppModuleShared {

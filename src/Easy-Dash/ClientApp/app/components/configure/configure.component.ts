@@ -1,8 +1,10 @@
-import { PLATFORM_ID, Component, Inject } from '@angular/core';
+import { PLATFORM_ID, Component, Inject, ViewContainerRef } from '@angular/core';
 import { Http } from '@angular/http';
 import { isPlatformBrowser } from '@angular/common';
 import { HubConnection } from '@aspnet/signalr-client';
 import { SweetAlertService } from 'angular-sweetalert-service';
+import { ConfigFormComponent } from '../configform/configform.component';
+import { ModalDialogService } from 'ngx-modal-dialog';  
 
 @Component({
     selector: 'configure',
@@ -17,7 +19,9 @@ export class ConfigureComponent {
 
     constructor(public http: Http,
         @Inject('BASE_URL') public baseUrl: string,
-        @Inject(PLATFORM_ID) platformId: string, private swal: SweetAlertService) {
+        @Inject(PLATFORM_ID) platformId: string,
+        private swal: SweetAlertService,
+        private modalService: ModalDialogService, private viewRef: ViewContainerRef) {
         if (!isPlatformBrowser(platformId))
             return;
 
@@ -34,7 +38,25 @@ export class ConfigureComponent {
         }
     }
 
-    loadData() {
+    editClick(id: number) {
+        console.warn('EditClicked', id);
+
+        const row: Configuration | undefined = this.configurations.find(conf => {
+            return conf.id === id;
+        });
+         
+        if (row) {
+            console.warn("Row is", row);
+            this.modalService.openDialog(this.viewRef,
+                {
+                    title: 'Edit Configuration',
+                    childComponent: ConfigFormComponent,
+                    data: row
+                });
+        }
+    }
+
+    private loadData() {
 
         this.configurations = [];
 
