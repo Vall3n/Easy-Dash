@@ -39,14 +39,12 @@ export class ConfigureComponent {
     }
 
     editClick(id: number) {
-        console.warn('EditClicked', id);
 
         const row: Configuration | undefined = this.configurations.find(conf => {
             return conf.id === id;
         });
          
         if (row) {
-            console.warn("Row is", row);
             this.modalService.openDialog(this.viewRef,
                 {
                     title: 'Edit Configuration',
@@ -72,9 +70,19 @@ export class ConfigureComponent {
 
     addConfiguration(): void {
         const item: Configuration = new Configuration();
-
         this.configureItem(item);
-        this.configurations.push(item);
+        this.modalService.openDialog(this.viewRef,
+            {
+                title: 'Add Configuration',
+                childComponent: ConfigFormComponent,
+                data: item,
+                onClose: () => {
+                    console.warn("OnClose", item)
+                    this.configurations.push(item);
+                    return true;
+                }
+            });
+
     }
 
     deleteConfiguration(id: number) {
@@ -98,8 +106,7 @@ export class ConfigureComponent {
                     } else {
                         this.swal.error({
                             title: 'Oops',
-                            text: 'That did not work',
-                            timer: 3000
+                            text: 'That did not work'
                         });
                     }
                 });
@@ -109,15 +116,20 @@ export class ConfigureComponent {
 
     configureItem(item: Configuration) {
         item.save = async () => {
-            this.http.post(this.baseUrl + 'api/configuration/save', item).subscribe(async response => {
+            return this.http.post(this.baseUrl + 'api/configuration/save', item).subscribe(async response => {
                 const result = response.json() as Configuration;
-                await this.hubConnection.invoke("ConfigAdded", result.id);
-                this.swal.success({
+                //await this.hubConnection.invoke("ConfigAdded", result.id);
+
+                item.id = result.id;
+                item.scheduleTimeSpan = result.scheduleTimeSpan;
+
+                 await this.swal.success({
                     title: 'Saved',
-                    text: 'Yeah baby, that config has been secured.',
-                    timer: 3000
+                    text: 'Yeah baby, that config has been secured.'
                 });
+                return true;
             }, error => console.error(error));
+            
         };
     }
 }

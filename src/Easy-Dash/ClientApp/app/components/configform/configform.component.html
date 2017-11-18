@@ -1,5 +1,4 @@
-﻿<div class="container">
-    <h3>Monitor Endpoint</h3>
+﻿<div class="container" style="max-width: 600px; max-height: 520px">
     <form #configForm="ngForm">
         <div class="form-group">
             <label for="description">Description</label>
@@ -39,7 +38,7 @@
             <input type="checkbox" class="form-control" id="enabled" [(ngModel)]="config.enabled" name="enabled">
         </div>
 
-        <button type="submit" class="btn" (click)="config.save()" [disabled]="!configForm.form.valid">Save</button>
-        <button type="submit" class="btn" (click)="deleteConfiguration(config.id)">Delete</button>
+        <!--<button type="submit" class="btn" (click)="config.save()" [disabled]="!configForm.form.valid">Save</button>
+        <button type="submit" class="btn" (click)="deleteConfiguration(config.id)">Delete</button>-->
     </form>
 </div>

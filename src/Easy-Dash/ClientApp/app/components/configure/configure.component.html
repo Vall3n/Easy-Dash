@@ -1,28 +1,36 @@
-<p *ngIf="!configurations"><em>Loading...</em></p>
-
-<table class="table table-hover table-condensed" *ngIf="configurations">
-    <thead>
-        <tr>
-            <th>Description</th>
-            <th>Url</th>
-            <th>Status</th>
-            <th>Interval</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let config of configurations">
-            <td>{{ config.description }}</td>
-            <td>{{ config.url }}</td>
-            <td>{{ config.statusCode }}</td>
-            <td>{{ config.scheduleTimeSpan }}</td>
-            <td>
-                <span class='glyphicon glyphicon glyphicon-edit' (click)="editClick(config.id)"></span>
-            </td>
-            <td>
-                <span class='glyphicon glyphicon glyphicon-remove'></span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<p *ngIf="!configurations.lenth === 0"><em>Loading...</em></p>
+<div *ngIf="configurations.length > 0">
+    <table class="table table-hover table-condensed" *ngIf="configurations">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Url</th>
+                <th>Status</th>
+                <th>Interval</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let config of configurations">
+                <td>{{ config.description }}</td>
+                <td>{{ config.url }}</td>
+                <td>{{ config.statusCode }}</td>
+                <td>{{ config.scheduleTimeSpan }}</td>
+                <td>
+                    <span class='fa fa-edit' (click)="editClick(config.id)"></span>
+                </td>
+                <td>
+                    <span class='fa fa-remove' (click)="deleteConfiguration(config.id)"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary pull-right" (click)="addConfiguration()">
+                <i class="fa fa-plus"></i>Add
+            </button>
+        </div>
+    </div>
+</div>

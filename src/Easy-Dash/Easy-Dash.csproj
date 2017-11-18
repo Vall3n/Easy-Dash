@@ -21,14 +21,11 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
-    <Compile Remove="wwwroot\dist\**" />
     <Content Remove="ClientApp\**" />
-    <Content Remove="wwwroot\dist\**" />
-    <EmbeddedResource Remove="wwwroot\dist\**" />
-    <None Remove="wwwroot\dist\**" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ClientApp\dist\" />
+    <Folder Include="wwwroot\dist\" />
   </ItemGroup>
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->

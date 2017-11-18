@@ -25,9 +25,20 @@ export class ConfigFormComponent implements IModalDialog {
         modalService: ModalDialogService, viewRef: ViewContainerRef) {
 
         this.actionButtons = [
-            { text: 'Close' }, // no special processing here
-            { text: 'I will always close', onAction: () => true },
-            { text: 'I never close', onAction: () => false }
+            {
+                text: 'Save',
+                onAction: async () => {
+                    if (this.config) {
+                        await this.config.save();
+                        return true;
+                    };
+                    return true;
+                }
+            },
+            {
+                text: 'Close',
+                onAction: () => true
+            }
         ];
 
     }
@@ -43,12 +54,10 @@ export class ConfigFormComponent implements IModalDialog {
     }
 
     dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions): void {
-        console.warn('Dialog init');
         if (options && options.data) {
             this.config = options.data;
         }
     }
-
 }
 
 class Configuration {
