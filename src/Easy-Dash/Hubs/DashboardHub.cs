@@ -9,19 +9,19 @@ namespace EasyDash.Hubs
     public class DashboardHub : Hub
     {
 
-        public Task StartTest(int id)
+        public Task TestStarted(int id)
         {
-            return Clients.All.InvokeAsync("testStarted", id);
+            return Clients.All.InvokeAsync("TestStarted", id);
         }
 
-        public Task EndTest(DashboardController.DashboardResult dashboardResult)//int Id, bool success)
+        public Task TestEnded(DashboardController.DashboardResult dashboardResult)//int Id, bool success)
         {
-            return Clients.All.InvokeAsync("testEnded", dashboardResult); //Id, success);
+            return Clients.All.InvokeAsync("TestEnded", dashboardResult); //Id, success);
         }
 
         public Task ConfigAdded(int id) {
             var connectionId = Context.ConnectionId;
-            return Clients.AllExcept(new [] {connectionId}).InvokeAsync("configAdded", id);
+            return Clients.AllExcept(new [] {connectionId}).InvokeAsync("ConfigAdded", id);
         }
     }
 }

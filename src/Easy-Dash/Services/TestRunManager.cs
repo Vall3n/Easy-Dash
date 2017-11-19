@@ -64,7 +64,7 @@ namespace EasyDash.Services
 	    [DisplayName("UrlConfiguration #{0}.Id")]
         public async Task RunTest(int id)
         {
-            var startTask = _hubContext.Clients.All.InvokeAsync("testStarted", id);
+            var startTask = _hubContext.Clients.All.InvokeAsync("TestStarted", id);
             using (var db = new LiteDatabase(_connectionStrings.Value.EasyDashDatabase))
             {
                 var collection = db.GetCollection<UrlConfiguration>("UrlConfigurations");

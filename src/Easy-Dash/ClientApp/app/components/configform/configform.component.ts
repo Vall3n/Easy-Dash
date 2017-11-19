@@ -5,18 +5,17 @@ import { HubConnection } from '@aspnet/signalr-client';
 import { SweetAlertService } from 'angular-sweetalert-service';
 import { ModalDialogService, IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal-dialog'; 
 
-
-
 @Component({
     selector: 'app-config-form',
     templateUrl: './configform.component.html',
     styleUrls: ['./configform.component.css']
-
 })
+
 export class ConfigFormComponent implements IModalDialog {
 
     actionButtons: IModalDialogButton[]; 
     config: Configuration | null = null;
+    hubConnection: HubConnection;
 
     constructor(public http: Http,
         @Inject('BASE_URL') public baseUrl: string,
@@ -30,24 +29,23 @@ export class ConfigFormComponent implements IModalDialog {
                 onAction: async () => {
                     if (this.config) {
                         await this.config.save();
-                        return true;
                     };
-                    return true;
                 }
             },
             {
                 text: 'Close',
-                onAction: () => true
+                onAction: () => new Promise<Boolean>((resolve: any) => {
+                    resolve();
+                })
             }
         ];
-
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         try {
 
-            //this.hubConnection = new HubConnection('/dashboardsignal');
-            //await this.hubConnection.start();
+            this.hubConnection = new HubConnection('/dashboardsignal');
+            await this.hubConnection.start();
         } catch (e) {
             console.warn('Exception on Init', e);
         }
@@ -56,6 +54,10 @@ export class ConfigFormComponent implements IModalDialog {
     dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions): void {
         if (options && options.data) {
             this.config = options.data;
+            options.onClose = () => {
+                console.warn("onClose fired");
+                return true;
+            }
         }
     }
 }
