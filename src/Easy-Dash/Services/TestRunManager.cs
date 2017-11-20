@@ -77,8 +77,7 @@ namespace EasyDash.Services
 
                 collection.Update(configuration);
                 await startTask;
-                //await _hubContext.Clients.All.InvokeAsync("testEnded", id, testResult.Succeeded);
-                await _hubContext.Clients.All.InvokeAsync("testEnded", DashboardController.TransformToDashboardResult(configuration));
+                await _hubContext.Clients.All.InvokeAsync("TestEnded", DashboardController.TransformToDashboardResult(configuration));
             }
         }
     }

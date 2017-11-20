@@ -37,7 +37,7 @@ export class ConfigureComponent {
 
     editClick(id: number) {
 
-        const row: Configuration | undefined = this.configurations.find(conf => {
+        const row = this.configurations.find(conf => {
             return conf.id === id;
         });
          
@@ -113,17 +113,15 @@ export class ConfigureComponent {
 
     configureItem(item: Configuration) {
         item.save = () => {
-            console.warn("item to save", item);
             const isNewRecord = item.id === undefined || (item  && item.id === 0);
             this.http.post(this.baseUrl + "api/configuration/save", item).subscribe(async response => {
                 const result = response.json() as Configuration;
-                //await this.hubConnection.invoke("ConfigAdded", result.id);
+                await this.hubConnection.invoke("ConfigAdded", result.id);
 
                 item.id = result.id;
                 item.scheduleTimeSpan = result.scheduleTimeSpan;
 
                 if (isNewRecord) {
-                    console.warn("Is New");
                     this.configurations.push(item);
                 }
 
