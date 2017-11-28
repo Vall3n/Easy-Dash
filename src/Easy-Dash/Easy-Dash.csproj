@@ -14,20 +14,17 @@
     <PackageReference Include="Hangfire.litedb" Version="0.1.0" />
     <PackageReference Include="LiteDB" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
-    <Compile Remove="ClientApp\dist\**" />
-    <Compile Remove="wwwroot\dist\**" />
     <Content Remove="ClientApp\**" />
-    <Content Remove="wwwroot\dist\**" />
-    <EmbeddedResource Remove="ClientApp\dist\**" />
-    <EmbeddedResource Remove="wwwroot\dist\**" />
-    <None Remove="ClientApp\dist\**" />
-    <None Remove="wwwroot\dist\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\dist\" />
   </ItemGroup>
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->

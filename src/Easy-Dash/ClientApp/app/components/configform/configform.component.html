@@ -1,0 +1,44 @@
+﻿<div class="container" style="max-width: 600px; max-height: 520px">
+    <form #configForm="ngForm">
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="hidden" name="someData" ng-value="config.id" />
+            <input type="text" class="form-control" id="description" required [(ngModel)]="config.description" name="description" #description="ngModel">
+            <div [hidden]="description.valid || description.pristine" class="alert alert-danger">
+                Description of the service to monitor is required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="url">Full Url</label>
+            <input type="url" class="form-control" id="url" required [(ngModel)]="config.url" name="url" #url="ngModel">
+            <div [hidden]="url.valid || url.pristine" class="alert alert-danger">
+                Url to monitor is required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="statusCode">Expected Http status code</label>
+            <input type="number" class="form-control" id="statusCode" [(ngModel)]="config.statusCode" name="statusCode">
+        </div>
+
+        <div class="form-group">
+            <label for="bodyContains">Response body contains text</label>
+            <input type="text" class="form-control" id="bodyContains" [(ngModel)]="config.bodyContains" name="bodyContains">
+        </div>
+
+        <div class="form-group">
+            <label for="schedule">Schedule time</label>
+            <app-duration-picker id="schedule" [(value)]="config.scheduleTime" [options]="{showPreview: false, showSeconds: false, showWeeks: false, showMonths: false, showYears: false }"></app-duration-picker>
+            <!--<input type="number" class="form-control" id="schedule" required [(ngModel)]="config.schedule" name="schedule">-->
+        </div>
+
+        <div class="form-group">
+            <label for="enabled">Enabled</label>
+            <input type="checkbox" class="form-control" id="enabled" [(ngModel)]="config.enabled" name="enabled">
+        </div>
+
+        <!--<button type="submit" class="btn" (click)="config.save()" [disabled]="!configForm.form.valid">Save</button>
+        <button type="submit" class="btn" (click)="deleteConfiguration(config.id)">Delete</button>-->
+    </form>
+</div>

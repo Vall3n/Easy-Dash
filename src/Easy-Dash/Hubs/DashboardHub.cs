@@ -1,0 +1,27 @@
+using System;
+using System.Threading.Tasks;
+using EasyDash.Controllers;
+using EasyDash.Models;
+using Microsoft.AspNetCore.SignalR;
+
+namespace EasyDash.Hubs
+{
+    public class DashboardHub : Hub
+    {
+
+        public Task TestStarted(int id)
+        {
+            return Clients.All.InvokeAsync("TestStarted", id);
+        }
+
+        public Task TestEnded(DashboardController.DashboardResult dashboardResult)//int Id, bool success)
+        {
+            return Clients.All.InvokeAsync("TestEnded", dashboardResult); //Id, success);
+        }
+
+        public Task ConfigAdded(int id) {
+            var connectionId = Context.ConnectionId;
+            return Clients.AllExcept(new [] {connectionId}).InvokeAsync("ConfigAdded", id);
+        }
+    }
+}

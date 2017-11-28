@@ -1,49 +1,36 @@
-<h1>Configure</h1>
-
-<div *ngFor="let config of configurations">
-    <div class="container">
-        <h3>Monitor Endpoint</h3>
-        <form #configForm="ngForm">
-            <div class="form-group">
-                <label for="description">Description</label>
-                <input type="text" class="form-control" id="description" required [(ngModel)]="config.description" name="description" #description="ngModel">
-                <div [hidden]="description.valid || description.pristine" class="alert alert-danger">
-                    Description of the service to monitor is required
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="url">Full Url</label>
-                <input type="url" class="form-control" id="url" required [(ngModel)]="config.url" name="url" #url="ngModel">
-                <div [hidden]="url.valid || url.pristine" class="alert alert-danger">
-                    Url to monitor is required
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="statusCode">Expected Http status code</label>
-                <input type="number" class="form-control" id="statusCode" [(ngModel)]="config.statusCode" name="statusCode">
-            </div>
-
-            <div class="form-group">
-                <label for="bodyContains">Response body contains text</label>
-                <input type="text" class="form-control" id="bodyContains" [(ngModel)]="config.bodyContains" name="bodyContains">
-            </div>
-            
-            <div class="form-group">
-                <label for="schedule">Schedule time</label>
-                <input type="number" class="form-control" id="schedule" required [(ngModel)]="config.schedule" name="schedule">
-            </div>
-            
-            <div class="form-group">
-                <label for="enabled">Enabled</label>
-                <input type="checkbox" class="form-control" id="enabled" [(ngModel)]="config.enabled" name="enabled">
-            </div>
-
-            <button type="submit" class="btn" (click)="config.save()" [disabled]="!configForm.form.valid">Save</button>
-        </form>
-    </div>
-    <hr />
+<p *ngIf="!configurations.lenth === 0"><em>Loading...</em></p>
+<div *ngIf="configurations.length > 0">
+<table class="table table-hover table-condensed" *ngIf="configurations">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Url</th>
+        <th>Status</th>
+        <th>Interval</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let config of configurations">
+        <td>{{ config.description }}</td>
+        <td>{{ config.url }}</td>
+        <td>{{ config.statusCode }}</td>
+        <td>{{ config.scheduleTimeSpan }}</td>
+        <td>
+            <span class='fa fa-edit' (click)="editClick(config.id)"></span>
+        </td>
+        <td>
+            <span class='fa fa-remove' (click)="deleteConfiguration(config.id)"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </div>
-
-<button (click)="addConfiguration()">Add Url configuration</button>
+<div class="row" *ngIf="!loading">
+    <div class="col-md-12">
+        <button class="btn btn-primary pull-right" (click)="addConfiguration()">
+            <i class="fa fa-plus"></i>Add
+        </button>
+    </div>
+</div>

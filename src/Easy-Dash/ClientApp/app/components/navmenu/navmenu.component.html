@@ -1,33 +1,28 @@
-<div class='main-nav'>
-    <div class='navbar navbar-inverse'>
-        <div class='navbar-header'>
-            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
-                <span class='sr-only'>Toggle navigation</span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-            </button>
-            <a class='navbar-brand' [routerLink]="['/dashboard']">Easy Dash</a>
-        </div>
-        <div class='clearfix'></div>
-        <div class='navbar-collapse collapse'>
+
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right" type="button" aria-controls="appNavigation" [attr.aria-expanded]="!isCollapsed" aria-label="Toggle navigation" (click)="toggleMenu()">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">Easy-Dash</a>
+    <div class="collapse navbar-collapse" id="appNavigation">
+        <div class="navbar-nav mr-auto">
             <ul class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/dashboard']">
-                        <span class='glyphicon glyphicon glyphicon-th-large'></span> Dashboard
+                        <span class='fa fa-th-large'></span> Dashboard
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/configure']">
-                        <span class='glyphicon glyphicon glyphicon-cog'></span> Configure
+                        <span class='fa fa-cog'></span> Configure
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/about']">
-                        <span class='glyphicon glyphicon glyphicon-flash'></span> About
+                        <span class='fa fa-flash'></span> About
                     </a>
                 </li>
             </ul>
         </div>
     </div>
-</div>
+</nav>

@@ -19,7 +19,7 @@ namespace EasyDash.Services
                 response.StatusCode = (int)result.StatusCode;
 
                 response.Succeeded = response.StatusCode == configuration.StatusCode
-                    && response.BodyContent.Contains(configuration.BodyContains);
+                    && response.BodyContent.Contains(configuration.BodyContains ?? "");
 
             }
             catch (FlurlHttpException ex)

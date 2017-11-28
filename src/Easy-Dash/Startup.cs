@@ -8,6 +8,8 @@ using Hangfire.LiteDB;
 using System.Diagnostics;
 using System;
 using EasyDash.Services;
+using EasyDash.Hubs;
+using EasyDash.Repositories;
 
 namespace EasyDash
 {
@@ -25,13 +27,16 @@ namespace EasyDash
         {
             services.AddMvc();
             services.AddOptions();
+            services.AddSignalR();
 
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<ITestRunManager, TestRunManager>();
 
+            services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
-            services.AddHangfire(t => t.UseLiteDbStorage(Configuration[key: "ConnectionStrings:HangfireDatabase"]));
+
+            services.AddHangfire(t => t.UseLiteDbStorage(Configuration.GetConnectionString("HangfireDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +55,10 @@ namespace EasyDash
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<DashboardHub>("dashboardsignal");
+            });
             app.UseStaticFiles();
             app.UseHangfireServer();
 
@@ -58,10 +67,8 @@ namespace EasyDash
                 app.UseHangfireDashboard();
             }
 
-            //TestRunManager.Instance.Initialize();
             var testRunManager = app.ApplicationServices.GetService<ITestRunManager>();
             testRunManager.Initialize();
-            //RecurringJob.AddOrUpdate(() => Debug.WriteLine($"Job {DateTime.Now}"), Cron.Minutely);
 
             app.UseMvc(routes =>
             {
