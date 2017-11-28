@@ -1,0 +1,48 @@
+﻿<template>
+    <ux-dialog>
+        <ux-dialog-body>
+            <div class="container" style="min-width: 450px; max-width: 600px; max-height: 520px">
+                <form role="form">
+                    <h3>Configuration</h3>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" value.bind="config.description">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">Full Url</label>
+                        <input type="url" class="form-control" value.bind="config.url">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statusCode">Expected Http status code</label>
+                        <input type="number" class="form-control" value.bind="config.statusCode">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bodyContains">Response body contains text</label>
+                        <input type="text" class="form-control" value.bind="config.bodyContains">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="schedule">Schedule time</label>
+                        <input type="text" class="form-control" required value.bind="config.scheduleTime">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="enabled">Enabled</label>
+                        <input type="checkbox" class="form-control" checked.bind="config.enabled">
+                    </div>
+                    <div>
+                        <input type="hidden" value.bind="config.id" />
+                    </div>
+
+                </form>
+            </div>
+        </ux-dialog-body>
+        <ux-dialog-footer>
+            <button click.trigger="controller.cancel()">Cancel</button>
+            <button class="btn btn-primary" click.trigger="controller.ok(config)">Save</button>
+        </ux-dialog-footer>
+    </ux-dialog>
+</template>
