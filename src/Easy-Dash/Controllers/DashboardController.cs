@@ -30,7 +30,7 @@ namespace EasyDash.Controllers
         public async Task<IEnumerable<DashboardResult>> Results()
         {
             //return Testing().ToList();
-
+            System.Threading.Thread.Sleep(3500);
             var collection = await _configurationRepository.Get();
 
             var result = collection

@@ -1,15 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using EasyDash.Hubs;
+using EasyDash.Repositories;
+using EasyDash.Services;
+using Hangfire;
+using Hangfire.LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Hangfire;
-using Hangfire.LiteDB;
-using System.Diagnostics;
-using System;
-using EasyDash.Services;
-using EasyDash.Hubs;
-using EasyDash.Repositories;
 
 namespace EasyDash
 {
@@ -26,18 +28,21 @@ namespace EasyDash
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddOptions();
-            services.AddSignalR();
-
-            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
-            services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<ITestRunManager, TestRunManager>();
-
-            services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+	        services.AddOptions();
+	        services.AddSignalR();
 
 
-            services.AddHangfire(t => t.UseLiteDbStorage(Configuration.GetConnectionString("HangfireDatabase")));
-        }
+			services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
+	        services.AddSingleton<IConfiguration>(Configuration);
+
+	        services.AddSingleton<ITestRunManager, TestRunManager>();
+
+	        services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+
+
+	        services.AddHangfire(t => t.UseLiteDbStorage(Configuration.GetConnectionString("HangfireDatabase")));
+
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -55,22 +60,18 @@ namespace EasyDash
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<DashboardHub>("dashboardsignal");
-            });
-            app.UseStaticFiles();
-            app.UseHangfireServer();
+	        app.UseSignalR(routes =>
+	        {
+		        routes.MapHub<DashboardHub>("dashboardsignal");
+	        });
 
-            if (env.IsDevelopment())
-            {
-                app.UseHangfireDashboard();
-            }
+	        app.UseHangfireServer();
+			app.UseStaticFiles();
 
-            var testRunManager = app.ApplicationServices.GetService<ITestRunManager>();
-            testRunManager.Initialize();
+	        var testRunManager = app.ApplicationServices.GetService<ITestRunManager>();
+	        testRunManager.Initialize();
 
-            app.UseMvc(routes =>
+			app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
