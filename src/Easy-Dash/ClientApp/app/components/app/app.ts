@@ -1,6 +1,6 @@
 import { Aurelia, PLATFORM, inject } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
-import { Busy } from './busy/busy';
+import { Busy } from '../busy/busy';
 
 @inject(Busy)
 export class App {

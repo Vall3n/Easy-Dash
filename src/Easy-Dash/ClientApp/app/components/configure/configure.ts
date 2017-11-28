@@ -5,7 +5,7 @@ import { DialogService } from 'aurelia-dialog';
 import { ConfigForm } from '../configform/configform'
 import * as SweetAlert from 'sweetalert2';
 import { Configuration } from '../models/models'
-import { Busy } from '../app/busy/busy';
+import { Busy } from '../busy/busy';
 
 @inject(HttpClient, DialogService, Busy)
 export class Configure {

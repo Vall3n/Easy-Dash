@@ -3,7 +3,7 @@ import { inject } from 'aurelia-framework';
 import * as moment from 'moment';
 import { HubConnection } from '@aspnet/signalr-client';
 import { IDashboardResult } from '../models/models'
-import { Busy } from '../app/busy/busy';
+import { Busy } from '../busy/busy';
 
 @inject(HttpClient, Busy)
 export class Dashboard {
