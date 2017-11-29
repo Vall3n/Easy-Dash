@@ -29,8 +29,6 @@ namespace EasyDash.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<DashboardResult>> Results()
         {
-            //return Testing().ToList();
-            System.Threading.Thread.Sleep(3500);
             var collection = await _configurationRepository.Get();
 
             var result = collection
@@ -43,8 +41,6 @@ namespace EasyDash.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<DashboardResult> Find(int id)
         {
-            //return Testing().ToList();
-
             var dashboardResult = await _configurationRepository.Get(id);
 
             var result = TransformToDashboardResult(dashboardResult);
@@ -81,19 +77,6 @@ namespace EasyDash.Controllers
             }
 
             return result;
-        }
-
-        private IEnumerable<DashboardResult> Testing()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 20).Select(index => new DashboardResult
-            {
-                Id = index,
-                Description = "Test service " + index,
-                LastStatus = Status[rng.Next(Status.Length - 1)],
-                LastUpdate = DateTime.Now.AddSeconds(rng.Next(-300, 0)),
-                NextUpdate = DateTime.Now.AddSeconds(rng.Next(10, 300))
-            });
         }
 
         public class DashboardResult
