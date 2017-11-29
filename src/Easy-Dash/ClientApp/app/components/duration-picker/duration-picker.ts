@@ -14,7 +14,7 @@ export class DurationPicker {
     private _seconds = 0;
 
     config = {
-        showButtons: true,
+        showButtons: false,
         showPreview: false,
         showLetters: true,
         showYears: false,
