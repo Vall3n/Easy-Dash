@@ -5,20 +5,37 @@ import { HubConnection } from '@aspnet/signalr-client';
 import { IDashboardResult } from '../models/models'
 import { Busy } from '../busy/busy';
 
+
 @inject(HttpClient, Busy)
 export class Dashboard {
     dashboardResults: IDashboardResult[];
     private hubConnection: HubConnection;
 
     constructor(public http: HttpClient ,private busy: Busy) {
-        console.warn("dashoard busy ", busy);
 
-        this.hookup();
+        this.loadDashboardResults();
+
+    }
+
+    async activate(): Promise<void> {
+        try {
+            this.busy.on();
+            return await this.hookup();
+        } catch (e) {
+
+        } finally {
+            this.busy.off();
+        }
+    }
+
+    deactivate() {
+        if (this.hubConnection) {
+            this.hubConnection.stop();
+        }
     }
 
     private async hookup() {
         try {
-            this.busy.on();
             this.hubConnection = new HubConnection('/dashboardsignal');
             await this.hubConnection.start();
 
@@ -40,22 +57,21 @@ export class Dashboard {
                         item.description = result.description;
                         item.lastUpdate = result.lastUpdate;
 
+                        this.configureItem(item);
+
                         setTimeout(() => this.sortResults(), 5000);
                     }
                 });
 
-            this.hubConnection.on('configAdded',
+            this.hubConnection.on('ConfigModified',
                 (id: number) => {
-                    console.warn('New config created', id);
-                    this.addDashboardResult(id);
+                    this.addOrUpdateDashboardResult(id);
                 });
 
-            this.loadDashboardResults();
+            return;
 
         } catch (e) {
             console.warn('Exception on Init', e);
-        } finally {
-            this.busy.off();
         }
     }
 
@@ -84,23 +100,8 @@ export class Dashboard {
         },
             1000);
 
-        item.friendlyNextUpdate = () => {
-            if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
-                return 'Awaiting results..';
-            }
 
-            return moment(item.nextUpdate).fromNow();
-        }
 
-        item.friendlyLastUpdated = () => {
-            try {
-                const m = moment(item.lastUpdate);
-                return m.fromNow();
-            } catch (e) {
-                console.warn(e);
-            }
-            return 'oops';
-        }
     }
 
     sortResults() {
@@ -113,10 +114,19 @@ export class Dashboard {
         try {
             this.busy.on();
             const result = await this.http.fetch('api/Dashboard/Results');
-            console.warn("result is", result);
 
-            const resultdata = await result.json();
-            this.dashboardResults = resultdata as IDashboardResult[];
+            const resultdata = await result.json() as IDashboardResult[];
+            this.dashboardResults = resultdata.map(m => {
+                const item = new IDashboardResult();
+
+                item.lastUpdate = m.lastUpdate;
+                item.description = m.description;
+                item.id = m.id;
+                item.lastStatus = m.lastStatus;
+                item.nextUpdate = m.nextUpdate;
+
+                return item;
+            });
 
             this.dashboardResults.forEach((item) => {
                 this.configureItem(item);
@@ -129,22 +139,31 @@ export class Dashboard {
             this.busy.off();
         }
     }
-
-
-    private async addDashboardResult(id: number) {
+    
+    private async addOrUpdateDashboardResult(id: number) {
         try {
             const response = await this.http.fetch('api/Dashboard/Find/' + id);
             const result = await response.json() as IDashboardResult;
 
             if (result) {
-                this.dashboardResults.push(result);
-                this.configureItem(result);
-                this.sortResults();
+
+                const existing = this.dashboardResults.find(x => x.id === id);
+                console.warn("EXI",  existing)
+                if (existing) {
+                    existing.description = result.description;
+                    existing.nextUpdate = result.nextUpdate;
+                    existing.lastUpdate = result.lastUpdate;
+                    this.configureItem(existing);
+                } else {
+                    this.dashboardResults.push(result);
+                    this.configureItem(result);
+                }
             }
         } catch (error) {
             console.error(error);
         }
     }
+
 }
 
 

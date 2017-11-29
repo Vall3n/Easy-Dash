@@ -16,9 +16,25 @@ export class Configure {
 
 
     constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
-        this.hubConnection = new HubConnection('/dashboardsignal');
-        this.hubConnection.start();
         this.loadData();
+    }
+
+    async activate() {
+        try {
+            this.busy.on();
+            this.hubConnection = new HubConnection('/dashboardsignal');
+            await this.hubConnection.start();
+        } catch (e) {
+
+        } finally {
+            this.busy.off();
+        }
+    }
+
+    deactivate() {
+        if (this.hubConnection) {
+            this.hubConnection.stop();
+        }
     }
 
     private async loadData() {
@@ -63,9 +79,7 @@ export class Configure {
 
         } catch (error) {
             console.error(error);
-        } finally {
-
-        }
+        } 
     }
 
     addConfiguration() {
@@ -82,15 +96,12 @@ export class Configure {
                 if (response.wasCancelled)
                     return;
 
-
                 (response.output as Configuration).save();
-                this.configurations.push(response.output);
+
             });
         } catch (error) {
             console.error(error);
-        } finally {
-
-        }
+        } 
     }
 
     async deleteConfiguration(id: number) {
@@ -149,7 +160,7 @@ export class Configure {
 
     async configureItem(item: Configuration) {
         item.save = async () => {
-            const isNewRecord = item.id === undefined || (item && item.id === 0);
+            const isNewRecord = !item.id;
             try {
                 this.busy.on();
                 const response = await this.http.fetch('api/configuration/save',
@@ -159,7 +170,7 @@ export class Configure {
                     });
 
                 const result = await response.json() as Configuration;
-                await this.hubConnection.invoke('ConfigAdded', result.id);
+                await this.hubConnection.invoke('ConfigModified', result.id);
 
                 item.id = result.id;
                 item.scheduleTimeSpan = result.scheduleTimeSpan;

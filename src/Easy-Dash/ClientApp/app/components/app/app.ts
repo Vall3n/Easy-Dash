@@ -5,9 +5,7 @@ import { Busy } from '../busy/busy';
 @inject(Busy)
 export class App {
     router: Router;
-    // static inject = [Busy];
     constructor(public busy: Busy) {
-        console.warn("App busy", busy)
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {

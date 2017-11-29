@@ -12,14 +12,17 @@ namespace EasyDash.Hubs
             return Clients.All.InvokeAsync("TestStarted", id);
         }
 
-        public Task TestEnded(DashboardResult dashboardResult)//int Id, bool success)
+        public Task TestEnded(DashboardResult dashboardResult)
         {
-            return Clients.All.InvokeAsync("TestEnded", dashboardResult); //Id, success);
+            return Clients.All.InvokeAsync("TestEnded", dashboardResult);
         }
 
-        public Task ConfigAdded(int id) {
-            var connectionId = Context.ConnectionId;
-            return Clients.AllExcept(new [] {connectionId}).InvokeAsync("ConfigAdded", id);
-        }
-    }
+	    public Task ConfigModified(int id)
+	    {
+		    var connectionId = Context.ConnectionId;
+		    return Clients.AllExcept(new[] { connectionId }).InvokeAsync("ConfigModified", id);
+
+		}
+
+	}
 }

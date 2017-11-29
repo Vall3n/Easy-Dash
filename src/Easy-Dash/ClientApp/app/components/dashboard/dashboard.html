@@ -11,9 +11,9 @@
         <tbody>
             <tr repeat.for="status of dashboardResults" class="${getRowStyle(status)}">
                 <td>${ status.description }</td>
-                <td>${ status.friendlyLastUpdated() }</td>
+                <td>${ status.friendlyLastUpdated }</td>
                 <td>${ status.lastStatus }</td>
-                <td>${ status.friendlyNextUpdate() }</td>
+                <td>${ status.friendlyNextUpdate }</td>
             </tr>
         </tbody>
     </table>
