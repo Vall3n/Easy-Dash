@@ -73,7 +73,7 @@ export class Configure {
 
         item.enabled = true;
         item.statusCode = 200;
-        item.scheduleTime = '5';
+        item.scheduleTime = 'PT5M';
 
         this.configureItem(item);
 

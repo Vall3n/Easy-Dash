@@ -75,7 +75,7 @@ export class DurationPicker {
         this.emitNewValue();
     }
 
-    constructor() { 
+    bind(bindingContext: any, overrideContext: any) { 
         this.parse();
     }
 
