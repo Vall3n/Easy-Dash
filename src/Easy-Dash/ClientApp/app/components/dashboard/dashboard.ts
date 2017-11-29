@@ -2,16 +2,17 @@ import { HttpClient } from 'aurelia-fetch-client';
 import { inject } from 'aurelia-framework';
 import * as moment from 'moment';
 import { HubConnection } from '@aspnet/signalr-client';
-import { IDashboardResult } from '../models/models'
+import { IDashboardResult, UrlTestStatus } from '../models/models'
 import { Busy } from '../busy/busy';
+import { DialogService } from 'aurelia-dialog';
+import { DashboardDetails } from '../dashboard-details/dashboard-details'
 
-
-@inject(HttpClient, Busy)
+@inject(HttpClient, DialogService, Busy)
 export class Dashboard {
     dashboardResults: IDashboardResult[];
     private hubConnection: HubConnection;
 
-    constructor(public http: HttpClient, private busy: Busy) {
+    constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
         this.loadDashboardResults();
     }
 
@@ -113,6 +114,28 @@ export class Dashboard {
             });
         } catch (error) {
             console.error(error);
+        } finally {
+            this.busy.off();
+        }
+    }
+
+    async detailsClick(id: number) {
+
+        try {
+            this.busy.on();
+            const response = await this.http.fetch(`api/Dashboard/${id}/details`);
+            const statuses = await response.json() as UrlTestStatus[];
+
+            this.busy.off();
+
+            this.dialogService.open({ viewModel: DashboardDetails, model: statuses, lock: false }).whenClosed(
+                response => {
+                    if (response.wasCancelled) {
+                        return;
+                    }
+                });
+        } catch (e) {
+            console.error(e);
         } finally {
             this.busy.off();
         }
