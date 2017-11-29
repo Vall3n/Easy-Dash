@@ -28,6 +28,8 @@ namespace EasyDash.Controllers
 
         [HttpGet("[action]")]
         public async Task<IEnumerable<DashboardResult>> Results()
+<<<<<<< HEAD
+=======
         {
             var collection = await _configurationRepository.Get();
 
@@ -38,6 +40,60 @@ namespace EasyDash.Controllers
             return result;
         }
 
+        [HttpGet("[action]/{id}")]
+        public async Task<DashboardResult> Find(int id)
+        {
+			var dashboardResult = await _configurationRepository.Get(id);
+
+            var result = TransformToDashboardResult(dashboardResult);
+            return result;
+        }        
+
+        public static DashboardResult TransformToDashboardResult(UrlConfiguration configuration)
+        {
+            if (configuration.UrlTestStatuses == null){
+                configuration.UrlTestStatuses = new List<UrlTestStatus>();
+            }
+
+            var lastStatus = configuration.UrlTestStatuses.FirstOrDefault();
+
+            var result = new DashboardResult
+            {
+                Id = configuration.Id,
+                Description = configuration.Description,
+            };
+
+            if (lastStatus == default(UrlTestStatus))
+            {
+                result.LastStatus = Status[2];
+            }
+            else
+            {
+                result.LastStatus = lastStatus.Succeeded ? Status[0] : Status[1];
+                result.LastUpdate = lastStatus.CompletedDateTime;
+
+                if (configuration.Enabled)
+                {
+                    result.NextUpdate = result.LastUpdate.AddTicks(configuration.ScheduleTimeSpan.Ticks);
+                }
+            }
+
+            return result;
+        }
+
+        private IEnumerable<DashboardResult> Testing()
+>>>>>>> develop
+        {
+            var collection = await _configurationRepository.Get();
+
+            var result = collection
+                .Select(TransformToDashboardResult)
+                .OrderBy(x => x.NextUpdate);
+
+            return result;
+        }
+
+<<<<<<< HEAD
         [HttpGet("[action]/{id}")]
         public async Task<DashboardResult> Find(int id)
         {
@@ -79,6 +135,8 @@ namespace EasyDash.Controllers
             return result;
         }
 
+=======
+>>>>>>> develop
         public class DashboardResult
         {
             public int Id { get; set; }
