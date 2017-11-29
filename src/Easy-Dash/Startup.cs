@@ -60,12 +60,13 @@ namespace EasyDash
                 app.UseExceptionHandler("/Home/Error");
             }
 
-	        app.UseSignalR(routes =>
+	        app.UseHangfireServer();
+			app.UseSignalR(routes =>
 	        {
 		        routes.MapHub<DashboardHub>("dashboardsignal");
 	        });
 
-	        app.UseHangfireServer();
+	        app.UseHangfireDashboard();
 			app.UseStaticFiles();
 
 	        var testRunManager = app.ApplicationServices.GetService<ITestRunManager>();

@@ -1,0 +1,139 @@
+﻿<template bindable="config">
+    <require from="./duration-picker.css"></require>
+    <table>
+        <tbody>
+        <tr if.bind="config.showLetters">
+            <td if.bind="config.showYears">Y</td>
+            <td if.bind="config.showMonths">M</td>
+            <td if.bind="config.showWeeks">W</td>
+            <td if.bind="config.showDays">D</td>
+            <td if.bind="config.showHours">H</td>
+            <td if.bind="config.showMinutes">M</td>
+            <td if.bind="config.showSeconds">S</td>
+        </tr>
+
+        <tr if.bind="config.showButtons">
+            <td if.bind="config.showYears">
+                <a class="btn btn-link" id="dp-years-up" click.bind="years = years + 1">
+                    <span class="fa fa-chevron-up"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showMonths">
+                <a class="btn btn-link" id="dp-months-up" click.bind="months = months + 1">
+                    <span class="fa fa-chevron-up"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showWeeks">
+                <a class="btn btn-link" id="dp-weeks-up" click.bind="weeks = weeks + 1">
+                    <span class="fa fa-chevron-up"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showDays">
+                <a class="btn btn-link" id="dp-days-up" click.bind="days = days + 1">
+                    <span class="fa fa-chevron-up"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showHours">
+                <a class="btn btn-link" id="dp-hours-up" click.bind="hours = hours + 1">
+                    <span class="fa fa-chevron-up"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showMinutes">
+                <a class="btn btn-link" id="dp-minutes-up" click.bind="minutes = minutes + 1">
+                    <span class="fa fa-chevron-up"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showSeconds">
+                <a class="btn btn-link" id="dp-seconds-up" click.bind="seconds = seconds + 1">
+                    <span class="fa fa-chevron-up"></span>
+                </a>
+            </td>
+        </tr>
+
+        <tr>
+            <td if.bind="config.showYears">
+                <input placeholder="Y" id="dp-years" value.bind="years">
+            </td>
+
+            <td if.bind="config.showMonths">
+                <input placeholder="M" id="dp-months" value.bind="months">
+            </td>
+
+            <td if.bind="config.showWeeks">
+                <input placeholder="W" id="dp-weeks" value.bind="weeks">
+            </td>
+
+            <td if.bind="config.showDays">
+                <input placeholder="D" id="dp-days" value.bind="days">
+            </td>
+
+            <td if.bind="config.showHours">
+                <input placeholder="H" id="dp-hours" value.bind="hours">
+            </td>
+
+            <td if.bind="config.showMinutes">
+                <input placeholder="M" id="dp-minutes" value.bind="minutes">
+            </td>
+
+            <td if.bind="config.showSeconds">
+                <input placeholder="S" id="dp-seconds" value.bind="seconds">
+            </td>
+
+            <td if.bind="config.showPreview">
+                <span id="dp-duration-value">${ value }</span>
+            </td>
+        </tr>
+
+        <tr if.bind="config.showButtons">
+            <td if.bind="config.showYears">
+                <a class="btn btn-link" id="dp-years-down" click.bind="years = years - 1">
+                    <span class="fa fa-chevron-down"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showMonths">
+                <a class="btn btn-link" id="dp-months-down" click.bind="months = months - 1">
+                    <span class="fa fa-chevron-down"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showWeeks">
+                <a class="btn btn-link" id="dp-weeks-down" click.bind="weeks = weeks - 1">
+                    <span class="fa fa-chevron-down"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showDays">
+                <a class="btn btn-link" id="dp-days-down" click.bind="days = days - 1">
+                    <span class="fa fa-chevron-down"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showHours">
+                <a class="btn btn-link" id="dp-hours-down" click.bind="hours = hours - 1">
+                    <span class="fa fa-chevron-down"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showMinutes">
+                <a class="btn btn-link" id="dp-minutes-down" click.bind="minutes = minutes - 1">
+                    <span class="fa fa-chevron-down"></span>
+                </a>
+            </td>
+
+            <td if.bind="config.showSeconds">
+                <a class="btn btn-link" id="dp-seconds-down" click.bind="seconds = seconds - 1">
+                    <span class="fa fa-chevron-down"></span>
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</template>

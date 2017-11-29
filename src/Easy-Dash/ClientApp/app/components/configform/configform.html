@@ -1,4 +1,5 @@
 ﻿<template>
+    <require from="../duration-picker/duration-picker"></require>
     <ux-dialog>
         <ux-dialog-body>
             <div class="container" style="min-width: 450px; max-width: 600px; max-height: 520px">
@@ -26,7 +27,7 @@
 
                     <div class="form-group">
                         <label for="schedule">Schedule time</label>
-                        <input type="text" class="form-control" required value.bind="config.scheduleTime">
+                        <duration-picker type="text" class="form-control" required value.bind="config.scheduleTime" ></duration-picker>
                     </div>
 
                     <div class="form-group">
@@ -34,7 +35,7 @@
                         <input type="checkbox" class="form-control" checked.bind="config.enabled">
                     </div>
                     <div>
-                        <input type="hidden" value.bind="config.id" />
+                        <input type="hidden" value.bind="config.id"/>
                     </div>
 
                 </form>
