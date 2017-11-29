@@ -1,14 +1,18 @@
 ﻿[
   {
-    "outputFile": "ClientApp/app/components/app/app.component.css",
-    "inputFile": "ClientApp/app/components/app/app.component.scss"
+    "outputFile": "ClientApp/app/components/app/app.css",
+    "inputFile": "ClientApp/app/components/app/app.scss"
   },
   {
-    "outputFile": "ClientApp/app/components/navmenu/navmenu.component.css",
-    "inputFile": "ClientApp/app/components/navmenu/navmenu.component.scss"
+    "outputFile": "ClientApp/app/components/configform/configform.css",
+    "inputFile": "ClientApp/app/components/configform/configform.scss"
   },
   {
-    "outputFile": "ClientApp/app/components/configure/configure.component.css",
-    "inputFile": "ClientApp/app/components/configure/configure.component.scss"
+    "outputFile": "ClientApp/app/components/configure/configure.css",
+    "inputFile": "ClientApp/app/components/configure/configure.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/components/navmenu/navmenu.css",
+    "inputFile": "ClientApp/app/components/navmenu/navmenu.scss"
   }
 ]

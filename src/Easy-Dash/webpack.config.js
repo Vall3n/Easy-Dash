@@ -1,104 +1,44 @@
-/// <binding AfterBuild="build" />
-
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const AotPlugin = require('@ngtools/webpack').AotPlugin;
-const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { AureliaPlugin } = require('aurelia-webpack-plugin');
+const bundleOutputDir = './wwwroot/dist';
 
 module.exports = (env) => {
-    // Configuration in common to both client-side and server-side bundles
     const isDevBuild = !(env && env.prod);
-    const sharedConfig = {
+    return [{
         stats: { modules: false },
-        context: __dirname,
-        resolve: { extensions: ['.js', '.ts'] },
+        entry: { 'app': 'aurelia-bootstrapper' },
+        resolve: {
+            extensions: ['.ts', '.js'],
+            modules: ['ClientApp', 'node_modules'],
+        },
         output: {
-            filename: '[name].js',
-            publicPath: 'dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
+            path: path.resolve(bundleOutputDir),
+            publicPath: 'dist/',
+            filename: '[name].js'
         },
         module: {
             rules: [
-                {
-                    test: /\.ts$/,
-                    include: /ClientApp/,
-                    use: isDevBuild
-                        ? ['awesome-typescript-loader?silent=true', 'angular2-template-loader']
-                        : '@ngtools/webpack'
-                },
-                { test: /\.html$/, use: 'html-loader?minimize=false' },
-                { test: /\.css$/, use: ['to-string-loader', isDevBuild ? 'css-loader' : 'css-loader?minimize'] },
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+                { test: /\.ts$/i, include: /ClientApp/, use: 'ts-loader?silent=true' },
+                { test: /\.html$/i, use: 'html-loader' },
+                { test: /\.css$/i, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' },
+                { test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/, use: 'url-loader?limit=25000' }
             ]
         },
         plugins: [
-            new CheckerPlugin(),
-            new CopyWebpackPlugin([
-
-                // Copy directory contents to {output}/to/directory/ 
-                { from: "./node_modules/sweetalert2/dist/sweetalert2.all.min.js" },
-                { from: "./node_modules/sweetalert2/dist/sweetalert2.min.css" },
-                { from: "./node_modules/sweetalert2/dist/sweetalert2.all.min.js" },
-                { from: "./node_modules/@aspnet/signalr-client/dist/browser/signalr-client-1.0.0-alpha2-final.min.js" }
-
-            ])
-        ]
-    };
-
-    // Configuration for client-side bundle suitable for running in browsers
-    const clientBundleOutputDir = './wwwroot/dist';
-    const clientBundleConfig = merge(sharedConfig, {
-        entry: { 'main-client': './ClientApp/boot.browser.ts' },
-        output: { path: path.join(__dirname, clientBundleOutputDir) },
-        plugins: [
+            new webpack.DefinePlugin({ IS_DEV_BUILD: JSON.stringify(isDevBuild) }),
             new webpack.DllReferencePlugin({
                 context: __dirname,
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
-            })
+            }),
+            new AureliaPlugin({ aureliaApp: 'boot' })
         ].concat(isDevBuild ? [
-            // Plugins that apply in development builds only
             new webpack.SourceMapDevToolPlugin({
                 filename: '[file].map', // Remove this line if you prefer inline source maps
-                moduleFilenameTemplate: path.relative(clientBundleOutputDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
+                moduleFilenameTemplate: path.relative(bundleOutputDir, '[resourcePath]')  // Point sourcemap entries to the original file locations on disk
             })
         ] : [
-            // Plugins that apply in production builds only
-            new webpack.optimize.UglifyJsPlugin(),
-            new AotPlugin({
-                tsConfigPath: './tsconfig.json',
-                entryModule: path.join(__dirname, 'ClientApp/app/app.module.browser#AppModule'),
-                exclude: ['./**/*.server.ts']
-            })
+            new webpack.optimize.UglifyJsPlugin()
         ])
-    });
-
-    // Configuration for server-side (prerendering) bundle suitable for running in Node
-    const serverBundleConfig = merge(sharedConfig, {
-        resolve: { mainFields: ['main'] },
-        entry: { 'main-server': './ClientApp/boot.server.ts' },
-        plugins: [
-            new webpack.DllReferencePlugin({
-                context: __dirname,
-                manifest: require('./ClientApp/dist/vendor-manifest.json'),
-                sourceType: 'commonjs2',
-                name: './vendor'
-            })
-        ].concat(isDevBuild ? [] : [
-            // Plugins that apply in production builds only
-            new AotPlugin({
-                tsConfigPath: './tsconfig.json',
-                entryModule: path.join(__dirname, 'ClientApp/app/app.module.server#AppModule'),
-                exclude: ['./**/*.browser.ts']
-            })
-        ]),
-        output: {
-            libraryTarget: 'commonjs',
-            path: path.join(__dirname, './ClientApp/dist')
-        },
-        target: 'node',
-        devtool: 'inline-source-map'
-    });
-
-    return [clientBundleConfig, serverBundleConfig];
-};
+    }];
+}

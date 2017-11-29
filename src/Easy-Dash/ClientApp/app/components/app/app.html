@@ -1,0 +1,19 @@
+<template>
+    <require from="./app.css"></require>
+    <require from="../busy/busy.css"></require>
+    <div show.bind="busy.active">
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+        <div class="spinner-blocker"></div>
+      </div>
+    <require from="../navmenu/navmenu.html"></require>
+    <navmenu router.bind="router"></navmenu>
+    <div class="container">
+        <router-view></router-view>
+    </div>
+</template>
