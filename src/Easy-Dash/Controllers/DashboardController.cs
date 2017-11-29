@@ -1,25 +1,19 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyDash.Models;
 using EasyDash.Repositories;
-using Hangfire;
 using Microsoft.AspNetCore.Mvc;
-using LiteDB;
-using Microsoft.Extensions.Options;
 
 namespace EasyDash.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     public class DashboardController : Controller
     {
-        private readonly IOptions<ConnectionStrings> _connectionStrings;
         private readonly IConfigurationRepository _configurationRepository;
 
-        public DashboardController(IOptions<ConnectionStrings> connectionStrings, IConfigurationRepository configurationRepository)
+        public DashboardController(IConfigurationRepository configurationRepository)
         {
-            _connectionStrings = connectionStrings;
             _configurationRepository = configurationRepository;
         }
         private static readonly string[] Status = {
@@ -77,28 +71,6 @@ namespace EasyDash.Controllers
             }
 
             return result;
-        }
-
-        private IEnumerable<DashboardResult> Testing()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 20).Select(index => new DashboardResult
-            {
-                Id = index,
-                Description = "Test service " + index,
-                LastStatus = Status[rng.Next(Status.Length - 1)],
-                LastUpdate = DateTime.Now.AddSeconds(rng.Next(-300, 0)),
-                NextUpdate = DateTime.Now.AddSeconds(rng.Next(10, 300))
-            });
-        }
-
-        public class DashboardResult
-        {
-            public int Id { get; set; }
-            public string Description { get; set; }
-            public string LastStatus { get; set; }
-            public DateTime LastUpdate { get; set; }
-            public DateTime NextUpdate { get; set; }
         }
     }
 }

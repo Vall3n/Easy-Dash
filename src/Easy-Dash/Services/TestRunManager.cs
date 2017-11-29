@@ -7,10 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyDash.Controllers;
 using EasyDash.Hubs;
-using EasyDash.Repositories;
-using Microsoft.AspNetCore.SignalR;
-
-namespace EasyDash.Services
+using Microsoft.AspNetCore.SignalR;namespace EasyDash.Services
 {
     public class TestRunManager : ITestRunManager
     {
