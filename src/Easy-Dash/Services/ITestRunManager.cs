@@ -6,7 +6,7 @@ namespace EasyDash.Services
     public interface ITestRunManager
     {
         void Initialize();
-	    void AddOrUpdateSchedule(UrlConfiguration configuration, bool trigger);
+	    void AddOrUpdateSchedule(UrlConfiguration configuration);
 	    void RemoveScedule(int id);
 
     }

@@ -9,10 +9,6 @@
     <AssemblyName>EasyDash</AssemblyName>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="ClientApp\app\components\value-converters\date-format.ts" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="LiteDB" Version="4.0.0" />
@@ -26,10 +22,6 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\app\components\value-converters\date-format.ts" />
   </ItemGroup>
 
 

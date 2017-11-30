@@ -1,18 +1,18 @@
 ﻿import { HttpClient } from 'aurelia-fetch-client';
 import { inject, NewInstance } from 'aurelia-framework';
 import { DialogController } from 'aurelia-dialog';
-import { EasyConfiguration as EasyConfiguration } from '../models/easyconfiguration'
+import { Configuration } from '../models/models'
 
 @inject(HttpClient, DialogController)
 export class ConfigForm {
     
-    config: EasyConfiguration;
+    config: Configuration;
 
     constructor(public http: HttpClient, public controller: DialogController) {
            
     }
 
-    activate(config: EasyConfiguration) {
+    activate(config: Configuration) {
         this.config = config;
     }
 }

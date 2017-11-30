@@ -14,13 +14,5 @@
   {
     "outputFile": "ClientApp/app/components/navmenu/navmenu.css",
     "inputFile": "ClientApp/app/components/navmenu/navmenu.scss"
-  },
-  {
-    "outputFile": "ClientApp/app/components/duration-picker/duration-picker.css",
-    "inputFile": "ClientApp/app/components/duration-picker/duration-picker.scss"
-  },
-  {
-    "outputFile": "ClientApp/app/components/busy/busy.css",
-    "inputFile": "ClientApp/app/components/busy/busy.scss"
   }
 ]

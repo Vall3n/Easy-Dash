@@ -2,48 +2,48 @@
     <require from="../duration-picker/duration-picker"></require>
     <ux-dialog>
         <ux-dialog-body>
-            <div class="card card-outline-secondary">
-                <div class="card-header">
-                    <h3 class="mb-0"><span class="fa fa-reorder">&nbsp;</span>Configuration</h3>
-                </div>
-                <div class="card-block">
-                    <form class="form" role="form" autocomplete="off">
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <input type="text" class="form-control" id="desciption" placeholder="Enter a Description" value.bind="config.description">
-                        </div>
-                        <div class="form-group">
-                            <label for="url">Url</label>
-                            <input type="url" class="form-control" id="url" placeholder="Enter a Url" required="" value.bind="config.url">
-                        </div>
-                        <div class="form-group">
-                            <label for="statusCode">Http Status</label>
-                            <input type="text" class="form-control" id="statusCode" placeholder="Enter the expected Http status code." required="" value.bind="config.statusCode">
-                        </div>
-                        <div class="form-group">
-                            <label for="bodyContains">Response body contains</label>
-                            <input type="text" class="form-control" id="bodyContains" placeholder="Enter a value expected in the body." required="" value.bind="config.bodyContains">
-                        </div>
-                        <div class="form-group">
-                            <label for="schduleTime">Schedule time</label>
-                            <duration-picker type="text" class="form-control" id="schduleTime" required value.bind="config.scheduleTime"></duration-picker>
-                        </div>
-                        <div class="form-group float-right">
-                            <label for="enabled">
-                                <span>Enabled</span>
-                                <input type="checkbox" class="form-control" id="enabled" checked.bind="config.enabled">
-                            </label>
-                        </div>
-                        <div>
-                            <input type="hidden" value.bind="config.id" />
-                        </div>
-                    </form>
-                </div>
+            <div class="container" style="min-width: 450px; max-width: 600px; max-height: 520px">
+                <form role="form">
+                    <h3>Configuration</h3>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" value.bind="config.description">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">Full Url</label>
+                        <input type="url" class="form-control" value.bind="config.url">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statusCode">Expected Http status code</label>
+                        <input type="number" class="form-control" value.bind="config.statusCode">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bodyContains">Response body contains text</label>
+                        <input type="text" class="form-control" value.bind="config.bodyContains">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="schedule">Schedule time</label>
+                        <duration-picker type="text" class="form-control" required value.bind="config.scheduleTime" ></duration-picker>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="enabled">Enabled</label>
+                        <input type="checkbox" class="form-control" checked.bind="config.enabled">
+                    </div>
+                    <div>
+                        <input type="hidden" value.bind="config.id"/>
+                    </div>
+
+                </form>
             </div>
         </ux-dialog-body>
         <ux-dialog-footer>
             <button click.trigger="controller.cancel()">Cancel</button>
-            <button class="btn btn-success" click.trigger="controller.ok(config)">Save</button>
+            <button class="btn btn-primary" click.trigger="controller.ok(config)">Save</button>
         </ux-dialog-footer>
     </ux-dialog>
 </template>
