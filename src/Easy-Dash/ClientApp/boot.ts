@@ -11,6 +11,7 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('aurelia-dialog'))
         .plugin(PLATFORM.moduleName('aurelia-validation'));
 
+
     if (IS_DEV_BUILD) {
         aurelia.use.developmentLogging();
     }

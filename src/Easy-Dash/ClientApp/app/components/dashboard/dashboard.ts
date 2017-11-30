@@ -2,7 +2,7 @@ import { HttpClient } from 'aurelia-fetch-client';
 import { inject } from 'aurelia-framework';
 import * as moment from 'moment';
 import { HubConnection } from '@aspnet/signalr-client';
-import { IDashboardResult, UrlTestStatus } from '../models/models'
+import { IDashboardResult, TestSummary } from '../models/models'
 import { Busy } from '../busy/busy';
 import { DialogService } from 'aurelia-dialog';
 import { DashboardDetails } from '../dashboard-details/dashboard-details'
@@ -124,11 +124,11 @@ export class Dashboard {
         try {
             this.busy.on();
             const response = await this.http.fetch(`api/Dashboard/${id}/details`);
-            const statuses = await response.json() as UrlTestStatus[];
+            const summaries = await response.json() as TestSummary[];
 
             this.busy.off();
 
-            this.dialogService.open({ viewModel: DashboardDetails, model: statuses, lock: false }).whenClosed(
+            this.dialogService.open({ viewModel: DashboardDetails, model: summaries, lock: false }).whenClosed(
                 response => {
                     if (response.wasCancelled) {
                         return;

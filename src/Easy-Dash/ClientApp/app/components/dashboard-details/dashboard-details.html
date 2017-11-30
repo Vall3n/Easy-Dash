@@ -4,39 +4,73 @@
     <require from="../value-converters/duration-format"></require>
     <ux-dialog>
         <ux-dialog-body>
-            <div class="card card-outline-secondary">
+            <div class="">
                 <div class="card-header">
-                    <h3 class="mb-0"><span class="fa fa-list">&nbsp;</span>Test details</h3>
+                    <h3 class="mb-0"><span class="fa fa-list">&nbsp;</span>Test Summaries</h3>
                 </div>
-                <!--<div if.bind="testStatuses.length > 0" class="card-block">-->
-                <table class="table table-hover table-condensed easy-spacer" if.bind="testStatuses">
-                    <thead>
-                        <tr>
-                            <th>Run date</th>
-                            <th>Duration</th>
-                            <th>Status</th>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr repeat.for="status of testStatuses" model.bind="status" >
-                            <td>${ status.startedDateTime | dateFormat }</td>
-                            <td>${ status.duration | durationFormat }</td>
-                            <td>${ status.statusCode }</td>
-                            <td><span class="fa fa-${status.succeeded ? 'check': 'close'} ${status.succeeded ? 'text-success': 'text-error'}"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!--</div>-->
-                <div if.bind="testStatuses.length == 0" class="card-block">
+                <div if.bind="summaries.length > 0" class="card easy-spacer">
+
+                    <ul class="nav nav-tabs">
+                        <li repeat.for="summary of summaries" model.bind="summary" class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab_${$index}">${summary.summaryDescription}</a>
+                        </li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div repeat.for="summary of summaries" model.bind="summary" class="tab-pane fade in ${$index == 0 ? 'active':''}" id="tab_${$index}">
+                            <div class="card border-dark">
+                                <div class="row easy-dialog-padding">
+                                    <div class="col">
+                                        <div class="card text-white border-info">
+                                            <div class="card-body">
+                                                <blockquote class="card-blockquote text-center">
+                                                    <p class="card-header">Total</p>
+                                                    <h3 class="easy-spacer">${summary.numberOfTests}</h3>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div><div class="col">
+                                        <div class="card text-white border-success">
+                                            <div class="card-body">
+                                                <blockquote class="card-blockquote text-center">
+                                                    <p class="card-header">Succeeded</p>
+                                                    <h3 class="easy-spacer">${summary.successful}</h3>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div><div class="col">
+                                        <div class="card text-white border-danger">
+                                            <div class="card-body">
+                                                <blockquote class="card-blockquote text-center">
+                                                    <p class="card-header">Failed</p>
+                                                    <h3 class="easy-spacer">${summary.failed}</h3>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row easy-dialog-padding">
+                                    <div class="col">
+                                        <div class="card text-white border-danger">
+                                            <div class="card-body">
+                                                <blockquote class="card-blockquote text-center">
+                                                    <p class="card-header">Avarage exection time for ${ summary.summaryDescription }</p>
+                                                    <h3 class="easy-spacer">${summary.averageDuration | durationFormat } milliseconds</h3>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div if.bind="summaries.length == 0" class="card card-block">
                     <div class="easy-dialog-padding">
                         <h4>No test results, yet. But wait, there will be.</h4>
                     </div>
                 </div>
             </div>
         </ux-dialog-body>
-        <ux-dialog-footer>
-            <button class="btn btn-secondary" click.trigger="controller.cancel()">Close</button>
-        </ux-dialog-footer>
+
     </ux-dialog>
 </template>
