@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,9 +40,47 @@ namespace EasyDash.Controllers
 
             var result = TransformToDashboardResult(dashboardResult);
             return result;
-        }        
+        }
 
-        public static DashboardResult TransformToDashboardResult(UrlConfiguration configuration)
+
+		[HttpGet("{id}/[action]")]
+		public async Task<List<TestSummary>> Details(int id)
+		{
+			var dashboardResult = await _configurationRepository.Get(id);
+
+			List<TestSummary> summaries = new List<TestSummary>
+			{
+				GenerateSummaries(dashboardResult.UrlTestStatuses, 1),
+				GenerateSummaries(dashboardResult.UrlTestStatuses, 7)
+			};
+
+
+			return summaries;
+			;
+		}
+
+	    public static TestSummary GenerateSummaries(List<UrlTestStatus> statuses, int days)
+	    {
+		    var hours = days * 24;
+		    var toDate = DateTime.Now.AddHours(hours * -1);
+
+		    var summaryset = statuses.Where(status => status.StartedDateTime >= toDate).ToList();
+
+		    var summary = new TestSummary
+		    {
+			    SummaryDescription = days == 1 ? "24 Hours" : $"{days} Days",
+			    AverageDuration = summaryset.Average(s => s.Duration.Milliseconds),
+			    Failed = summaryset.Count(s => !s.Succeeded),
+			    Successful = summaryset.Count(s => s.Succeeded),
+			    FromDate = summaryset.Min(s => s.StartedDateTime),
+			    ToDate = summaryset.Max(s => s.StartedDateTime),
+			    NumberOfTests = summaryset.Count
+		    };
+
+		    return summary;
+	    }
+
+		public static DashboardResult TransformToDashboardResult(UrlConfiguration configuration)
         {
             if (configuration.UrlTestStatuses == null){
                 configuration.UrlTestStatuses = new List<UrlTestStatus>();

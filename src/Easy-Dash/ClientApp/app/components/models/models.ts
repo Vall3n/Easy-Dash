@@ -41,3 +41,24 @@ export class IDashboardResult {
         return 'oops';
     }
 }
+
+export class UrlTestStatus {
+    id: number;
+    startedDateTime: string;
+    completedDateTime: string;
+    duration: string;
+    statusCode: number;
+    bodyContent: string;
+    succeeded: boolean;
+}
+
+export class TestSummary {
+    summaryDescription: string;
+    fromDate: string;
+    toDate: string;
+    numberOfTests: number;
+    successful: number;
+    failed: number;
+    averageDuration: number;
+    source: Array<UrlTestStatus>;
+}

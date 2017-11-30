@@ -20,7 +20,7 @@ export class App {
         },{
             route: 'configure',
             name: 'configure',
-            settings: { icon: 'fa-cog' },
+            settings: { icon: 'fa-cogs' },
             moduleId: PLATFORM.moduleName('../configure/configure'),
             nav: true,
             title: 'Configure'

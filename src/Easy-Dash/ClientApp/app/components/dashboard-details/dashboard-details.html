@@ -1,0 +1,74 @@
+﻿<template>
+    <ux-dialog>
+        <ux-dialog-body>
+            <div if.bind="summaries">
+                
+                <require from="../dashboard/statusclass"></require>
+                <require from="../value-converters/date-format"></require>
+                <require from="../value-converters/duration-format"></require>
+
+                <div class="card-header">
+                    <h3 class="mb-0"><span class="fa fa-list">&nbsp;</span>Test Summaries</h3>
+                </div>
+                <div class="card easy-spacer" ref="tabs">
+
+                    <ul class="nav nav-tabs">
+                        <li repeat.for="summary of summaries" model.bind="summary" class="nav-item">
+                            <a class="nav-link " href="#tab_${$index}" data-toggle="tab">${summary.summaryDescription}</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div repeat.for="summary of summaries" model.bind="summary" class="tab-pane fade in " id="tab_${$index}">
+                            <div class="card border-dark">
+                                <div class="row easy-dialog-padding">
+                                    <div class="col">
+                                        <div class="card text-white border-info">
+                                            <div class="card-body">
+                                                <blockquote class="card-blockquote text-center">
+                                                    <p class="card-header">Total</p>
+                                                    <h3 class="easy-spacer">${ summary.numberOfTests }</h3>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card text-white border-success">
+                                            <div class="card-body">
+                                                <blockquote class="card-blockquote text-center">
+                                                    <p class="card-header">Succeeded</p>
+                                                    <h3 class="easy-spacer">${ summary.successful }</h3>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card text-white border-danger">
+                                            <div class="card-body">
+                                                <blockquote class="card-blockquote text-center">
+                                                    <p class="card-header">Failed</p>
+                                                    <h3 class="easy-spacer">${ summary.failed }</h3>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row easy-dialog-padding">
+                                    <div class="col">
+                                        <div class="card text-white border-danger">
+                                            <div class="card-body">
+                                                <blockquote class="card-blockquote text-center">
+                                                    <p class="card-header">Avarage exection time for ${ summary.summaryDescription }</p>
+                                                    <h3 class="easy-spacer">${summary.averageDuration | durationFormat } milliseconds</h3>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ux-dialog-body>
+    </ux-dialog>
+</template>

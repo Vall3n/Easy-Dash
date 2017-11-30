@@ -1,20 +1,18 @@
 import { HttpClient } from 'aurelia-fetch-client';
-import { inject } from 'aurelia-framework';
+import { inject, PLATFORM } from 'aurelia-framework';
 import * as moment from 'moment';
 import { HubConnection } from '@aspnet/signalr-client';
-import { IDashboardResult } from '../models/models'
+import { IDashboardResult, TestSummary } from '../models/models'
 import { Busy } from '../busy/busy';
+import { DialogService } from 'aurelia-dialog';
 
-
-@inject(HttpClient, Busy)
+@inject(HttpClient, DialogService, Busy)
 export class Dashboard {
     dashboardResults: IDashboardResult[];
     private hubConnection: HubConnection;
 
-    constructor(public http: HttpClient ,private busy: Busy) {
-
+    constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
         this.loadDashboardResults();
-
     }
 
     async activate(): Promise<void> {
@@ -75,33 +73,13 @@ export class Dashboard {
         }
     }
 
-    getRowStyle(item: IDashboardResult): string {
-
-        switch (item.lastStatus) {
-            case 'Pending':
-                return 'bg-info';
-            case 'Fail':
-                return 'bg-danger';
-            case 'Success':
-                return 'bg-success';
-            case 'Running':
-                return 'bg-active';
-            default:
-                return '';
-        }
-    }
-
     configureItem(item: IDashboardResult) {
         const intervalHandle = setInterval(() => {
             if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
                 clearInterval(intervalHandle);
                 item.lastStatus = 'Pending';
             }
-        },
-            1000);
-
-
-
+        }, 1000);
     }
 
     sortResults() {
@@ -139,7 +117,30 @@ export class Dashboard {
             this.busy.off();
         }
     }
-    
+
+    async detailsClick(id: number) {
+
+        try {
+            this.busy.on();
+            const response = await this.http.fetch(`api/Dashboard/${id}/details`);
+            const summaries = await response.json() as TestSummary[];
+
+            this.busy.off();
+
+            console.warn("Open dialog", summaries);
+            this.dialogService.open({ viewModel: PLATFORM.moduleName('app/components/dashboard-details/dashboard-details') , model: summaries, lock: false }).whenClosed(
+                response => {
+                    if (response.wasCancelled) {
+                        return;
+                    }
+                });
+        } catch (e) {
+            console.error(e);
+        } finally {
+            this.busy.off();
+        }
+    }
+
     private async addOrUpdateDashboardResult(id: number) {
         try {
             const response = await this.http.fetch('api/Dashboard/Find/' + id);
@@ -148,7 +149,7 @@ export class Dashboard {
             if (result) {
 
                 const existing = this.dashboardResults.find(x => x.id === id);
-                console.warn("EXI",  existing)
+                console.warn("EXI", existing)
                 if (existing) {
                     existing.description = result.description;
                     existing.nextUpdate = result.nextUpdate;
@@ -163,7 +164,4 @@ export class Dashboard {
             console.error(error);
         }
     }
-
 }
-
-

@@ -32,9 +32,9 @@ module.exports = ({ prod } = {}) => {
                 'aurelia-templating-resources',
                 'aurelia-templating-router',
                 'bootstrap',
-                'bootstrap/dist/css/bootstrap.css',
+                'bootswatch/dist/darkly/bootstrap.css',
                 'jquery'
-            ],
+            ]
         },
         output: {
             path: path.join(__dirname, 'wwwroot', 'dist'),
