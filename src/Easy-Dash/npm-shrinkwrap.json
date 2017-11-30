@@ -202,7 +202,7 @@
       "requires": {
         "aurelia-logging": "1.3.1",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-task-queue": "1.2.0"
       }
     },
@@ -218,7 +218,7 @@
         "aurelia-history-browser": "1.0.0",
         "aurelia-loader-default": "1.0.2",
         "aurelia-logging-console": "1.0.0",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-pal-browser": "1.2.1",
         "aurelia-polyfills": "1.2.1",
         "aurelia-router": "1.3.0",
@@ -234,7 +234,7 @@
       "integrity": "sha1-DatwFskE7+frukX4RnO1jzgA2dc=",
       "requires": {
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0"
+        "aurelia-pal": "1.4.0"
       }
     },
     "aurelia-dialog": {
@@ -245,7 +245,7 @@
         "aurelia-dependency-injection": "1.3.1",
         "aurelia-framework": "1.1.2",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-templating": "1.4.2"
       }
     },
@@ -274,7 +274,7 @@
         "aurelia-loader": "1.0.0",
         "aurelia-logging": "1.3.1",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-path": "1.1.1",
         "aurelia-task-queue": "1.2.0",
         "aurelia-templating": "1.4.2"
@@ -293,7 +293,7 @@
       "dev": true,
       "requires": {
         "aurelia-history": "1.0.0",
-        "aurelia-pal": "1.3.0"
+        "aurelia-pal": "1.4.0"
       }
     },
     "aurelia-hot-module-reload": {
@@ -305,7 +305,7 @@
         "aurelia-dependency-injection": "1.3.1",
         "aurelia-loader": "1.0.0",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-templating": "1.4.2"
       }
     },
@@ -326,7 +326,7 @@
       "requires": {
         "aurelia-loader": "1.0.0",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0"
+        "aurelia-pal": "1.4.0"
       }
     },
     "aurelia-loader-webpack": {
@@ -338,7 +338,7 @@
         "aurelia-hot-module-reload": "0.1.0",
         "aurelia-loader": "1.0.0",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0"
+        "aurelia-pal": "1.4.0"
       }
     },
     "aurelia-logging": {
@@ -360,13 +360,13 @@
       "resolved": "https://registry.npmjs.org/aurelia-metadata/-/aurelia-metadata-1.0.3.tgz",
       "integrity": "sha1-Ho1Z2hiOKHGorXSbpCyoUISj8w4=",
       "requires": {
-        "aurelia-pal": "1.3.0"
+        "aurelia-pal": "1.4.0"
       }
     },
     "aurelia-pal": {
-      "version": "1.3.0",
-      "resolved": "https://registry.npmjs.org/aurelia-pal/-/aurelia-pal-1.3.0.tgz",
-      "integrity": "sha1-ldK42o+zGK22AZ0yDR0vkCjzfxc="
+      "version": "1.4.0",
+      "resolved": "https://registry.npmjs.org/aurelia-pal/-/aurelia-pal-1.4.0.tgz",
+      "integrity": "sha1-EUjyVshUwOAgoKj0Zcv0pu6vkYg="
     },
     "aurelia-pal-browser": {
       "version": "1.2.1",
@@ -374,7 +374,7 @@
       "integrity": "sha1-Qm21NaYBmUDElSD0wjopsHicSnU=",
       "dev": true,
       "requires": {
-        "aurelia-pal": "1.3.0"
+        "aurelia-pal": "1.4.0"
       }
     },
     "aurelia-path": {
@@ -388,7 +388,7 @@
       "integrity": "sha1-xCk4VpHznLC/VIYjhZlVMtlyVBE=",
       "dev": true,
       "requires": {
-        "aurelia-pal": "1.3.0"
+        "aurelia-pal": "1.4.0"
       }
     },
     "aurelia-route-recognizer": {
@@ -419,7 +419,7 @@
       "resolved": "https://registry.npmjs.org/aurelia-task-queue/-/aurelia-task-queue-1.2.0.tgz",
       "integrity": "sha1-kjOsMOwQtiARO7qzcCSijmH1mGU=",
       "requires": {
-        "aurelia-pal": "1.3.0"
+        "aurelia-pal": "1.4.0"
       }
     },
     "aurelia-templating": {
@@ -432,7 +432,7 @@
         "aurelia-loader": "1.0.0",
         "aurelia-logging": "1.3.1",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-path": "1.1.1",
         "aurelia-task-queue": "1.2.0"
       }
@@ -459,7 +459,7 @@
         "aurelia-loader": "1.0.0",
         "aurelia-logging": "1.3.1",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-path": "1.1.1",
         "aurelia-task-queue": "1.2.0",
         "aurelia-templating": "1.4.2"
@@ -475,7 +475,7 @@
         "aurelia-dependency-injection": "1.3.1",
         "aurelia-logging": "1.3.1",
         "aurelia-metadata": "1.0.3",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-path": "1.1.1",
         "aurelia-router": "1.3.0",
         "aurelia-templating": "1.4.2"
@@ -489,7 +489,7 @@
         "aurelia-binding": "1.2.1",
         "aurelia-dependency-injection": "1.3.1",
         "aurelia-logging": "1.3.1",
-        "aurelia-pal": "1.3.0",
+        "aurelia-pal": "1.4.0",
         "aurelia-task-queue": "1.2.0",
         "aurelia-templating": "1.4.2"
       }

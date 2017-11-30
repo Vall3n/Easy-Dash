@@ -1,22 +1,21 @@
-﻿import { HttpClient } from 'aurelia-fetch-client';
-import { inject } from 'aurelia-framework';
-import * as moment from 'moment';
-import { HubConnection } from '@aspnet/signalr-client';
-import { UrlTestStatus, TestSummary } from '../models/models'
-import { Busy } from '../busy/busy';
+﻿import { inject } from 'aurelia-framework';
+import {  TestSummary } from '../models/models'
 import { DialogController } from 'aurelia-dialog';  
 
-@inject(HttpClient, Busy, DialogController)
+@inject(DialogController, Element)
 export class DashboardDetails {
 
-    summaries: TestSummary[];
+    summaries: TestSummary[] = [];
 
-    constructor(private http: HttpClient, private busy: Busy, public controller: DialogController) {
+    constructor(public controller: DialogController,private element: Element) {
 
     }
 
-    async activate(summaries: Array<TestSummary>) {
+    activate(summaries: Array<TestSummary>) {
         this.summaries = summaries;
     }
 
+    attached() {
+    }
 }
+

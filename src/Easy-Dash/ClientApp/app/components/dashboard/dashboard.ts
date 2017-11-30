@@ -1,11 +1,10 @@
 import { HttpClient } from 'aurelia-fetch-client';
-import { inject } from 'aurelia-framework';
+import { inject, PLATFORM } from 'aurelia-framework';
 import * as moment from 'moment';
 import { HubConnection } from '@aspnet/signalr-client';
 import { IDashboardResult, TestSummary } from '../models/models'
 import { Busy } from '../busy/busy';
 import { DialogService } from 'aurelia-dialog';
-import { DashboardDetails } from '../dashboard-details/dashboard-details'
 
 @inject(HttpClient, DialogService, Busy)
 export class Dashboard {
@@ -128,7 +127,8 @@ export class Dashboard {
 
             this.busy.off();
 
-            this.dialogService.open({ viewModel: DashboardDetails, model: summaries, lock: false }).whenClosed(
+            console.warn("Open dialog", summaries);
+            this.dialogService.open({ viewModel: PLATFORM.moduleName('app/components/dashboard-details/dashboard-details') , model: summaries, lock: false }).whenClosed(
                 response => {
                     if (response.wasCancelled) {
                         return;
