@@ -4,13 +4,13 @@ import { HubConnection } from '@aspnet/signalr-client';
 import { DialogService } from 'aurelia-dialog';
 import { ConfigForm } from '../configform/configform'
 import * as SweetAlert from 'sweetalert2';
-import { Configuration } from '../models/models'
+import { EasyConfiguration as EasyConfiguration } from '../models/easyconfiguration'
 import { Busy } from '../busy/busy';
 
 @inject(HttpClient, DialogService, Busy)
 export class Configure {
 
-    configurations: Configuration[];
+    configurations: EasyConfiguration[];
     loading = false;
     private hubConnection: HubConnection;
 
@@ -44,7 +44,7 @@ export class Configure {
             this.configurations = [];
 
             const result = await this.http.fetch('api/Configuration/Urls');
-            this.configurations = (await result.json()) as Configuration[];
+            this.configurations = (await result.json()) as EasyConfiguration[];
 
             this.configurations.forEach((item) => {
                 this.configureItem(item);
@@ -61,7 +61,7 @@ export class Configure {
 
         try {
 
-            const row: Configuration | undefined = this.configurations.find(conf => {
+            const row: EasyConfiguration | undefined = this.configurations.find(conf => {
                 return conf.id === id;
             });
 
@@ -73,7 +73,7 @@ export class Configure {
                         return;
                     }
 
-                    (response.output as Configuration).save();
+                    (response.output as EasyConfiguration).save();
                 });
             }
 
@@ -83,7 +83,7 @@ export class Configure {
     }
 
     addConfiguration() {
-        const item = new Configuration();
+        const item = new EasyConfiguration();
 
         item.enabled = true;
         item.statusCode = 200;
@@ -96,7 +96,7 @@ export class Configure {
                 if (response.wasCancelled)
                     return;
 
-                (response.output as Configuration).save();
+                (response.output as EasyConfiguration).save();
 
             });
         } catch (error) {
@@ -158,7 +158,7 @@ export class Configure {
 
     }
 
-    async configureItem(item: Configuration) {
+    async configureItem(item: EasyConfiguration) {
         item.save = async () => {
             const isNewRecord = !item.id;
             try {
@@ -169,7 +169,7 @@ export class Configure {
                         body: json(item)
                     });
 
-                const result = await response.json() as Configuration;
+                const result = await response.json() as EasyConfiguration;
                 await this.hubConnection.invoke('ConfigModified', result.id);
 
                 item.id = result.id;

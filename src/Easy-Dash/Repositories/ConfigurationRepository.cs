@@ -92,7 +92,7 @@ namespace EasyDash.Repositories
 	            try
 	            {
 		            collection.Upsert(urlConfiguration);
-		            _testRunManager.AddOrUpdateSchedule(urlConfiguration);
+		            _testRunManager.AddOrUpdateSchedule(urlConfiguration, true);
 		            return Task.FromResult(urlConfiguration);
 	            }
 	            catch (Exception ex)

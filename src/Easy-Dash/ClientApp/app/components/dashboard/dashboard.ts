@@ -2,13 +2,14 @@ import { HttpClient } from 'aurelia-fetch-client';
 import { inject, PLATFORM } from 'aurelia-framework';
 import * as moment from 'moment';
 import { HubConnection } from '@aspnet/signalr-client';
-import { IDashboardResult, TestSummary } from '../models/models'
+import { DashboardResult } from '../models/dashboardresult';
+import { TestSummary } from '../models/testsummary';
 import { Busy } from '../busy/busy';
 import { DialogService } from 'aurelia-dialog';
 
 @inject(HttpClient, DialogService, Busy)
 export class Dashboard {
-    dashboardResults: IDashboardResult[];
+    dashboardResults: DashboardResult[];
     private hubConnection: HubConnection;
 
     constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
@@ -46,7 +47,7 @@ export class Dashboard {
                 });
 
             this.hubConnection.on('TestEnded',
-                (result: IDashboardResult) => {
+                (result: DashboardResult) => {
                     let row = this.dashboardResults.findIndex(item => item.id === result.id);
                     if (row >= 0) {
                         const item = this.dashboardResults[row];
@@ -73,7 +74,7 @@ export class Dashboard {
         }
     }
 
-    configureItem(item: IDashboardResult) {
+    configureItem(item: DashboardResult) {
         const intervalHandle = setInterval(() => {
             if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
                 clearInterval(intervalHandle);
@@ -93,9 +94,9 @@ export class Dashboard {
             this.busy.on();
             const result = await this.http.fetch('api/Dashboard/Results');
 
-            const resultdata = await result.json() as IDashboardResult[];
+            const resultdata = await result.json() as DashboardResult[];
             this.dashboardResults = resultdata.map(m => {
-                const item = new IDashboardResult();
+                const item = new DashboardResult();
 
                 item.lastUpdate = m.lastUpdate;
                 item.description = m.description;
@@ -144,7 +145,7 @@ export class Dashboard {
     private async addOrUpdateDashboardResult(id: number) {
         try {
             const response = await this.http.fetch('api/Dashboard/Find/' + id);
-            const result = await response.json() as IDashboardResult;
+            const result = await response.json() as DashboardResult;
 
             if (result) {
 
