@@ -94,7 +94,7 @@ namespace EasyDash.Repositories
 		            collection.Upsert(urlConfiguration);
 		            _testRunManager.AddOrUpdateSchedule(urlConfiguration, true);
 		            return Task.FromResult(urlConfiguration);
-	            }
+	            }   
 	            catch (Exception ex)
 	            {
 		            return Task.FromException<UrlConfiguration>(new Exception("Could not save the configuration",ex));

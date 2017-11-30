@@ -18,6 +18,13 @@ export class App {
             nav: true,
             title: 'Dashboard'
         },{
+            route: 'cardview',
+            name: 'cardview',
+            settings: { icon: 'fa-vcard-o' },
+            moduleId: PLATFORM.moduleName('../dashboard-cardview/dashboard-cardview'),
+            nav: true,
+            title: 'Card View'
+        },{
             route: 'configure',
             name: 'configure',
             settings: { icon: 'fa-cogs' },
