@@ -38,3 +38,9 @@ ux-dialog {
 .navbar-dark .navbar-nav .nav-link:active {
 	color: #191919;
 }
+
+@media (min-width: 1900px) {
+    .container {
+        max-width: 1840px;
+    }
+}

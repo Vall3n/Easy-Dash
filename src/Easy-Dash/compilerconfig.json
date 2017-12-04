@@ -22,5 +22,9 @@
   {
     "outputFile": "ClientApp/app/components/busy/busy.css",
     "inputFile": "ClientApp/app/components/busy/busy.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/components/dashboard-cardview/dashboard-cardview.css",
+    "inputFile": "ClientApp/app/components/dashboard-cardview/dashboard-cardview.scss"
   }
 ]

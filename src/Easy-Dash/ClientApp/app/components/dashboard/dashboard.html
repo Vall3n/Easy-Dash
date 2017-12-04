@@ -1,26 +1,32 @@
 <template>
     <require from="./statusclass"></require>
-    <h4 class="easy-spacer"><span class="fa fa-th-large">&nbsp;</span>Dashboard</h4>
-    <table class="table table-hover table-condensed easy-spacer" if.bind="dashboardResults">
-        <thead>
-            <tr>
-                <th>Description</th>
-                <th>Last update</th>
-                <th>Status</th>
-                <th>Next update</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr repeat.for="status of dashboardResults" model.bind="status" class.bind="status.lastStatus | statusClass">
-                <td>${ status.description }</td>
-                <td>${ status.friendlyLastUpdated }</td>
-                <td>${ status.lastStatus }</td>
-                <td>${ status.friendlyNextUpdate }</td>
-                <td>
-                    <span class='fa fa-list' click.delegate="detailsClick(status.id)"></span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <require from="../dashboard-failed/dashboard-failed"></require>
+    <div style="display: flex;">
+        <div style="flex-grow: 3; margin: auto; max-width: 80%;">
+            <h4 class="easy-spacer"><span class="fa fa-th-large">&nbsp;</span>Dashboard</h4>
+            <table class="table table-hover table-condensed easy-spacer" if.bind="dashboardResults">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Last update</th>
+                        <th>Status</th>
+                        <th>Next update</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr repeat.for="status of dashboardResults" model.bind="status" class.bind="status.lastStatus | statusClass">
+                        <td>${ status.description }</td>
+                        <td>${ status.friendlyLastUpdated }</td>
+                        <td>${ status.lastStatus }</td>
+                        <td>${ status.friendlyNextUpdate }</td>
+                        <td>
+                            <span class='fa fa-list' click.delegate="detailsClick(status.id)"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <dashboard-failed style="flex-grow: 1; margin-left: 20px;" />
+    </div>
 </template>
