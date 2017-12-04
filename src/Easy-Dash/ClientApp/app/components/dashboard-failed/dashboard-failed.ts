@@ -1,6 +1,5 @@
 ﻿import { HttpClient } from 'aurelia-fetch-client';
 import { inject, PLATFORM } from 'aurelia-framework';
-import * as moment from 'moment';
 import { HubConnection } from '@aspnet/signalr-client';
 import { DashboardResult } from '../models/dashboardresult';
 import { TestSummary } from '../models/testsummary';
@@ -9,22 +8,12 @@ import { DialogService } from 'aurelia-dialog';
 
 @inject(HttpClient, DialogService, Busy)
 export class DashboardFailed {
-    dashboardResults: DashboardResult[];
+    failedResults: DashboardResult[] = [];
     private hubConnection: HubConnection;
 
     constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
         this.loadDashboardResults();
-    }
-
-    async activate(): Promise<void> {
-        try {
-            this.busy.on();
-            return await this.hookup();
-        } catch (e) {
-
-        } finally {
-            this.busy.off();
-        }
+        this.hookup();
     }
 
     deactivate() {
@@ -35,45 +24,35 @@ export class DashboardFailed {
 
     private async hookup() {
         try {
+            this.busy.on();
+
             this.hubConnection = new HubConnection('/dashboardsignal');
             await this.hubConnection.start();
 
             this.hubConnection.on('TestStarted',
                 (id: number) => {
-                    let row = this.dashboardResults.findIndex(result => result.id === id);
-                    if (row >= 0) {
-                        this.dashboardResults[row].lastStatus = 'Running';
+                    const row = this.failedResults.findIndex(result => result.id === id);
+                    if (row > -1) {
+                        this.failedResults[row].lastStatus = 'Running';
                     }
                 });
 
             this.hubConnection.on('TestEnded',
                 (result: DashboardResult) => {
-                    let row = this.dashboardResults.findIndex(item => item.id === result.id);
-                    if (row >= 0) {
-                        const item = this.dashboardResults[row];
-                        item.nextUpdate = result.nextUpdate;
-                        item.lastStatus = result.lastStatus;
-                        item.description = result.description;
-                        item.lastUpdate = result.lastUpdate;
-
-                        setTimeout(() => this.sortResults(), 5000);
-                    }
-                });
-
-            this.hubConnection.on('ConfigModified',
-                (id: number) => {
-                    this.addOrUpdateDashboardResult(id);
+                    this.addOrUpdateDashboardResult(result);
                 });
 
             return;
 
         } catch (e) {
-            console.warn('Exception on Init', e);
+            console.warn('Exception on hookup', e);
+        } finally {
+            this.busy.off();
         }
     }
 
     sortResults() {
-        this.dashboardResults.sort((a, b) => {
+        this.failedResults.sort((a, b) => {
             return new Date(a.nextUpdate).getTime() - new Date(b.nextUpdate).getTime();
         });
     }
@@ -84,21 +63,12 @@ export class DashboardFailed {
             const result = await this.http.fetch('api/Dashboard/Results');
 
             const resultdata = await result.json() as DashboardResult[];
-            this.dashboardResults = resultdata.filter(r => r.lastStatus === "Fail").map(m => {
-                const item = new DashboardResult();
-
-                item.lastUpdate = m.lastUpdate;
-                item.description = m.description;
-                item.id = m.id;
-                item.lastStatus = m.lastStatus;
-                item.nextUpdate = m.nextUpdate;
-
-                return item;
+            this.failedResults = [];
+            resultdata.filter(r => r.lastStatus === 'Fail').map(m => {
+                this.addOrUpdateDashboardResult(m);
             });
 
-            this.dashboardResults.forEach((item) => {
-                this.sortResults();
-            });
+            this.sortResults();
         } catch (error) {
             console.error(error);
         } finally {
@@ -127,21 +97,22 @@ export class DashboardFailed {
         }
     }
 
-    private async addOrUpdateDashboardResult(id: number) {
-        try {
-            const response = await this.http.fetch('api/Dashboard/Find/' + id);
-            const result = await response.json() as DashboardResult;
+    private addOrUpdateDashboardResult(result: DashboardResult): void {
+        const existingIndex = this.failedResults.findIndex(x => x.id === result.id);
+        if (existingIndex > -1) {
+            this.failedResults.splice(existingIndex, 1);
+        }
 
-            const existingIndex = this.dashboardResults.findIndex(x => x.id === id);
-            if (existingIndex > -1) {
-                this.dashboardResults.splice(existingIndex, 1);
-            }
+        if (result && result.lastStatus === 'Fail') {
+            const item = new DashboardResult();
 
-            if (result && result.lastStatus === "Fail") {
-                this.dashboardResults.push(result);
-            }
-        } catch (error) {
-            console.error(error);
+            item.lastUpdate = result.lastUpdate;
+            item.description = result.description;
+            item.id = result.id;
+            item.lastStatus = result.lastStatus;
+            item.nextUpdate = result.nextUpdate;
+
+            this.failedResults.unshift(item);
         }
     }
 }

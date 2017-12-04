@@ -9,7 +9,7 @@ import { DialogService } from 'aurelia-dialog';
 
 @inject(HttpClient, DialogService, Busy)
 export class Dashboard {
-    dashboardResults: DashboardResult[];
+    dashboardResults: DashboardResult[] = [];
     private hubConnection: HubConnection;
 
     constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {

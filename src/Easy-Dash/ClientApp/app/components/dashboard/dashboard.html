@@ -1,8 +1,9 @@
 <template>
+    <require from="./dashboard.css"></require>
     <require from="./statusclass"></require>
     <require from="../dashboard-failed/dashboard-failed"></require>
-    <div style="display: flex;">
-        <div style="flex-grow: 3; margin: auto; max-width: 80%;">
+    <div class="results-container">
+        <div class="results-all">
             <h4 class="easy-spacer"><span class="fa fa-th-large">&nbsp;</span>Dashboard</h4>
             <table class="table table-hover table-condensed easy-spacer" if.bind="dashboardResults">
                 <thead>
@@ -27,6 +28,8 @@
                 </tbody>
             </table>
         </div>
-        <dashboard-failed style="flex-grow: 1; margin-left: 20px;" />
+        <div class="results-failed">
+            <dashboard-failed />
+        </div>
     </div>
 </template>

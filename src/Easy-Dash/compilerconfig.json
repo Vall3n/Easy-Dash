@@ -26,5 +26,9 @@
   {
     "outputFile": "ClientApp/app/components/dashboard-cardview/dashboard-cardview.css",
     "inputFile": "ClientApp/app/components/dashboard-cardview/dashboard-cardview.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/components/dashboard/dashboard.css",
+    "inputFile": "ClientApp/app/components/dashboard/dashboard.scss"
   }
 ]
