@@ -33,6 +33,7 @@ module.exports = ({ prod } = {}) => {
                 'aurelia-templating-router',
                 'bootstrap',
                 'bootswatch/dist/darkly/bootstrap.css',
+                'font-awesome/css/font-awesome.css',
                 'jquery'
             ]
         },
