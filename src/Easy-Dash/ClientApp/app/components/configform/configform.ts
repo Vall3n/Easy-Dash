@@ -5,7 +5,7 @@ import { EasyConfiguration as EasyConfiguration } from '../models/easyconfigurat
 
 @inject(HttpClient, DialogController)
 export class ConfigForm {
-    
+
     config: EasyConfiguration;
     minutes = [
         { id: 1, name: '1' },
@@ -18,7 +18,7 @@ export class ConfigForm {
     selectedTime: number = 15;
 
     constructor(public http: HttpClient, public controller: DialogController) {
-           
+
     }
 
     activate(config: EasyConfiguration) {

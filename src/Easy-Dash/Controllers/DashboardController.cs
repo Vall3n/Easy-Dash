@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using EasyDash.Models;
 using EasyDash.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Logging;
 
 namespace EasyDash.Controllers
 {
@@ -107,9 +106,6 @@ namespace EasyDash.Controllers
 
 				if (configuration.Enabled)
 				{
-
-					Console.WriteLine($"Before {result.NextUpdate}" );
-
 					var nextTick = Math.Ceiling(DateTime.Now.AddMinutes(1).Minute / (configuration.ScheduleTime * 1.0));
 					var minutes = (int)(nextTick * configuration.ScheduleTime);
 					var now = DateTime.Now;
@@ -121,7 +117,6 @@ namespace EasyDash.Controllers
 						(minutes > 60 ? 0 : minutes),
 						0);
 
-					Console.WriteLine($"After {result.NextUpdate}");
 				}
 			}
 

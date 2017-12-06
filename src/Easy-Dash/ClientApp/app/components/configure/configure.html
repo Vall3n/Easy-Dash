@@ -30,11 +30,33 @@
             </tbody>
         </table>
     </div>
-    <div class="row" if.bind="!loading">
+    <div class="row" if.bind="!loading && configurations.length > 0">
         <div class="col-md-12">
             <button class="btn btn-success pull-right" click.delegate="addConfiguration()">
                 <i class="fa fa-plus"></i>&nbsp;Add
             </button>
         </div>
     </div>
+    
+    <div if.bind="!loading" class="container-fluid easy-spacer-more">
+        <div if.bind="configurations.length == 0" class="d-flex justify-content-center">
+            <div class="p-2 easy-card">
+                <div class="card border-danger">
+                    <h5 class="card-header">
+                        <div class="float-left"><span class="fa fa-info"></span>&nbsp;&nbsp;We are missing something</div>
+                    </h5>
+                    <div class="card-body bg-secondary">
+                        <h5 class="card-title">But don't panic</h5>
+                        <h6 class="card-subtitle text-muted">Hit the Add button below and start adding some conifugurations to test for you.</h6>
+                    </div>
+                    <div class="card-footer text-muted bg-danger">
+                        <div class="btn btn-secondary float-right" click.delegate="addConfiguration()">
+                            <span class='fa fa-plus'></span>&nbsp;Add
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
