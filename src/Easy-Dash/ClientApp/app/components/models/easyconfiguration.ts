@@ -5,8 +5,7 @@ export class EasyConfiguration {
     url: string;
     statusCode: number;
     bodyContains: string;
-    scheduleTime: string;
+    scheduleTime: number;
     enabled: boolean;
-    scheduleTimeSpan: string;
     save() { }
 }

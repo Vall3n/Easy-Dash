@@ -2,22 +2,27 @@ import { computedFrom } from 'aurelia-framework';
 import * as moment from 'moment';
 
 export class DashboardResult {
+
+    constructor() {
+        setInterval(() => { this.currentDateTime = Date.now() }, 1000);
+    }
+
     id: number;
     description: string;
     lastStatus: string;
     lastUpdate: string;
     nextUpdate: string;
-
-    @computedFrom("nextUpdate")
+    
+    @computedFrom("nextUpdate","currentDateTime")
     get friendlyNextUpdate(): string {
-        if (new Date(this.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
+        if (new Date(this.nextUpdate).getTime() < new Date(this.currentDateTime).getTime()) {
             return 'Awaiting results..';
         }
 
         return moment(this.nextUpdate).fromNow();
     };
 
-    @computedFrom("lastUpdate")
+    @computedFrom("lastUpdate", "currentDateTime")
     get friendlyLastUpdated(): string {
         try {
             const m = moment(this.lastUpdate);
@@ -27,4 +32,6 @@ export class DashboardResult {
         }
         return 'oops';
     }
+
+    private currentDateTime: number;
 }

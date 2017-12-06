@@ -150,7 +150,7 @@ export class DashboardCards {
             if (result) {
 
                 const existing = this.dashboardResults.find(x => x.id === id);
-                console.warn("EXI", existing)
+  
                 if (existing) {
                     existing.description = result.description;
                     existing.nextUpdate = result.nextUpdate;

@@ -75,12 +75,12 @@ export class Dashboard {
     }
 
     configureItem(item: DashboardResult) {
-        const intervalHandle = setInterval(() => {
-            if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
-                clearInterval(intervalHandle);
-                item.lastStatus = 'Pending';
-            }
-        }, 1000);
+        //const intervalHandle = setInterval(() => {
+        //    if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
+        //        clearInterval(intervalHandle);
+        //        item.lastStatus = 'Pending';
+        //    }
+        //}, 1000);
     }
 
     sortResults() {
@@ -150,7 +150,6 @@ export class Dashboard {
             if (result) {
 
                 const existing = this.dashboardResults.find(x => x.id === id);
-                console.warn("EXI", existing)
                 if (existing) {
                     existing.description = result.description;
                     existing.nextUpdate = result.nextUpdate;

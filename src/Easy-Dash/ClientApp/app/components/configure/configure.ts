@@ -87,7 +87,7 @@ export class Configure {
 
         item.enabled = true;
         item.statusCode = 200;
-        item.scheduleTime = 'PT5M';
+        item.scheduleTime = 5;
 
         this.configureItem(item);
 
@@ -173,7 +173,6 @@ export class Configure {
                 await this.hubConnection.invoke('ConfigModified', result.id);
 
                 item.id = result.id;
-                item.scheduleTimeSpan = result.scheduleTimeSpan;
 
                 if (isNewRecord) {
                     this.configurations.push(item);

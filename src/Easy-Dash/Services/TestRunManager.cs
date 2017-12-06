@@ -45,12 +45,8 @@ namespace EasyDash.Services
             if (!configuration.Enabled)
                 return;
 
-            var span = configuration.ScheduleTimeSpan;
-            string cron;
-            if (span.TotalMinutes < 60)
-                cron = $"*/{span.Minutes} * * * *";
-            else
-                cron = $"*/{span.Minutes} */{span.Hours} * * *";
+            var span = configuration.ScheduleTime;
+	        var cron = $"*/{span} * * * *";
 
             RecurringJob.AddOrUpdate(jobName, () => RunTest(configuration.Id), cron);
 
