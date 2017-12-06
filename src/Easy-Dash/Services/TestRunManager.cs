@@ -7,7 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyDash.Controllers;
 using EasyDash.Hubs;
-using Microsoft.AspNetCore.SignalR;namespace EasyDash.Services
+using Microsoft.AspNetCore.SignalR;
+
+
+namespace EasyDash.Services
 {
     public class TestRunManager : ITestRunManager
     {
@@ -34,7 +37,7 @@ using Microsoft.AspNetCore.SignalR;namespace EasyDash.Services
             }
         }
 
-        public void AddOrUpdateSchedule(UrlConfiguration configuration)
+        public void AddOrUpdateSchedule(UrlConfiguration configuration, bool trigger = false)
         {
             var jobName = $"UrlConfiguration_{configuration.Id}";
             RecurringJob.RemoveIfExists(jobName);
@@ -42,14 +45,14 @@ using Microsoft.AspNetCore.SignalR;namespace EasyDash.Services
             if (!configuration.Enabled)
                 return;
 
-            var span = configuration.ScheduleTimeSpan;
-            string cron;
-            if (span.TotalMinutes < 60)
-                cron = $"*/{span.Minutes} * * * *";
-            else
-                cron = $"*/{span.Minutes} */{span.Hours} * * *";
+            var span = configuration.ScheduleTime;
+	        var cron = $"*/{span} * * * *";
 
             RecurringJob.AddOrUpdate(jobName, () => RunTest(configuration.Id), cron);
+
+            if (trigger) {
+                RecurringJob.Trigger(jobName);
+            }
         }
 
 	    public void RemoveScedule(int id)

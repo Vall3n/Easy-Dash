@@ -52,7 +52,7 @@ namespace EasyDash.Controllers
                 StatusCode = 200,
                 BodyContains = $"\"id\": {index}",
                 Enabled = true,
-                ScheduleTime = "PT5M",
+                ScheduleTime = 5,
                 
             });
 

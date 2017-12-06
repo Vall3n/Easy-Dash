@@ -1,5 +1,5 @@
 ﻿import { inject } from 'aurelia-framework';
-import {  TestSummary } from '../models/models'
+import {  TestSummary } from '../models/testsummary'
 import { DialogController } from 'aurelia-dialog';  
 
 @inject(DialogController, Element)

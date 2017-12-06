@@ -1,0 +1,26 @@
+﻿<template>
+    <div if.bind="failedResults.length">
+        <require from="../dashboard/statusclass"></require>
+        <h4 class="easy-spacer"><span class="fa fa-exclamation-triangle">&nbsp;</span>Recently failed</h4>
+        <table class="table table-hover table-condensed easy-spacer" if.bind="failedResults.length">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Last update</th>
+                    <th>Next update</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr repeat.for="result of failedResults" model.bind="result" class.bind="result.lastStatus | statusClass">
+                    <td>${ result.description }</td>
+                    <td>${ result.friendlyLastUpdated }</td>
+                    <td>${ result.friendlyNextUpdate }</td>
+                    <td>
+                        <span class='fa fa-list' click.delegate="detailsClick(result.id)"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</template>

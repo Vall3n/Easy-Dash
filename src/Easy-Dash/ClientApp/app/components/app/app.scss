@@ -11,6 +11,10 @@ ux-dialog-overlay.active {
 	margin-top: 20px;
 }
 
+.easy-spacer-more {
+	margin-top: 80px;
+}
+
 ux-dialog {
 	min-width: 450px;
 	background-color: rgba(68, 68, 68, 0.5);
@@ -37,4 +41,10 @@ ux-dialog {
 
 .navbar-dark .navbar-nav .nav-link:active {
 	color: #191919;
+}
+
+@media (min-width: 1900px) {
+    .container {
+        max-width: 1840px;
+    }
 }

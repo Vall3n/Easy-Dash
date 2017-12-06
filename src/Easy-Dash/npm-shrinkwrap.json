@@ -3470,6 +3470,57 @@
       "integrity": "sha1-PTgyGCgjHkNPKHUUlZw3qCtin0I=",
       "dev": true
     },
+    "uglify-es-webpack-plugin": {
+      "version": "0.10.0",
+      "resolved": "https://registry.npmjs.org/uglify-es-webpack-plugin/-/uglify-es-webpack-plugin-0.10.0.tgz",
+      "integrity": "sha512-AJprSiu2H734h6IT6GVe5Hw/FP0AWMMv/tggknn3WdiaZSIWqWvtoRezxTGgbbkA9CQtT4Kk1KGegj6rA7osJQ==",
+      "requires": {
+        "uglify-es": "3.2.0",
+        "webpack-sources": "0.2.3"
+      },
+      "dependencies": {
+        "commander": {
+          "version": "2.12.2",
+          "resolved": "https://registry.npmjs.org/commander/-/commander-2.12.2.tgz",
+          "integrity": "sha512-BFnaq5ZOGcDN7FlrtBT4xxkgIToalIIxwjxLWVJ8bGTpe1LroqMiqQXdA7ygc7CRvaYS+9zfPGFnJqFSayx+AA=="
+        },
+        "source-list-map": {
+          "version": "1.1.2",
+          "resolved": "https://registry.npmjs.org/source-list-map/-/source-list-map-1.1.2.tgz",
+          "integrity": "sha1-mIkBnRAkzOVc3AaUmDN+9hhqEaE="
+        },
+        "source-map": {
+          "version": "0.6.1",
+          "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz",
+          "integrity": "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="
+        },
+        "uglify-es": {
+          "version": "3.2.0",
+          "resolved": "https://registry.npmjs.org/uglify-es/-/uglify-es-3.2.0.tgz",
+          "integrity": "sha512-eD4rjK4o6rzrvE1SMZJLQFEVMnWRUyIu6phJ0BXk5TIthMmP5B4QP0HI8o3bkQB5wf1N4WHA0leZAQyQBAd+Jg==",
+          "requires": {
+            "commander": "2.12.2",
+            "source-map": "0.6.1"
+          }
+        },
+        "webpack-sources": {
+          "version": "0.2.3",
+          "resolved": "https://registry.npmjs.org/webpack-sources/-/webpack-sources-0.2.3.tgz",
+          "integrity": "sha1-F8Yr+vE8cH+dAsR54Nzd6DgGl/s=",
+          "requires": {
+            "source-list-map": "1.1.2",
+            "source-map": "0.5.7"
+          },
+          "dependencies": {
+            "source-map": {
+              "version": "0.5.7",
+              "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.5.7.tgz",
+              "integrity": "sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w="
+            }
+          }
+        }
+      }
+    },
     "uglify-js": {
       "version": "3.0.20",
       "resolved": "https://registry.npmjs.org/uglify-js/-/uglify-js-3.0.20.tgz",

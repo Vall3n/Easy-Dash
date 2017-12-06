@@ -18,7 +18,7 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div repeat.for="summary of summaries" model.bind="summary" class="tab-pane fade in " id="tab_${$index}">
+                        <div repeat.for="summary of summaries" model.bind="summary" class="tab-pane fade in ${$index == 0 ? 'active': ''}" id="tab_${$index}">
                             <div class="card border-dark">
                                 <div class="row easy-dialog-padding">
                                     <div class="col">
