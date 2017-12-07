@@ -6,6 +6,7 @@ import { DashboardResult } from '../models/dashboardresult';
 import { TestSummary } from '../models/testsummary';
 import { Busy } from '../busy/busy';
 import { DialogService } from 'aurelia-dialog';
+import * as SweetAlert from 'sweetalert2';
 
 @inject(HttpClient, DialogService, Busy)
 export class Dashboard {
@@ -147,6 +148,16 @@ export class Dashboard {
                     existing.description = result.description;
                     existing.nextUpdate = result.nextUpdate;
                     existing.lastUpdate = result.lastUpdate;
+
+
+                    await SweetAlert.default({
+                        position: 'bottom-right',
+                        type: 'info',
+                        title: `${existing.description} was changed.`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }); 
+
                 } else {
 
                     const newResult = new DashboardResult();
@@ -155,9 +166,16 @@ export class Dashboard {
                     newResult.nextUpdate = result.nextUpdate;
                     newResult.id = result.id;
                     newResult.lastStatus = result.lastStatus;
-
-
+                    
                     this.dashboardResults.push(newResult);
+
+                    await SweetAlert.default({
+                        position: 'bottom-right',
+                        type: 'info',
+                        title: `New configuration added. ${newResult.description}`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }); 
                 }
             }
         } catch (error) {
@@ -171,6 +189,14 @@ export class Dashboard {
         if (removed) {
             const index = this.dashboardResults.indexOf(removed);
             this.dashboardResults.splice(index, 1);
+
+            await SweetAlert.default({
+                position: 'bottom-right',
+                type: 'warning',
+                title: `Configuration removed. '${removed.description}'`,
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     }
 }
