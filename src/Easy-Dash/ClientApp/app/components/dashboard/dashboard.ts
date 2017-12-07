@@ -56,8 +56,6 @@ export class Dashboard {
                         item.description = result.description;
                         item.lastUpdate = result.lastUpdate;
 
-                        this.configureItem(item);
-
                         setTimeout(() => this.sortResults(), 5000);
                     }
                 });
@@ -67,20 +65,17 @@ export class Dashboard {
                     this.addOrUpdateDashboardResult(id);
                 });
 
+
+            this.hubConnection.on('ConfigRemoved',
+                (id: number) => {
+                    this.removeDashboardResult(id);
+                });
+
             return;
 
         } catch (e) {
             console.warn('Exception on Init', e);
         }
-    }
-
-    configureItem(item: DashboardResult) {
-        //const intervalHandle = setInterval(() => {
-        //    if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
-        //        clearInterval(intervalHandle);
-        //        item.lastStatus = 'Pending';
-        //    }
-        //}, 1000);
     }
 
     sortResults() {
@@ -108,8 +103,6 @@ export class Dashboard {
             });
 
             this.dashboardResults.forEach((item) => {
-                this.configureItem(item);
-
                 this.sortResults();
             });
         } catch (error) {
@@ -154,14 +147,30 @@ export class Dashboard {
                     existing.description = result.description;
                     existing.nextUpdate = result.nextUpdate;
                     existing.lastUpdate = result.lastUpdate;
-                    this.configureItem(existing);
                 } else {
-                    this.dashboardResults.push(result);
-                    this.configureItem(result);
+
+                    const newResult = new DashboardResult();
+                    newResult.lastUpdate = result.lastUpdate;
+                    newResult.description = result.description;
+                    newResult.nextUpdate = result.nextUpdate;
+                    newResult.id = result.id;
+                    newResult.lastStatus = result.lastStatus;
+
+
+                    this.dashboardResults.push(newResult);
                 }
             }
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    private async removeDashboardResult(id: number) {
+
+        const removed = this.dashboardResults.find(x => x.id === id);
+        if (removed) {
+            const index = this.dashboardResults.indexOf(removed);
+            this.dashboardResults.splice(index, 1);
         }
     }
 }
