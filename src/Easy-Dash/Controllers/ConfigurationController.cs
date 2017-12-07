@@ -7,6 +7,7 @@ using LiteDB;
 using Microsoft.Extensions.Options;
 using EasyDash.Repositories;
 using System.Threading.Tasks;
+using EasyDash.Services;
 
 namespace EasyDash.Controllers
 {
@@ -39,24 +40,13 @@ namespace EasyDash.Controllers
 			return await _configurationRepository.Delete(id);
 		}
 
-        private async Task GenerateSampleData()
+        [HttpPost("[action]")]
+        public async Task<UrlTestStatus> Test([FromBody]UrlConfiguration urlConfiguration)
         {
-            if (await _configurationRepository.Count() > 0)
-                return;
+            var runner = new UrlRunner();
+            var results = await runner.Test(urlConfiguration);
 
-            var items = Enumerable.Range(1, 5).Select(index => new UrlConfiguration()
-            {
-                Id = index,
-                Description = "Test service " + index,
-                Url = $"https://jsonplaceholder.typicode.com/posts/{index}",
-                StatusCode = 200,
-                BodyContains = $"\"id\": {index}",
-                Enabled = true,
-                ScheduleTime = 5,
-                
-            });
-
-            await _configurationRepository.Save(items);
+            return results;
         }
     }
 }
