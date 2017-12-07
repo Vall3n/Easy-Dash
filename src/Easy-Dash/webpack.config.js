@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
+const webpack  = require('webpack');
 const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const UglifyEsPlugin = require('uglify-es-webpack-plugin');
 const bundleOutputDir = './wwwroot/dist';
@@ -23,7 +23,8 @@ module.exports = (env) => {
             rules: [
                 { test: /\.ts$/i, include: /ClientApp/, use: 'ts-loader?silent=true' },
                 { test: /\.html$/i, use: 'html-loader' },
-                { test: /\.css$/i, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' },
+                { test: /\.scss$/i, issuer: /\.html$/i, loader: 'css-loader!sass-loader' },
+                { test: /\.css$/i, use: [isDevBuild ? 'css-loader' : 'css-loader?minimize'] },
                 { test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/, use: 'url-loader?limit=25000' }
             ]
         },
@@ -33,7 +34,7 @@ module.exports = (env) => {
                 context: __dirname,
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
             }),
-            new AureliaPlugin({ aureliaApp: 'boot' }),
+            new AureliaPlugin({ aureliaApp: 'boot' })
         ].concat(isDevBuild ? [
             new webpack.SourceMapDevToolPlugin({
                 filename: '[file].map', // Remove this line if you prefer inline source maps
