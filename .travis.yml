@@ -5,5 +5,5 @@ script:
   - cd ./src/Easy-Dash
   - npm install
   - dotnet restore
-  - dotnet build ./src/Easy-Dash/
+  - dotnet build
   
