@@ -6,6 +6,7 @@ import { DashboardResult } from '../models/dashboardresult';
 import { TestSummary } from '../models/testsummary';
 import { Busy } from '../busy/busy';
 import { DialogService } from 'aurelia-dialog';
+import * as SweetAlert from 'sweetalert2';
 
 @inject(HttpClient, DialogService, Busy)
 export class Dashboard {
@@ -56,8 +57,6 @@ export class Dashboard {
                         item.description = result.description;
                         item.lastUpdate = result.lastUpdate;
 
-                        this.configureItem(item);
-
                         setTimeout(() => this.sortResults(), 5000);
                     }
                 });
@@ -67,20 +66,17 @@ export class Dashboard {
                     this.addOrUpdateDashboardResult(id);
                 });
 
+
+            this.hubConnection.on('ConfigRemoved',
+                (id: number) => {
+                    this.removeDashboardResult(id);
+                });
+
             return;
 
         } catch (e) {
             console.warn('Exception on Init', e);
         }
-    }
-
-    configureItem(item: DashboardResult) {
-        //const intervalHandle = setInterval(() => {
-        //    if (new Date(item.nextUpdate).getTime() < new Date(Date.now()).getTime()) {
-        //        clearInterval(intervalHandle);
-        //        item.lastStatus = 'Pending';
-        //    }
-        //}, 1000);
     }
 
     sortResults() {
@@ -108,8 +104,6 @@ export class Dashboard {
             });
 
             this.dashboardResults.forEach((item) => {
-                this.configureItem(item);
-
                 this.sortResults();
             });
         } catch (error) {
@@ -154,14 +148,55 @@ export class Dashboard {
                     existing.description = result.description;
                     existing.nextUpdate = result.nextUpdate;
                     existing.lastUpdate = result.lastUpdate;
-                    this.configureItem(existing);
+
+
+                    await SweetAlert.default({
+                        position: 'bottom-right',
+                        type: 'info',
+                        title: `${existing.description} was changed.`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }); 
+
                 } else {
-                    this.dashboardResults.push(result);
-                    this.configureItem(result);
+
+                    const newResult = new DashboardResult();
+                    newResult.lastUpdate = result.lastUpdate;
+                    newResult.description = result.description;
+                    newResult.nextUpdate = result.nextUpdate;
+                    newResult.id = result.id;
+                    newResult.lastStatus = result.lastStatus;
+                    
+                    this.dashboardResults.push(newResult);
+
+                    await SweetAlert.default({
+                        position: 'bottom-right',
+                        type: 'info',
+                        title: `New configuration added. ${newResult.description}`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }); 
                 }
             }
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    private async removeDashboardResult(id: number) {
+
+        const removed = this.dashboardResults.find(x => x.id === id);
+        if (removed) {
+            const index = this.dashboardResults.indexOf(removed);
+            this.dashboardResults.splice(index, 1);
+
+            await SweetAlert.default({
+                position: 'bottom-right',
+                type: 'warning',
+                title: `Configuration removed. '${removed.description}'`,
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     }
 }
