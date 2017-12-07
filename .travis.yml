@@ -2,6 +2,8 @@ language: csharp
 mono: none
 dotnet: 2.0.0
 script:
+  - cd ./src/Easy-Dash
+  - npm install
   - dotnet restore
   - dotnet build ./src/Easy-Dash/
   
