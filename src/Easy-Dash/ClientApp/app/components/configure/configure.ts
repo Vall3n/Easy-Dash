@@ -129,12 +129,14 @@ export class Configure {
 
                 if (deletestatus.status === 200) {
 
+                    this.hubConnection.invoke("ConfigRemoved", id);
+
                     await SweetAlert.default({
                         title: 'Deleted',
                         text: 'That data is gone, gone, gone!',
                         type: 'success',
                         showCancelButton: false,
-                        timer: 2500
+                        timer: 1500
                     });
 
                     const index = this.configurations.indexOf(row);
