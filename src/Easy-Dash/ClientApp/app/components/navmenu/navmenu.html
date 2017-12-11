@@ -1,4 +1,4 @@
-<template bindable="router">
+<template bindable="router, changeTheme, themes, themeSelector">
     <require from="./navmenu.scss"></require>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">Easy-Dash</a>
@@ -11,6 +11,14 @@
                     <a class="nav-link" href.bind="row.href">
                         <span class="fa ${ row.settings.icon }"></span> ${ row.title }
                     </a>
+                </li>
+                <li  if.bind="themeSelector" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="Preview" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        Themes
+                    </a>
+                    <div class="dropdown-menu">
+                        <a repeat.for="theme of themes" class="dropdown-item" href="#" click.trigger="changeTheme({name: theme.id})">${theme.id}</a>
+                    </div>
                 </li>
             </ul>
         </div>
