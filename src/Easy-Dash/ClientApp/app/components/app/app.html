@@ -1,18 +1,18 @@
 <template>
     <require from="./app.scss"></require>
     <require from="../busy/busy.scss"></require>
-    <div show.bind="busy.active"> 
+    <div show.bind="busy.active">
         <div class="spinner">
             <div class="rect1"></div>
             <div class="rect2"></div>
             <div class="rect3"></div>
             <div class="rect4"></div>
             <div class="rect5"></div>
-          </div>
+        </div>
         <div class="spinner-blocker"></div>
-      </div>
+    </div>
     <require from="../navmenu/navmenu.html"></require>
-    <navmenu router.bind="router"></navmenu>
+    <navmenu router.bind="router" themes.bind="themes" theme-selector.bind="themeSelector" change-theme.call="changeTheme(name)"></navmenu>
     <div class="container">
         <router-view></router-view>
     </div>
