@@ -2,6 +2,7 @@ const path = require('path');
 const webpack  = require('webpack');
 const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const UglifyEsPlugin = require('uglify-es-webpack-plugin');
+const copyWebpackPlugin = require('copy-webpack-plugin');
 const bundleOutputDir = './wwwroot/dist';
 
 module.exports = (env) => {
@@ -34,6 +35,13 @@ module.exports = (env) => {
                 context: __dirname,
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
             }),
+            new copyWebpackPlugin([
+                {
+                    context: './node_modules/bootswatch/dist',
+                    from: '**/*.min.css',
+                    to: 'bootswatch'
+                }
+            ]),
             new AureliaPlugin({ aureliaApp: 'boot' })
         ].concat(isDevBuild ? [
             new webpack.SourceMapDevToolPlugin({
