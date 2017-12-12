@@ -15,3 +15,36 @@
     padding-left: 5px;
     padding-right: 5px;
 }
+
+
+
+
+.result-animation-add {
+    -webkit-animation: fadeOut 10s forwards cubic-bezier(0,1,1,1);
+    animation: fadeOut 10s forwards cubic-bezier(0,1,1,1);
+}
+
+.result-animation-remove {
+    -webkit-animation: fadeOut 1.5s reverse;
+    animation: fadeOut 1.5s reverse;
+}
+
+@-webkit-keyframes fadeOut {
+    0% {
+        transform: scale(1.0);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        transform: scale(1.0);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
