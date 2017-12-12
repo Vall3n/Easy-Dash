@@ -26,7 +26,7 @@ module.exports = (env) => {
                 { test: /\.html$/i, use: 'html-loader' },
                 { test: /\.scss$/i, issuer: /\.html$/i, loader: 'css-loader!sass-loader' },
                 { test: /\.css$/i, use: [isDevBuild ? 'css-loader' : 'css-loader?minimize'] },
-                { test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?.*$|$)/, use: 'url-loader?limit=25000' }
+                { test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?.*)?$/, use: 'url-loader?limit=25000' }
             ]
         },
         plugins: [
@@ -40,6 +40,18 @@ module.exports = (env) => {
                     context: './node_modules/bootswatch/dist',
                     from: '**/*.min.css',
                     to: 'bootswatch'
+                }, {
+                    context: './node_modules/font-awesome/',
+                    from: 'css/**/*.css',
+                    to: 'font-awesome'
+                }, {
+                    context: './node_modules/font-awesome/',
+                    from: 'css/**/*.min.css',
+                    to: 'font-awesome'
+                }, {
+                    context: './node_modules/font-awesome/',
+                    from: 'fonts/**/*.*',
+                    to: 'font-awesome'
                 }
             ]),
             new AureliaPlugin({ aureliaApp: 'boot' })
