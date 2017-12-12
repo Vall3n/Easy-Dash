@@ -12,8 +12,9 @@
         <div class="spinner-blocker"></div>
     </div>
     <require from="../navmenu/navmenu.html"></require>
-    <navmenu router.bind="router" themes.bind="themes" theme-selector.bind="themeSelector" change-theme.call="changeTheme(name)"></navmenu>
+    <navmenu router.bind="router" themes.bind="themes" theme-selector.bind="themeSelector" change-theme.call="changeTheme(name)" selected-theme.bind="selectedTheme"></navmenu>
     <div class="container">
         <router-view></router-view>
     </div>
+    <div class="text-muted easy-watermark">Theme: ${selectedTheme}</div>
 </template>

@@ -1,6 +1,6 @@
-<template bindable="router, changeTheme, themes, themeSelector">
+<template bindable="router, changeTheme, themes, themeSelector, selectedTheme">
     <require from="./navmenu.scss"></require>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <a class="navbar-brand" href="#">Easy-Dash</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -12,11 +12,13 @@
                         <span class="fa ${ row.settings.icon }"></span> ${ row.title }
                     </a>
                 </li>
-                <li  if.bind="themeSelector" class="nav-item dropdown">
+            </ul>
+            <ul if.bind="themeSelector" class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="Preview" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                        Themes
+                        Themes 
                     </a>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-menu-right">
                         <a repeat.for="theme of themes" class="dropdown-item" href="#" click.trigger="changeTheme({name: theme.id})">${theme.id}</a>
                     </div>
                 </li>
