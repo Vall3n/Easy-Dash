@@ -97,7 +97,7 @@ export class App {
 
     private supportLocalStorage(): boolean {
         try {
-            return 'localStorage' in window && window['localStorage'] !== null;
+            return localStorage !== undefined;
         } catch (e) {
             return false;
         }
