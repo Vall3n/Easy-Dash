@@ -58,7 +58,7 @@ namespace EasyDash.Controllers
             return summaries;
         }
 
-        public static TestSummary GenerateSummaries(List<UrlTestStatus> statuses, int days)
+	    private static TestSummary GenerateSummaries(IEnumerable<UrlTestStatus> statuses, int days)
         {
             var hours = days * 24;
             var toDate = DateTime.Now.AddHours(hours * -1);

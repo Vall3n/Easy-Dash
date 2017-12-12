@@ -19,13 +19,11 @@ namespace EasyDash.Hubs
 
 	    public Task ConfigModified(int id)
 	    {
-		    var connectionId = Context.ConnectionId;
 		    return Clients.All.InvokeAsync("ConfigModified", id);
 		}
 
 	    public Task ConfigRemoved(int id)
 	    {
-		    var connectionId = Context.ConnectionId;
 		    return Clients.All.InvokeAsync("ConfigRemoved", id);
 	    }
 

@@ -6,7 +6,7 @@
         <div class="results-all">
             <h4 class="easy-spacer"><span class="fa fa-th-large">&nbsp;</span>Dashboard</h4>
             <table class="table table-hover table-condensed easy-spacer" if.bind="dashboardResults">
-                <thead class="bg-dark text-light">
+                <thead class="bg-primary text-light">
                     <tr>
                         <th>Description</th>
                         <th>Last update</th>
@@ -23,6 +23,7 @@
                         <td>${ status.friendlyNextUpdate }</td>
                         <td>
                             <span class='fa fa-list' click.delegate="detailsClick(status.id)"></span>
+                            <span if.bind="status.lastStatus === 'Running'" class='pull-right fa fa-spin fa-circle-o-notch'></span>
                         </td>
                     </tr>
                 </tbody>
