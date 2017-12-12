@@ -32,6 +32,10 @@
     <TypeScriptCompile Include="ClientApp\app\components\value-converters\date-format.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\dist\" />
+  </ItemGroup>
+
 
 
 

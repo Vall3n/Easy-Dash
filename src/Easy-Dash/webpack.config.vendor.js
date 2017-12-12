@@ -32,9 +32,8 @@ module.exports = ({ prod } = {}) => {
                 'aurelia-templating-resources',
                 'aurelia-templating-router',
                 'bootstrap',
-                //'bootswatch/dist/slate/bootstrap.css',
-                'font-awesome/css/font-awesome.css',
                 'jquery'
+                
             ]
         },
         output: {
