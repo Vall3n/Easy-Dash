@@ -16,7 +16,7 @@ export function configure(aurelia: Aurelia) {
         aurelia.use.developmentLogging();
     }
 
-    new HttpClient().configure(config => {
+    new HttpClient().configure((config: any) => {
         const baseUrl = document.getElementsByTagName('base')[0].href;
         config.withBaseUrl(baseUrl);
     });
