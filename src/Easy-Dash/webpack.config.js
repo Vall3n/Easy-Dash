@@ -26,7 +26,7 @@ module.exports = (env) => {
                 { test: /\.html$/i, use: 'html-loader' },
                 { test: /\.scss$/i, issuer: /\.html$/i, loader: 'css-loader!sass-loader' },
                 { test: /\.css$/i, use: [isDevBuild ? 'css-loader' : 'css-loader?minimize'] },
-                { test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?.*$|$)/, use: 'url-loader?limit=25000' }
+                { test: /.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)(\?v=\d+\.\d+\.\d+)?$/, use: 'url-loader?limit=25000' }
             ]
         },
         plugins: [
