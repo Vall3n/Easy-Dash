@@ -57,12 +57,17 @@ namespace EasyDash.Repositories
             }
         }
 
-        public Task<IEnumerable<UrlConfiguration>> Get()
+        public Task<IEnumerable<UrlConfiguration>> Get(bool includeDiabled = false)
         {
             using (var database = new LiteDB.LiteDatabase(_connnectionStrings.Value.EasyDashDatabase))
             {
                 var collection = database.GetCollection<UrlConfiguration>("UrlConfigurations");
-                var result = collection.FindAll();
+
+	            var statuses = new List<bool> {true};
+				if (includeDiabled)
+					statuses.Add(false);
+
+	            var result = collection.Find(x => statuses.Contains(x.Enabled));
 
                 return Task.FromResult(result);
             }

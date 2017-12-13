@@ -1,6 +1,7 @@
 <template>
     <require from="./dashboard.scss"></require>
     <require from="./statusclass"></require>
+    <require from="./animateresultonchange"></require>
     <require from="../dashboard-failed/dashboard-failed"></require>
     <div class="results-container">
         <div class="results-all">
@@ -16,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr repeat.for="status of dashboardResults" model.bind="status" class.bind="status.lastStatus | statusClass">
+                    <tr repeat.for="status of dashboardResults" model.bind="status" class.bind="status.lastStatus | statusClass" animateresultonchange.bind="status.lastStatus">
                         <td>${ status.description }</td>
                         <td>${ status.friendlyLastUpdated }</td>
                         <td>${ status.lastStatus }</td>

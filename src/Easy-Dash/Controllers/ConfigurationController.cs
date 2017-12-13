@@ -25,7 +25,7 @@ namespace EasyDash.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<UrlConfiguration>> Urls()
         {
-            return await _configurationRepository.Get();
+            return await _configurationRepository.Get(true);
         }
 
         [HttpPost("[action]")]

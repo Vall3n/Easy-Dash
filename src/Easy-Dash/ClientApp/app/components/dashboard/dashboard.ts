@@ -57,7 +57,7 @@ export class Dashboard {
                         item.description = result.description;
                         item.lastUpdate = result.lastUpdate;
 
-                        setTimeout(() => this.sortResults(), 5000);
+                        //setTimeout(() => this.sortResults(), 5000);
                     }
                 });
 
@@ -103,9 +103,7 @@ export class Dashboard {
                 return item;
             });
 
-            this.dashboardResults.forEach((item) => {
-                this.sortResults();
-            });
+            this.sortResults();
         } catch (error) {
             console.error(error);
         } finally {
@@ -123,7 +121,7 @@ export class Dashboard {
             this.busy.off();
 
             console.warn("Open dialog", summaries);
-            this.dialogService.open({ viewModel: PLATFORM.moduleName('app/components/dashboard-details/dashboard-details') , model: summaries, lock: false }).whenClosed(
+            this.dialogService.open({ viewModel: PLATFORM.moduleName('app/components/dashboard-details/dashboard-details'), model: summaries, lock: false }).whenClosed(
                 response => {
                     if (response.wasCancelled) {
                         return;
@@ -156,7 +154,7 @@ export class Dashboard {
                         title: `${existing.description} was changed.`,
                         showConfirmButton: false,
                         timer: 1500
-                    }); 
+                    });
 
                 } else {
 
@@ -166,7 +164,7 @@ export class Dashboard {
                     newResult.nextUpdate = result.nextUpdate;
                     newResult.id = result.id;
                     newResult.lastStatus = result.lastStatus;
-                    
+
                     this.dashboardResults.push(newResult);
 
                     await SweetAlert.default({
@@ -175,7 +173,7 @@ export class Dashboard {
                         title: `New configuration added. ${newResult.description}`,
                         showConfirmButton: false,
                         timer: 1500
-                    }); 
+                    });
                 }
             }
         } catch (error) {
