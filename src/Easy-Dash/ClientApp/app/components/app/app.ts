@@ -1,14 +1,13 @@
-import { Aurelia, PLATFORM, inject } from 'aurelia-framework';
+import { PLATFORM, inject } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
 import { Busy } from '../busy/busy';
-import { Themes } from './themes';
 
 
 @inject(Busy)
 export class App {
     router: Router;
-    themeSelector: boolean = false;
-    selectedTheme: string = 'darkly';
+    themeSelector = false;
+    selectedTheme = 'darkly';
     themes = [
         { id: 'cerulean', style: 'dist/bootswatch/cerulean/bootstrap.min.css' },
         { id: 'cosmo', style: 'dist/bootswatch/cosmo/bootstrap.min.css' },

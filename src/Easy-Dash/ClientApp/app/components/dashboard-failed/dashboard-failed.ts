@@ -11,7 +11,7 @@ export class DashboardFailed {
     failedResults: DashboardResult[] = [];
     private hubConnection: HubConnection;
 
-    constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
+    constructor(public http: HttpClient, public dialogService: DialogService, private readonly busy: Busy) {
         this.loadDashboardResults();
         this.hookup();
     }
