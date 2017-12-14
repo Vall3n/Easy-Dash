@@ -4,7 +4,7 @@ import { CssAnimator } from 'aurelia-animator-css';
 @customAttribute('animateresultonchange')
 @inject(Element, CssAnimator)
 export class AnimateResultOnChangeCustomAttribute {
-    constructor(private element: Element, private animator: CssAnimator) {
+    constructor(private readonly element: Element, private readonly animator: CssAnimator) {
     }
 
     initialValueSet = false;

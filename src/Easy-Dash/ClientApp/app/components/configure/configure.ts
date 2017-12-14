@@ -1,5 +1,5 @@
 import { HttpClient, json } from 'aurelia-fetch-client';
-import { inject, NewInstance } from 'aurelia-framework';
+import { inject } from 'aurelia-framework';
 import { HubConnection } from '@aspnet/signalr-client';
 import { DialogService } from 'aurelia-dialog';
 import { ConfigForm } from '../configform/configform'
@@ -60,13 +60,11 @@ export class Configure {
     editClick(id: number) {
 
         try {
-
             const row: EasyConfiguration | undefined = this.configurations.find(conf => {
                 return conf.id === id;
             });
 
             if (row) {
-
 
                 this.dialogService.open({ viewModel: ConfigForm, model: row, lock: true }).whenClosed(response => {
                     if (response.wasCancelled) {
@@ -157,7 +155,6 @@ export class Configure {
                 });
             }
         }
-
     }
 
     async configureItem(item: EasyConfiguration) {
@@ -192,7 +189,6 @@ export class Configure {
             } finally {
                 this.busy.off();
             }
-
         }
     }
 }

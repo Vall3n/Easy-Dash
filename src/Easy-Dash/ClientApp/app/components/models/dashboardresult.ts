@@ -12,16 +12,13 @@ export class DashboardResult {
     lastStatus: string;
     lastUpdate: string;
     nextUpdate: string;
-    updating: boolean;
     
     @computedFrom("nextUpdate","currentDateTime")
     get friendlyNextUpdate(): string {
         if (new Date(this.nextUpdate).getTime() < new Date(this.currentDateTime).getTime()) {
-            this.updating = true;
             return 'Awaiting results..';
         }
 
-        this.updating = false;
         return moment(this.nextUpdate).fromNow();
     };
 

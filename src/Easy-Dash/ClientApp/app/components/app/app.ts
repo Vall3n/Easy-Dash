@@ -17,7 +17,7 @@ export class App {
         { id: 'flatly', style: 'dist/bootswatch/flatly/bootstrap.min.css' },
         { id: 'journal', style: 'dist/bootswatch/journal/bootstrap.min.css' },
         { id: 'litera', style: 'dist/bootswatch/litera/bootstrap.min.css' },
-        //{ id: 'lumen', style: 'dist/bootswatch/lumen/bootstrap.min.css' },
+        { id: 'lumen', style: 'dist/bootswatch/lumen/bootstrap.min.css' },
         { id: 'lux', style: 'dist/bootswatch/lux/bootstrap.min.css' },
         { id: 'materia', style: 'dist/bootswatch/materia/bootstrap.min.css' },
         { id: 'minty', style: 'dist/bootswatch/minty/bootstrap.min.css' },
