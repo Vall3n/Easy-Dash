@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\value-converters\date-format.ts" />
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
 
 
@@ -33,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\dist\" />
   </ItemGroup>
 
