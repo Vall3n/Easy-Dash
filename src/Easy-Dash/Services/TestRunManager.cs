@@ -64,7 +64,7 @@ namespace EasyDash.Services
 	    [DisplayName("UrlConfiguration #{0}.Id")]
         public async Task RunTest(int id)
         {
-            var startTask = _hubContext.Clients.All.InvokeAsync("TestStarted", id);
+            var startTask = _hubContext.Clients.All.SendAsync("TestStarted", id);
             using (var db = new LiteDatabase(_connectionStrings.Value.EasyDashDatabase))
             {
                 var collection = db.GetCollection<UrlConfiguration>("UrlConfigurations");
@@ -77,7 +77,7 @@ namespace EasyDash.Services
 
                 collection.Update(configuration);
                 await startTask;
-                await _hubContext.Clients.All.InvokeAsync("TestEnded", DashboardController.TransformToDashboardResult(configuration));
+                await _hubContext.Clients.All.SendAsync("TestEnded", DashboardController.TransformToDashboardResult(configuration));
             }
         }
     }

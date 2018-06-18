@@ -9,22 +9,22 @@ namespace EasyDash.Hubs
 
         public Task TestStarted(int id)
         {
-            return Clients.All.InvokeAsync("TestStarted", id);
+            return Clients.All.SendAsync("TestStarted", id);
         }
 
         public Task TestEnded(DashboardResult dashboardResult)
         {
-            return Clients.All.InvokeAsync("TestEnded", dashboardResult);
+            return Clients.All.SendAsync("TestEnded", dashboardResult);
         }
 
 	    public Task ConfigModified(int id)
 	    {
-		    return Clients.All.InvokeAsync("ConfigModified", id);
+		    return Clients.All.SendAsync("ConfigModified", id);
 		}
 
 	    public Task ConfigRemoved(int id)
 	    {
-		    return Clients.All.InvokeAsync("ConfigRemoved", id);
+		    return Clients.All.SendAsync("ConfigRemoved", id);
 	    }
 
 	}

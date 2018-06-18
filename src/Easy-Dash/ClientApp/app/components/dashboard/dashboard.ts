@@ -1,16 +1,16 @@
 import { HttpClient } from 'aurelia-fetch-client';
 import { inject, PLATFORM } from 'aurelia-framework';
-import { HubConnection } from '@aspnet/signalr-client';
 import { DashboardResult } from '../models/dashboardresult';
 import { TestSummary } from '../models/testsummary';
 import { Busy } from '../busy/busy';
 import { DialogService } from 'aurelia-dialog';
 import * as SweetAlert from 'sweetalert2';
+import * as signalR from '@aspnet/signalr';
 
 @inject(HttpClient, DialogService, Busy)
 export class Dashboard {
     dashboardResults: DashboardResult[] = [];
-    private hubConnection: HubConnection;
+    private hubConnection: signalR.HubConnection | null = null;
 
     constructor(public http: HttpClient, public dialogService: DialogService, private readonly busy: Busy) {
         this.loadDashboardResults();
@@ -35,8 +35,9 @@ export class Dashboard {
 
     private async hookup() {
         try {
-            this.hubConnection = new HubConnection('/dashboardsignal');
-            await this.hubConnection.start();
+            this.hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/dashboardsignal")
+            .build();
 
             this.hubConnection.on('TestStarted',
                 (id: number) => {

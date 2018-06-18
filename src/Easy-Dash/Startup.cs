@@ -63,7 +63,7 @@ namespace EasyDash
 	        app.UseHangfireServer();
 			app.UseSignalR(routes =>
 	        {
-		        routes.MapHub<DashboardHub>("dashboardsignal");
+		        routes.MapHub<DashboardHub>("/dashboardsignal");
 	        });
 
 	        app.UseHangfireDashboard();

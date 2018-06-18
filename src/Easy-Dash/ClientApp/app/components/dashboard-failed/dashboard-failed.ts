@@ -1,15 +1,16 @@
 ﻿import { HttpClient } from 'aurelia-fetch-client';
 import { inject, PLATFORM } from 'aurelia-framework';
-import { HubConnection } from '@aspnet/signalr-client';
 import { DashboardResult } from '../models/dashboardresult';
 import { TestSummary } from '../models/testsummary';
 import { Busy } from '../busy/busy';
 import { DialogService } from 'aurelia-dialog';
+import * as signalR from '@aspnet/signalr';
+
 
 @inject(HttpClient, DialogService, Busy)
 export class DashboardFailed {
     failedResults: DashboardResult[] = [];
-    private hubConnection: HubConnection;
+    private hubConnection: signalR.HubConnection | null = null;
 
     constructor(public http: HttpClient, public dialogService: DialogService, private readonly busy: Busy) {
         this.loadDashboardResults();
@@ -26,7 +27,9 @@ export class DashboardFailed {
         try {
             this.busy.on();
 
-            this.hubConnection = new HubConnection('/dashboardsignal');
+            this.hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/dashboardsignal")
+            .build();
             await this.hubConnection.start();
 
             this.hubConnection.on('TestStarted',

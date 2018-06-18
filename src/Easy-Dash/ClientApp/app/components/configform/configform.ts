@@ -7,7 +7,7 @@ import { UrlTestStatus } from '../models/urlteststatus';
 @inject(HttpClient, DialogController)
 export class ConfigForm {
 
-    config: EasyConfiguration;
+    config: EasyConfiguration = new EasyConfiguration();
     minutes = [
         { id: 1, name: '1' },
         { id: 5, name: '5' },
@@ -22,7 +22,7 @@ export class ConfigForm {
     }
 
 
-    testResult: UrlTestStatus;
+    testResult: UrlTestStatus | null = null;
     test = async () => {
         try {
             const response = await this.http.fetch('api/configuration/test',

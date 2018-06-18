@@ -1,31 +1,34 @@
 import { HttpClient, json } from 'aurelia-fetch-client';
 import { inject } from 'aurelia-framework';
-import { HubConnection } from '@aspnet/signalr-client';
 import { DialogService } from 'aurelia-dialog';
 import { ConfigForm } from '../configform/configform'
 import * as SweetAlert from 'sweetalert2';
 import { EasyConfiguration as EasyConfiguration } from '../models/easyconfiguration'
 import { Busy } from '../busy/busy';
+import * as signalR from '@aspnet/signalr';
 
 @inject(HttpClient, DialogService, Busy)
 export class Configure {
 
-    configurations: EasyConfiguration[];
+    configurations: EasyConfiguration[] = [];
     loading = false;
-    private hubConnection: HubConnection;
+    private hubConnection: signalR.HubConnection;
 
 
     constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
+        this.hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/dashboardsignal")
+        .build();
         this.loadData();
     }
 
     async activate() {
         try {
             this.busy.on();
-            this.hubConnection = new HubConnection('/dashboardsignal');
+            
             await this.hubConnection.start();
         } catch (e) {
-
+            console.log("Hub connection error", e);
         } finally {
             this.busy.off();
         }

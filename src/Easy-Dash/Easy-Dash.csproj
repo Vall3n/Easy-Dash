@@ -1,13 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <RootNamespace>EasyDash</RootNamespace>
     <AssemblyName>EasyDash</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\dist\app.component.css" />
+    <Content Remove="wwwroot\dist\app.css" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\value-converters\date-format.ts" />
@@ -22,7 +27,7 @@
     <PackageReference Include="Hangfire" Version="1.6.17" />
     <PackageReference Include="Hangfire.litedb" Version="0.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +40,11 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="wwwroot\dist\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\dist\app.component.css" />
+    <None Include="wwwroot\dist\app.css" />
   </ItemGroup>
 
 

@@ -5,7 +5,7 @@ import { Busy } from '../busy/busy';
 
 @inject(Busy)
 export class App {
-    router: Router;
+    router: Router | null = null;
     themeSelector = false;
     selectedTheme = 'darkly';
     themes = [
