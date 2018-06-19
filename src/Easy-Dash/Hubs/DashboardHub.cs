@@ -6,7 +6,7 @@ namespace EasyDash.Hubs
 {
     public class DashboardHub : Hub
     {
-
+        
         public Task TestStarted(int id)
         {
             return Clients.All.SendAsync("TestStarted", id);

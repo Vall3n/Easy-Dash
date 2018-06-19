@@ -23,7 +23,6 @@ export class App {
         { id: 'pulse', style: 'dist/bootswatch/pulse/bootstrap.min.css' },
         { id: 'sandstone', style: 'dist/bootswatch/sandstone/bootstrap.min.css' },
         { id: 'simplex', style: 'dist/bootswatch/simplex/bootstrap.min.css' },
-        //{ id: 'sketchy', style: 'dist/bootswatch/sketchy/bootstrap.min.css' },
         { id: 'slate', style: 'dist/bootswatch/slate/bootstrap.min.css' },
         { id: 'solar', style: 'dist/bootswatch/solar/bootstrap.min.css' },
         { id: 'spacelab', style: 'dist/bootswatch/spacelab/bootstrap.min.css' },

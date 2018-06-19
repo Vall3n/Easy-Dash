@@ -4,14 +4,7 @@
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
-    "@aspnet/signalr": {
-      "version": "1.0.0-alpha2-final",
-      "resolved": "https://registry.npmjs.org/@aspnet/signalr/-/signalr-client-1.0.0-alpha2-final.tgz",
-      "integrity": "sha1-a899AQKHXfiqbwOhB0h8k/Tx/rQ=",
-      "requires": {
-        "msgpack5": "^3.5.0"
-      }
-    },
+
     "@types/webpack-env": {
       "version": "1.13.3",
       "resolved": "https://registry.npmjs.org/@types/webpack-env/-/webpack-env-1.13.3.tgz",

@@ -10,11 +10,23 @@ import * as signalR from '@aspnet/signalr';
 @inject(HttpClient, DialogService, Busy)
 export class DashboardFailed {
     failedResults: DashboardResult[] = [];
-    private hubConnection: signalR.HubConnection | null = null;
+    private hubConnection: signalR.HubConnection;
 
     constructor(public http: HttpClient, public dialogService: DialogService, private readonly busy: Busy) {
+
+        this.hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/dashboardsignal")
+        .configureLogging(signalR.LogLevel.Trace)
+        .build();
+
         this.loadDashboardResults();
         this.hookup();
+
+        this.hubConnection.start().then(() => {
+            console.info("Hub started");
+        }).catch((reason: any) => {
+            console.log("Hub Error", reason);
+        });
     }
 
     deactivate() {
@@ -23,15 +35,10 @@ export class DashboardFailed {
         }
     }
 
-    private async hookup() {
+    private hookup() {
         try {
             this.busy.on();
-
-            this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/dashboardsignal")
-            .build();
-            await this.hubConnection.start();
-
+            
             this.hubConnection.on('TestStarted',
                 (id: number) => {
                     const row = this.failedResults.findIndex(result => result.id === id);
@@ -45,7 +52,6 @@ export class DashboardFailed {
                     this.addOrUpdateDashboardResult(result);
                 });
 
-            return;
 
         } catch (e) {
             console.warn('Exception on hookup', e);

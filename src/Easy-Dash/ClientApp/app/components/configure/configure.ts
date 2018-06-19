@@ -18,15 +18,22 @@ export class Configure {
     constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
         this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/dashboardsignal")
+        .configureLogging(signalR.LogLevel.Trace)
         .build();
+            
+        this.hubConnection.start().then(() => {
+            console.info("Hub started");
+        }).catch((reason: any) => {
+            console.log("Hub Error", reason);
+        });
         this.loadData();
     }
 
     async activate() {
         try {
             this.busy.on();
-            
-            await this.hubConnection.start();
+
+
         } catch (e) {
             console.log("Hub connection error", e);
         } finally {
