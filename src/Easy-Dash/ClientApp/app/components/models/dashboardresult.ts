@@ -20,7 +20,7 @@ export class DashboardResult {
         }
 
         return moment(this.nextUpdate).fromNow();
-    };
+    }; 
 
     @computedFrom("lastUpdate", "currentDateTime")
     get friendlyLastUpdated(): string {
