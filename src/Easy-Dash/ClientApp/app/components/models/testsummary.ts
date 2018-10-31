@@ -1,12 +1,12 @@
 import { UrlTestStatus } from './urlteststatus';
 
 export class TestSummary {
-    summaryDescription: string;
-    fromDate: string;
-    toDate: string;
-    numberOfTests: number;
-    successful: number;
-    failed: number;
-    averageDuration: number;
-    source: Array<UrlTestStatus>;
+    summaryDescription: string = '';
+    fromDate: string | Date = '';
+    toDate: string | Date = '';
+    numberOfTests: number = 0;
+    successful: number = 0;
+    failed: number = 0;
+    averageDuration: number = 0;
+    source: Array<UrlTestStatus> = [];
 }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
@@ -10,18 +10,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\dist\app.component.css" />
+    <Content Remove="wwwroot\dist\app.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\app\components\value-converters\date-format.ts" />
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="LiteDB" Version="4.0.0" />
-    <PackageReference Include="Flurl" Version="2.5.0" />
-    <PackageReference Include="Flurl.Http" Version="2.0.1" />
-    <PackageReference Include="Hangfire" Version="1.6.17" />
+    <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="Flurl" Version="2.8.0" />
+    <PackageReference Include="Flurl.Http" Version="2.4.0" />
+    <PackageReference Include="Hangfire" Version="1.6.20" />
     <PackageReference Include="Hangfire.litedb" Version="0.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\dist\" />
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\dist\app.component.css" />
+    <None Include="wwwroot\dist\app.css" />
   </ItemGroup>
 
 

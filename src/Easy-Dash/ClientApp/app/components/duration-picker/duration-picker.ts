@@ -3,7 +3,7 @@
 export class DurationPicker {
 
     regex: RegExp = /^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d+[HMS])(\d+H)?(\d+M)?(\d+S)?)?$/;
-    @bindable({ defaultBindingMode: bindingMode.twoWay }) value: string | null;
+    @bindable({ defaultBindingMode: bindingMode.twoWay }) value: string | null = null;
 
     private _years = 0;
     private _months = 0;

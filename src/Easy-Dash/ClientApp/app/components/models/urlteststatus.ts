@@ -1,10 +1,10 @@
 ﻿export class UrlTestStatus {
-    id: number;
-    startedDateTime: string;
-    completedDateTime: string;
-    duration: string;
-    statusCode: number;
-    bodyContent: string;
-    succeeded: boolean;
+    id: number  = 0;
+    startedDateTime: string = '';
+    completedDateTime: string = '';
+    duration: string = '';
+    statusCode: number = 200;
+    bodyContent: string = '';
+    succeeded: boolean = true;
 }
 

@@ -27,7 +27,16 @@ namespace EasyDash
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy", 
+            builder => 
+            {
+                builder.AllowAnyMethod().AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowCredentials();
+            }));
+
 	        services.AddOptions();
 	        services.AddSignalR();
 
@@ -41,12 +50,17 @@ namespace EasyDash
 
 
 	        services.AddHangfire(t => t.UseLiteDbStorage(Configuration.GetConnectionString("HangfireDatabase")));
-
+            services.AddMvc();
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+			app.UseSignalR(routes =>
+	        {
+		        routes.MapHub<DashboardHub>("/dashboardsignal");
+	        });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -61,10 +75,8 @@ namespace EasyDash
             }
 
 	        app.UseHangfireServer();
-			app.UseSignalR(routes =>
-	        {
-		        routes.MapHub<DashboardHub>("dashboardsignal");
-	        });
+            app.UseCors("CorsPolicy");
+
 
 	        app.UseHangfireDashboard();
 			app.UseStaticFiles();

@@ -1,14 +1,13 @@
-import { Aurelia, PLATFORM, inject } from 'aurelia-framework';
+import { PLATFORM, inject } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
 import { Busy } from '../busy/busy';
-import { Themes } from './themes';
 
 
 @inject(Busy)
 export class App {
-    router: Router;
-    themeSelector: boolean = false;
-    selectedTheme: string = 'darkly';
+    router: Router | null = null;
+    themeSelector = false;
+    selectedTheme = 'darkly';
     themes = [
         { id: 'cerulean', style: 'dist/bootswatch/cerulean/bootstrap.min.css' },
         { id: 'cosmo', style: 'dist/bootswatch/cosmo/bootstrap.min.css' },
@@ -17,14 +16,13 @@ export class App {
         { id: 'flatly', style: 'dist/bootswatch/flatly/bootstrap.min.css' },
         { id: 'journal', style: 'dist/bootswatch/journal/bootstrap.min.css' },
         { id: 'litera', style: 'dist/bootswatch/litera/bootstrap.min.css' },
-        //{ id: 'lumen', style: 'dist/bootswatch/lumen/bootstrap.min.css' },
+        { id: 'lumen', style: 'dist/bootswatch/lumen/bootstrap.min.css' },
         { id: 'lux', style: 'dist/bootswatch/lux/bootstrap.min.css' },
         { id: 'materia', style: 'dist/bootswatch/materia/bootstrap.min.css' },
         { id: 'minty', style: 'dist/bootswatch/minty/bootstrap.min.css' },
         { id: 'pulse', style: 'dist/bootswatch/pulse/bootstrap.min.css' },
         { id: 'sandstone', style: 'dist/bootswatch/sandstone/bootstrap.min.css' },
         { id: 'simplex', style: 'dist/bootswatch/simplex/bootstrap.min.css' },
-        //{ id: 'sketchy', style: 'dist/bootswatch/sketchy/bootstrap.min.css' },
         { id: 'slate', style: 'dist/bootswatch/slate/bootstrap.min.css' },
         { id: 'solar', style: 'dist/bootswatch/solar/bootstrap.min.css' },
         { id: 'spacelab', style: 'dist/bootswatch/spacelab/bootstrap.min.css' },

@@ -1,19 +1,18 @@
 import { HttpClient } from 'aurelia-fetch-client';
 import { inject, PLATFORM } from 'aurelia-framework';
-import * as moment from 'moment';
-import { HubConnection } from '@aspnet/signalr-client';
 import { DashboardResult } from '../models/dashboardresult';
 import { TestSummary } from '../models/testsummary';
 import { Busy } from '../busy/busy';
 import { DialogService } from 'aurelia-dialog';
 import * as SweetAlert from 'sweetalert2';
+import * as signalR from '@aspnet/signalr';
 
 @inject(HttpClient, DialogService, Busy)
 export class Dashboard {
     dashboardResults: DashboardResult[] = [];
-    private hubConnection: HubConnection;
+    private hubConnection: signalR.HubConnection | null = null;
 
-    constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
+    constructor(public http: HttpClient, public dialogService: DialogService, private readonly busy: Busy) {
         this.loadDashboardResults();
     }
 
@@ -36,12 +35,13 @@ export class Dashboard {
 
     private async hookup() {
         try {
-            this.hubConnection = new HubConnection('/dashboardsignal');
-            await this.hubConnection.start();
+            this.hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/dashboardsignal")
+            .build();
 
             this.hubConnection.on('TestStarted',
                 (id: number) => {
-                    let row = this.dashboardResults.findIndex(result => result.id === id);
+                    const row = this.dashboardResults.findIndex(result => result.id === id);
                     if (row >= 0) {
                         this.dashboardResults[row].lastStatus = 'Running';
                     }
@@ -49,7 +49,7 @@ export class Dashboard {
 
             this.hubConnection.on('TestEnded',
                 (result: DashboardResult) => {
-                    let row = this.dashboardResults.findIndex(item => item.id === result.id);
+                    const row = this.dashboardResults.findIndex(item => item.id === result.id);
                     if (row >= 0) {
                         const item = this.dashboardResults[row];
                         item.nextUpdate = result.nextUpdate;
@@ -112,7 +112,6 @@ export class Dashboard {
     }
 
     async detailsClick(id: number) {
-
         try {
             this.busy.on();
             const response = await this.http.fetch(`api/Dashboard/${id}/details`);
@@ -121,9 +120,13 @@ export class Dashboard {
             this.busy.off();
 
             console.warn("Open dialog", summaries);
-            this.dialogService.open({ viewModel: PLATFORM.moduleName('app/components/dashboard-details/dashboard-details'), model: summaries, lock: false }).whenClosed(
-                response => {
-                    if (response.wasCancelled) {
+            this.dialogService.open({
+                    viewModel: PLATFORM.moduleName('app/components/dashboard-details/dashboard-details'),
+                    model: summaries,
+                    lock: false
+                })
+                .whenClosed(dialogResponse => {
+                    if (dialogResponse.wasCancelled) {
                         return;
                     }
                 });

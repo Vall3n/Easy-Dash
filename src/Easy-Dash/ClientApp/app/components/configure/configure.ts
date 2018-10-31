@@ -1,31 +1,41 @@
 import { HttpClient, json } from 'aurelia-fetch-client';
-import { inject, NewInstance } from 'aurelia-framework';
-import { HubConnection } from '@aspnet/signalr-client';
+import { inject } from 'aurelia-framework';
 import { DialogService } from 'aurelia-dialog';
 import { ConfigForm } from '../configform/configform'
 import * as SweetAlert from 'sweetalert2';
 import { EasyConfiguration as EasyConfiguration } from '../models/easyconfiguration'
 import { Busy } from '../busy/busy';
+import * as signalR from '@aspnet/signalr';
 
 @inject(HttpClient, DialogService, Busy)
 export class Configure {
 
-    configurations: EasyConfiguration[];
+    configurations: EasyConfiguration[] = [];
     loading = false;
-    private hubConnection: HubConnection;
+    private hubConnection: signalR.HubConnection;
 
 
     constructor(public http: HttpClient, public dialogService: DialogService, private busy: Busy) {
+        this.hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/dashboardsignal")
+        .configureLogging(signalR.LogLevel.Trace)
+        .build();
+            
+        this.hubConnection.start().then(() => {
+            console.info("Hub started");
+        }).catch((reason: any) => {
+            console.log("Hub Error", reason);
+        });
         this.loadData();
     }
 
     async activate() {
         try {
             this.busy.on();
-            this.hubConnection = new HubConnection('/dashboardsignal');
-            await this.hubConnection.start();
-        } catch (e) {
 
+
+        } catch (e) {
+            console.log("Hub connection error", e);
         } finally {
             this.busy.off();
         }
@@ -60,13 +70,11 @@ export class Configure {
     editClick(id: number) {
 
         try {
-
             const row: EasyConfiguration | undefined = this.configurations.find(conf => {
                 return conf.id === id;
             });
 
             if (row) {
-
 
                 this.dialogService.open({ viewModel: ConfigForm, model: row, lock: true }).whenClosed(response => {
                     if (response.wasCancelled) {
@@ -157,7 +165,6 @@ export class Configure {
                 });
             }
         }
-
     }
 
     async configureItem(item: EasyConfiguration) {
@@ -192,7 +199,6 @@ export class Configure {
             } finally {
                 this.busy.off();
             }
-
         }
     }
 }

@@ -7,12 +7,11 @@ export class DashboardResult {
         setInterval(() => { this.currentDateTime = Date.now() }, 1000);
     }
 
-    id: number;
-    description: string;
-    lastStatus: string;
-    lastUpdate: string;
-    nextUpdate: string;
-    updating: boolean;
+    id: number = 0;
+    description: string | null = null;
+    lastStatus: string | null = null;
+    lastUpdate: string = '';
+    nextUpdate: string = ''
     
     @computedFrom("nextUpdate","currentDateTime")
     get friendlyNextUpdate(): string {
@@ -36,6 +35,6 @@ export class DashboardResult {
         return 'oops';
     }
 
-    private currentDateTime: number;
+    private currentDateTime: number = 0;
     
 }

@@ -1,5 +1,6 @@
 body {
 		padding-top: 70px;
+		font-size: 14px !important;
 }
 
 ux-dialog-overlay.active {
@@ -48,3 +49,23 @@ ux-dialog {
     }
 }
 
+.dropdown-menu {
+	font-size:14px !important;
+}
+
+.navbar-brand {
+	display: inline-block !important;
+	padding-top: 12px;
+	padding-bottom: unset;
+	font-size: 15px;
+	line-height: unset;
+}
+
+.btn {
+	font-size: 14px !important;
+	padding: 6px 12px;
+}
+
+.form-control {
+	font-size: inherit;
+}

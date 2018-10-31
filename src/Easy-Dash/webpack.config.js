@@ -1,4 +1,4 @@
-const path = require('path');
+    const path = require('path');
 const webpack  = require('webpack');
 const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const UglifyEsPlugin = require('uglify-es-webpack-plugin');

@@ -7,7 +7,7 @@ export class DashboardDetails {
 
     summaries: TestSummary[] = [];
 
-    constructor(public controller: DialogController,private element: Element) {
+    constructor(public controller: DialogController,private readonly element: Element) {
 
     }
 

@@ -1,5 +1,5 @@
 import { HttpClient } from 'aurelia-fetch-client';
-import { inject, PLATFORM } from 'aurelia-framework';
+import { inject } from 'aurelia-framework';
 import { Busy } from '../busy/busy';
 import { Dashboard } from '../dashboard/dashboard';
 import { DialogService } from 'aurelia-dialog';
